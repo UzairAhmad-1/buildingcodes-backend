@@ -1,0 +1,11 @@
+// tsconfig.ts-node.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS"
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  }
+}

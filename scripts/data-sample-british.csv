@@ -1,0 +1,71 @@
+page,text,label
+27,"Division A Compliance, Objectives and Functional Statements",Division
+31,Part 1 Compliance,Part
+31,Section 1.1. General,Section
+31,1.1.1. Application of this Code,Subsection
+31,1.1.1.1. Application of this Code,Article
+31,1) This Code applies to any one or more of the following:,Sentence
+31,"a) the design and construction of a new building ,",Clause
+31,"b) the occupancy of any building ,",Clause
+31,"c) a change in occupancy of any building ,",Clause
+31,"d) an alteration of any building ,",Clause
+31,"e) an addition to any building ,",Clause
+31,"f) the demolition of any building ,",Clause
+31,"g) the reconstruction of any building that has been damaged by fire, earthquake or other cause,",Clause
+31,"h) the correction of an unsafe condition in or about any building ,",Clause
+31,"i) all parts of any building that are affected by a change in occupancy ,",Clause
+31,j) the work necessary to ensure safety in parts of a building,Clause
+31,"i) that remain after a demolition,",Subclause
+31,"ii) that are affected by but that are not directly involved in alterations , or",Subclause
+31,"iii) that are affected by but not directly involved in additions,",Subclause
+31,"k) except as permitted by the British Columbia Fire Code, the installation, replacement, or alteration of materials or equipment regulated by this Code,",Clause
+31,"l) the work necessary to ensure safety in a relocated building during and after relocation,",Clause
+31,"m) safety during construction of a building , including protection of the public,",Clause
+31,"n) the design, installation, extension, alteration , renewal or repair of plumbing systems , and",Clause
+31,"o) the alteration , rehabilitation and change of occupancy of heritage buildings .",Clause
+31,2) This Code does not apply to the following:,Sentence
+31,"a) sewage , water, electrical, telephone, rail or similar public infrastructure systems located in a street or a public transit right of way,",Clause
+32,"b) utility towers and poles, and television, radio and other communication aerials and towers, except for loads resulting from their being located on or attached to buildings ,",Clause
+32,"c) mechanical or other equipment and appliances not specifically regulated in these regulations,",Clause
+32,"d) flood control and hydro electric dams and structures,",Clause
+32,"e) accessory buildings less than 10 m 2  in building area that do not create a hazard,",Clause
+32,"f) with the permission of the authority having jurisdiction , temporary buildings including",Clause
+32,"i) construction site offices,",Subclause
+32,"ii) seasonal storage buildings ,",Subclause
+32,"iii) special events facilities,",Subclause
+32,"iv) emergency facilities, and",Subclause
+32,"v) similar structures,",Subclause
+32,"g) factory built housing and components complying with CSA-Z240 MH Series standard, but this exemption does not extend to on site preparations (siting, foundations, mountings), connection to services and installation of appliances , and",Clause
+32,h) areas that are specifically exempted from provincial building regulations by provincial or federal enactments.,Clause
+32,3) This Code applies to both site-built and factory-constructed buildings . (See Note A-1.1.1.1.(3).),Sentence
+32,4) Farm buildings shall conform to the requirements in the National Farm Building Code of Canada 1995.,Sentence
+32,"5) For heritage buildings , the Alternate Compliance Methods for Heritage Buildings in Table 1.1.1.1.(5) may be substituted for requirements contained elsewhere in this Code. (See Note A-1.1.1.1.(5).)",Sentence
+37,"6) For the design and construction of alterations to existing buildings to add a secondary suite , not including the design and construction of new additions or new buildings , the Alternate Compliance Methods for Alterations to Existing Buildings to Add a Secondary Suite in Table 1.1.1.1.(6) may be substituted for requirements contained elsewhere in this Code. (See Note A-1.1.1.1.(6).)",Sentence
+38,1.1.1.2. Application to Existing Buildings,Article
+38,"1) Where a building is altered, rehabilitated, renovated or repaired, or there is a change in occupancy , the level of life safety and building performance shall not be decreased below a level that already exists. (See Note A-1.1.1.2.(1).)",Sentence
+38,1.1.2. Internal References to this Code,Subsection
+38,1.1.2.1. Book I (General) and Book II (Plumbing Systems) of the Code,Article
+38,"1) This is the first of the two Books, Book I (General) and Book II (Plumbing Systems), that together form the British Columbia Building Code.",Sentence
+38,1.1.2.2. Internal References to the Code,Article
+38,"1) Unless a Book is specified, references to “the British Columbia Building Code,” “the Code,” “this Code” and the like shall be read as references to the Book in which they appear.",Sentence
+39,"1.1.3. Appendices, Notes and Annotations",Subsection
+39,"1.1.3.1. Appendices, Notes and References to Appendices and Notes have No Legal Effect",Article
+39,"1) Except for Notes A-Table 9.23.3.5.-B and A-9.23.13., including Table A-9.23.13. in Division B, Notes to Parts of this Code have no legal effect.",Sentence
+39,Section 1.2. Compliance,Section
+39,1.2.1. Compliance with this Code,Subsection
+39,1.2.1.1. Compliance with this Code,Article
+39,1) Compliance with this Code shall be achieved by,Sentence
+39,"a) complying with the applicable acceptable solutions in Division B (see Note A-1.2.1.1.(1)(a)), or",Clause
+39,"b) except as required by Sentence (3), using alternative solutions, accepted by the authority having jurisdiction under Section 2.3 of Division C, that will achieve at least the minimum level of performance required by Division B in the areas defined by the objectives and functional statements attributed to the applicable acceptable solutions (see Note A-1.2.1.1.(1)(b)).",Clause
+39,2) For the purposes of compliance with this Code as required in Clause,Sentence
+39,"1.2.1.1.(1)(b), the objectives and functional statements attributed to the acceptable solutions in Division B shall be the objectives and functional statements referred to in Subsection 1.1.2. of Division B.",Article
+39,3) An alternative solution shall not be used in place of an acceptable solution if the acceptable solution expressly requires conformance to a provincial enactment other than Book I (General) or Book II (Plumbing Systems) of the British Columbia Building Code.,Sentence
+39,1.2.1.2. Responsibility of Owner,Article
+39,"1) Unless otherwise specified in this Code, the owner of a building shall be the person responsible for carrying out the provisions of this Code in relation to that building .",Sentence
+39,2) The owner of a building is in no way relieved of full responsibility for complying with this Code by the authority having jurisdiction,Sentence
+39,"a) granting a building permit,",Clause
+39,"b) approving drawings or specifications, or",Clause
+39,c) carrying out inspections.,Clause
+39,"1.2.2. Materials, Appliances, Systems and Equipment",Subsection
+39,"1.2.2.1. Characteristics of Materials, Appliances, Systems and Equipment",Article
+39,"1) All materials, appliances , systems and equipment installed to meet the requirements of this Code shall possess the necessary characteristics to perform their intended functions when installed in a building .",Sentence
