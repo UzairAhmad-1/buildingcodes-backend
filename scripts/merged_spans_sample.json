@@ -1,0 +1,3714 @@
+[
+  {
+    "label": "Division",
+    "title": "Division A",
+    "text": "Compliance, Objectives and Functional Statements",
+    "page": 27,
+    "font": "HelveticaLTPro-Black",
+    "size": 23.940000534057617,
+    "bbox": [
+      252.3000030517578,
+      227.28030395507812,
+      383.0770568847656,
+      251.22030639648438
+    ],
+    "y": 227.28030395507812
+  },
+  {
+    "label": "Part",
+    "title": "Part 1",
+    "text": "Compliance",
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 21.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      97.15636444091797,
+      144.3247833251953,
+      119.05636596679688
+    ],
+    "y": 97.15636444091797
+  },
+  {
+    "label": "Section",
+    "title": "Section 1.1.",
+    "text": "General",
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 16.979999542236328,
+    "bbox": [
+      71.69999694824219,
+      227.64219665527344,
+      182.29751586914062,
+      244.6221923828125
+    ],
+    "y": 227.64219665527344
+  },
+  {
+    "label": "Subsection",
+    "title": "1.1.1.",
+    "text": "Application of this Code",
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      71.69999694824219,
+      257.7242126464844,
+      107.693115234375,
+      269.6642150878906
+    ],
+    "y": 257.7242126464844
+  },
+  {
+    "label": "Article",
+    "title": "1.1.1.1.",
+    "text": "Application of this Code",
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      282.4002990722656,
+      111.7177734375,
+      292.30029296875
+    ],
+    "y": 282.4002990722656
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "This Code applies to any one or more of the following:",
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      300.5173034667969,
+      167.70822143554688,
+      310.41729736328125
+    ],
+    "y": 300.5173034667969
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "the design of a new building ,",
+    "references": [
+      {
+        "text": "new building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          241.28298950195312,
+          312.1991882324219,
+          297.7466735839844,
+          322.2477111816406
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      159.4139862060547,
+      312.1991882324219,
+      167.69039916992188,
+      322.2477111816406
+    ],
+    "y": 312.1991882324219
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "the construction of a new building ,",
+    "references": [
+      {
+        "text": "new building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          266.8468017578125,
+          323.17828369140625,
+          323.2511291503906,
+          333.226806640625
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.87939453125,
+      323.17828369140625,
+      167.69436645507812,
+      333.226806640625
+    ],
+    "y": 323.17828369140625
+  },
+  {
+    "label": "Clause",
+    "title": "c)",
+    "text": "the occupancy of any building ,",
+    "references": [
+      {
+        "text": "occupancy",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          189.54364013671875,
+          334.216796875,
+          234.6361846923828,
+          344.26531982421875
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          265.4251403808594,
+          334.216796875,
+          302.3659973144531,
+          344.26531982421875
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      159.95848083496094,
+      334.216796875,
+      167.6903839111328,
+      344.26531982421875
+    ],
+    "y": 334.216796875
+  },
+  {
+    "label": "Clause",
+    "title": "d)",
+    "text": "the change in occupancy of any building ,",
+    "references": [
+      {
+        "text": "occupancy",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          235.269775390625,
+          345.1958923339844,
+          280.2276611328125,
+          355.2444152832031
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          310.90576171875,
+          345.1958923339844,
+          347.7941589355469,
+          355.2444152832031
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.27548217773438,
+      345.1958923339844,
+      167.675537109375,
+      355.2444152832031
+    ],
+    "y": 345.1958923339844
+  },
+  {
+    "label": "Clause",
+    "title": "e)",
+    "text": "an alteration to any building ,",
+    "references": [
+      {
+        "text": "alteration",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          186.47265625,
+          356.17498779296875,
+          228.2239227294922,
+          366.2235107421875
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          259.0069580078125,
+          356.17498779296875,
+          295.9261169433594,
+          366.2235107421875
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      159.59217834472656,
+      356.17498779296875,
+      167.67454528808594,
+      366.2235107421875
+    ],
+    "y": 356.17498779296875
+  },
+  {
+    "label": "Clause",
+    "title": "f)",
+    "text": "an addition to any building ,",
+    "references": [
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          257.71307373046875,
+          367.2135009765625,
+          294.7033996582031,
+          377.26202392578125
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      160.54257202148438,
+      367.2135009765625,
+      167.6794891357422,
+      377.26202392578125
+    ],
+    "y": 367.2135009765625
+  },
+  {
+    "label": "Clause",
+    "title": "g)",
+    "text": "the demolition of any building ,",
+    "references": [
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          271.6433410644531,
+          378.1925964355469,
+          308.6000671386719,
+          388.2411193847656
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.80018615722656,
+      378.1925964355469,
+      167.675537109375,
+      388.2411193847656
+    ],
+    "y": 378.1925964355469
+  },
+  {
+    "label": "Clause",
+    "title": "h)",
+    "text": "the reconstruction of any building that has been damaged by fire, earthquake or other cause,",
+    "references": [
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          285.6468811035156,
+          389.17169189453125,
+          322.02252197265625,
+          399.22021484375
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.5625762939453,
+      389.17169189453125,
+      167.6705780029297,
+      399.22021484375
+    ],
+    "y": 389.17169189453125
+  },
+  {
+    "label": "Clause",
+    "title": "i)",
+    "text": "the correction of an unsafe condition in or about any building or property,",
+    "references": [
+      {
+        "text": "unsafe condition",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          261.2493591308594,
+          411.1893005371094,
+          330.424560546875,
+          421.2378234863281
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          400.2957763671875,
+          411.1893005371094,
+          436.9535217285156,
+          421.2378234863281
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      161.453369140625,
+      411.1893005371094,
+      167.67849731445312,
+      421.2378234863281
+    ],
+    "y": 411.1893005371094
+  },
+  {
+    "label": "Clause",
+    "title": "j)",
+    "text": "all parts of any building affected by a change in occupancy ,",
+    "references": [
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          242.02548217773438,
+          422.16839599609375,
+          278.7198791503906,
+          432.2169189453125
+        ]
+      },
+      {
+        "text": "occupancy",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          383.2034912109375,
+          422.16839599609375,
+          428.08416748046875,
+          432.2169189453125
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      162.0572509765625,
+      422.16839599609375,
+      167.71807861328125,
+      432.2169189453125
+    ],
+    "y": 422.16839599609375
+  },
+  {
+    "label": "Clause",
+    "title": "k)",
+    "text": "the work necessary to ensure safety in parts of any building that",
+    "references": [
+      {
+        "text": "work",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          189.54757690429688,
+          433.2069091796875,
+          212.12652587890625,
+          443.25543212890625
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          396.5447692871094,
+          433.2069091796875,
+          433.3033752441406,
+          443.25543212890625
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.82986450195312,
+      433.2069091796875,
+      167.70521545410156,
+      443.25543212890625
+    ],
+    "y": 433.2069091796875
+  },
+  {
+    "label": "Subclause",
+    "title": "i)",
+    "text": "remain after demolition, or",
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      187.51016235351562,
+      444.1860046386719,
+      320.1246337890625,
+      454.2345275878906
+    ],
+    "y": 444.1860046386719
+  },
+  {
+    "label": "Subclause",
+    "title": "ii)",
+    "text": "are affected by, but are not directly involved in, additions or alterations ,",
+    "references": [
+      {
+        "text": "alterations",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          209.117919921875,
+          466.20361328125,
+          254.84005737304688,
+          476.25213623046875
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      184.5698699951172,
+      455.16510009765625,
+      454.129150390625,
+      465.213623046875
+    ],
+    "y": 455.16510009765625
+  },
+  {
+    "label": "Clause",
+    "title": "l)",
+    "text": "the installation, replacement, or alteration of materials regulated by this Code,",
+    "references": [
+      {
+        "text": "alteration",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          316.47344970703125,
+          477.1827087402344,
+          358.1395568847656,
+          487.2312316894531
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      161.4632568359375,
+      477.1827087402344,
+      167.69432067871094,
+      487.2312316894531
+    ],
+    "y": 477.1827087402344
+  },
+  {
+    "label": "Clause",
+    "title": "m)",
+    "text": "the installation, replacement, or alteration of equipment regulated by this Code,",
+    "references": [
+      {
+        "text": "alteration",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          316.1547546386719,
+          499.2003173828125,
+          357.77728271484375,
+          509.24884033203125
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      155.5826416015625,
+      499.2003173828125,
+      167.70123291015625,
+      509.24884033203125
+    ],
+    "y": 499.2003173828125
+  },
+  {
+    "label": "Clause",
+    "title": "n)",
+    "text": "the work necessary to ensure safety in a relocated building during and after relocation, and",
+    "references": [
+      {
+        "text": "work",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          189.55154418945312,
+          521.1585083007812,
+          212.17701721191406,
+          531.2069702148438
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          392.2293701171875,
+          521.1585083007812,
+          428.9246520996094,
+          531.2069702148438
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.58236694335938,
+      521.1585083007812,
+      167.68641662597656,
+      531.2069702148438
+    ],
+    "y": 521.1585083007812
+  },
+  {
+    "label": "Clause",
+    "title": "o)",
+    "text": "safety during construction of a project , including protection of the public and neighbouring properties.",
+    "references": [
+      {
+        "text": "project",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          312.04827880859375,
+          543.1761474609375,
+          342.0056457519531,
+          553.224609375
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.94869995117188,
+      543.1761474609375,
+      167.68743896484375,
+      553.224609375
+    ],
+    "y": 543.1761474609375
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "This Code applies to both site-built and factory-constructed buildings . (See Note A-1.1.1.1.(2).)",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          440.7323913574219,
+          572.272216796875,
+          481.4571228027344,
+          582.3206787109375
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.14691162109375,
+      571.5693969726562,
+      167.7181396484375,
+      581.4693603515625
+    ],
+    "y": 571.5693969726562
+  },
+  {
+    "label": "Sentence",
+    "title": "3)",
+    "text": "This Code does not permit the construction of a building for which a land use is not allowed pursuant to an airport vicinity protection area regulation under the Municipal Government Act.",
+    "references": [
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          387.0200500488281,
+          601.3088989257812,
+          423.7668151855469,
+          611.3573608398438
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.14695739746094,
+      600.6060791015625,
+      167.7181854248047,
+      610.5060424804688
+    ],
+    "y": 600.6060791015625
+  },
+  {
+    "label": "Sentence",
+    "title": "4)",
+    "text": "This Code does not apply to",
+    "page": 31,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.14695739746094,
+      640.6812744140625,
+      167.7181854248047,
+      650.5812377929688
+    ],
+    "y": 640.6812744140625
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "a building of low human occupancy associated with the operation of the farm on which it is located, where the building is used for the",
+    "references": [
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          180.693115234375,
+          652.422607421875,
+          217.3250732421875,
+          662.4710693359375
+        ]
+      },
+      {
+        "text": "occupancy",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          281.7978515625,
+          652.422607421875,
+          326.6171569824219,
+          662.4710693359375
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          319.5030517578125,
+          663.4017333984375,
+          356.2518005371094,
+          673.4501953125
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      159.4239501953125,
+      652.422607421875,
+      167.7003631591797,
+      662.4710693359375
+    ],
+    "y": 652.422607421875
+  },
+  {
+    "label": "Subclause",
+    "title": "i)",
+    "text": "housing of livestock,",
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      187.50038146972656,
+      674.3807983398438,
+      291.6176452636719,
+      684.4292602539062
+    ],
+    "y": 674.3807983398438
+  },
+  {
+    "label": "Subclause",
+    "title": "ii)",
+    "text": "storage or maintenance of equipment, or",
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      184.56008911132812,
+      685.4193115234375,
+      379.9394836425781,
+      695.4677734375
+    ],
+    "y": 685.4193115234375
+  },
+  {
+    "label": "Subclause",
+    "title": "iii)",
+    "text": "storage of materials or produce, (see Note A-1.1.1.1.(4)(a)),",
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      181.67918395996094,
+      696.3983764648438,
+      341.3581848144531,
+      706.4468383789062
+    ],
+    "y": 696.3983764648438
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "utility towers and poles, television and radio or other communications antennas or towers, except that loads resulting from those located on or attached to a building shall be included in the building design,",
+    "references": [
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          232.29098510742188,
+          740.3742065429688,
+          269.01995849609375,
+          750.4226684570312
+        ]
+      },
+      {
+        "text": "building",
+        "page": 31,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          374.9598693847656,
+          740.3643188476562,
+          411.61761474609375,
+          750.4127807617188
+        ]
+      }
+    ],
+    "page": 31,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.87948608398438,
+      718.416015625,
+      167.70632934570312,
+      728.4644775390625
+    ],
+    "y": 718.416015625
+  },
+  {
+    "label": "Clause",
+    "title": "c)",
+    "text": "water conveyance and control structures, except for an associated building provided for occupancy ,",
+    "references": [
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          441.5402526855469,
+          75.4432144165039,
+          478.3544616699219,
+          85.49171447753906
+        ]
+      },
+      {
+        "text": "occupancy",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          208.32998657226562,
+          86.48172760009766,
+          253.42347717285156,
+          96.53022766113281
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.9600067138672,
+      75.4432144165039,
+      143.6958770751953,
+      85.49171447753906
+    ],
+    "y": 75.4432144165039
+  },
+  {
+    "label": "Clause",
+    "title": "d)",
+    "text": "highway and railway bridges,",
+    "page": 32,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.286865234375,
+      97.46085357666016,
+      143.6898956298828,
+      107.50935363769531
+    ],
+    "y": 97.46085357666016
+  },
+  {
+    "label": "Clause",
+    "title": "e)",
+    "text": "mechanical process equipment and appliances in an industrial occupancy that are not required for building services and are not specifically regulated by this Code,",
+    "references": [
+      {
+        "text": "industrial occupancy",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          382.9244079589844,
+          108.43997955322266,
+          470.69476318359375,
+          118.48847961425781
+        ]
+      },
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          258.5041809082031,
+          119.4784927368164,
+          295.1134033203125,
+          129.52699279785156
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.6035614013672,
+      108.43997955322266,
+      143.6908721923828,
+      118.48847961425781
+    ],
+    "y": 108.43997955322266
+  },
+  {
+    "label": "Clause",
+    "title": "f)",
+    "text": "an accessory building not greater than 10 m 2 in building area that does not create a hazard, or",
+    "references": [
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          207.34983825683594,
+          141.43675231933594,
+          244.1085205078125,
+          151.48524475097656
+        ]
+      },
+      {
+        "text": "building area",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          356.7621154785156,
+          141.44322204589844,
+          412.76739501953125,
+          151.49171447753906
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      136.57376098632812,
+      141.43675231933594,
+      143.71067810058594,
+      151.48524475097656
+    ],
+    "y": 141.43675231933594
+  },
+  {
+    "label": "Clause",
+    "title": "g)",
+    "text": "the category of elevating devices and amusement rides regulated under other regulations made pursuant to the Safety Codes Act, except for ramps, stairs, platforms and associated buildings .",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          291.40618896484375,
+          185.47850036621094,
+          332.1626281738281,
+          195.52699279785156
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.82388305664062,
+      163.4608612060547,
+      143.679443359375,
+      173.5093536376953
+    ],
+    "y": 163.4608612060547
+  },
+  {
+    "label": "Article",
+    "title": "1.1.1.2.",
+    "text": "Application to Existing Buildings (See Note A-1.1.1.2.)",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      47.70391845703125,
+      207.5753631591797,
+      87.72467041015625,
+      217.47535705566406
+    ],
+    "y": 207.5753631591797
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "This Article applies to a building that legally existed before 01 May 2024.",
+    "references": [
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          256.5979309082031,
+          238.8790740966797,
+          293.29913330078125,
+          248.9275665283203
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.15081787109375,
+      238.17625427246094,
+      143.7220458984375,
+      248.0762481689453
+    ],
+    "y": 238.17625427246094
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "If a building is altered, rehabilitated, refurbished, renovated or repaired, the level of life safety and building performance shall not be decreased.",
+    "references": [
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          166.13365173339844,
+          256.5208435058594,
+          202.9784393310547,
+          266.5693664550781
+        ]
+      },
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          216.89886474609375,
+          267.4999694824219,
+          253.67633056640625,
+          277.5484924316406
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.16070556640625,
+      255.8180389404297,
+      143.73193359375,
+      265.7180480957031
+    ],
+    "y": 255.8180389404297
+  },
+  {
+    "label": "Sentence",
+    "title": "3)",
+    "text": "Except as specified in Part 10 of Division B, the authority having jurisdiction shall accept any construction or condition that lawfully exists in Alberta.",
+    "references": [
+      {
+        "text": "authority having jurisdiction",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          359.8647155761719,
+          285.0823669433594,
+          479.7794189453125,
+          295.1308898925781
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.1606903076172,
+      284.37957763671875,
+      143.73191833496094,
+      294.2795715332031
+    ],
+    "y": 284.37957763671875
+  },
+  {
+    "label": "Sentence",
+    "title": "4)",
+    "text": "A change in occupancy or alteration of any building shall be permitted if the level of safety and building performance proposed are acceptable to the authority having jurisdiction .",
+    "references": [
+      {
+        "text": "occupancy",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          205.232666015625,
+          313.7032775878906,
+          250.26181030273438,
+          323.7518005371094
+        ]
+      },
+      {
+        "text": "alteration",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          262.4803771972656,
+          313.7032775878906,
+          304.10687255859375,
+          323.7518005371094
+        ]
+      },
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          334.8751220703125,
+          313.7032775878906,
+          371.7565612792969,
+          323.7518005371094
+        ]
+      },
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          201.02313232421875,
+          324.7417907714844,
+          238.0243682861328,
+          334.7903137207031
+        ]
+      },
+      {
+        "text": "authority",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          435.953125,
+          324.7417907714844,
+          476.6312561035156,
+          334.7903137207031
+        ]
+      },
+      {
+        "text": "having jurisdiction",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          119.726318359375,
+          335.72088623046875,
+          197.29978942871094,
+          345.7694091796875
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.17054748535156,
+      313.00048828125,
+      143.7417755126953,
+      322.9004821777344
+    ],
+    "y": 313.00048828125
+  },
+  {
+    "label": "Sentence",
+    "title": "5)",
+    "text": "The authority having jurisdiction may accept an alternative or a proposal that achieves the appropriate level of safety for the specific activity for which the building is to be used.",
+    "references": [
+      {
+        "text": "authority having jurisdiction",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          168.44619750976562,
+          353.3626708984375,
+          289.0341491699219,
+          363.41119384765625
+        ]
+      },
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          457.31439208984375,
+          364.3417663574219,
+          494.13043212890625,
+          374.3902893066406
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.16061401367188,
+      352.6598815917969,
+      143.73184204101562,
+      362.55987548828125
+    ],
+    "y": 352.6598815917969
+  },
+  {
+    "label": "Sentence",
+    "title": "6)",
+    "text": "The authority having jurisdiction may accept existing construction not in complete compliance with this Code and may place conditions on the existing construction.",
+    "references": [
+      {
+        "text": "authority having jurisdiction",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          168.4561004638672,
+          392.962646484375,
+          287.5184020996094,
+          403.01116943359375
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.17051696777344,
+      392.2598571777344,
+      143.7417449951172,
+      402.15985107421875
+    ],
+    "y": 392.2598571777344
+  },
+  {
+    "label": "Section",
+    "title": "Section 1.2.",
+    "text": "Compliance",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 16.979999542236328,
+    "bbox": [
+      47.70000076293945,
+      434.4021911621094,
+      158.32809448242188,
+      451.3821716308594
+    ],
+    "y": 434.4021911621094
+  },
+  {
+    "label": "Subsection",
+    "title": "1.2.1.",
+    "text": "Compliance with this Code",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      47.70000076293945,
+      464.2442321777344,
+      83.71821594238281,
+      476.1842346191406
+    ],
+    "y": 464.2442321777344
+  },
+  {
+    "label": "Article",
+    "title": "1.2.1.1.",
+    "text": "Compliance with this Code",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      47.70000076293945,
+      488.6802978515625,
+      87.72074890136719,
+      498.5802917480469
+    ],
+    "y": 488.6802978515625
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Compliance with this Code shall be achieved by",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.13699340820312,
+      506.2626953125,
+      143.70822143554688,
+      516.1626586914062
+    ],
+    "y": 506.2626953125
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "complying with the applicable acceptable solutions in Division B (see Note A-1.2.1.1.(1)(a)), or",
+    "page": 32,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.4139862060547,
+      518.0040283203125,
+      143.71316528320312,
+      528.052490234375
+    ],
+    "y": 518.0040283203125
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "using alternative solutions that will achieve at least the minimum level of performance required by Division B in the areas defined by the objectives and functional statements attributed to the applicable acceptable solutions (see Note A-1.2.1.1.(1)(b)).",
+    "page": 32,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.87939453125,
+      539.9622192382812,
+      143.70822143554688,
+      550.0106811523438
+    ],
+    "y": 539.9622192382812
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "For the purposes of compliance with this Code as required in Clause 1.2.1.1.(1)(b), the objectives and functional statements attributed to the acceptable solutions in Division B shall be the objectives and functional statements referred to in Subsection 1.1.2. of Division B.",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.13699340820312,
+      589.8978881835938,
+      143.70822143554688,
+      599.7978515625
+    ],
+    "y": 589.8978881835938
+  },
+  {
+    "label": "Subsection",
+    "title": "1.2.2.",
+    "text": "Materials, Appliances, Systems and Equipment",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      47.70000076293945,
+      647.0642700195312,
+      83.67163848876953,
+      659.0042114257812
+    ],
+    "y": 647.0642700195312
+  },
+  {
+    "label": "Article",
+    "title": "1.2.2.1.",
+    "text": "Characteristics of Materials, Appliances, Systems and Equipment",
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      47.70000076293945,
+      671.5003051757812,
+      87.70293426513672,
+      681.4002685546875
+    ],
+    "y": 671.5003051757812
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "All materials, appliances , systems and equipment installed to meet the requirements of this Code shall possess the necessary characteristics to perform their intended functions when installed in a building .",
+    "references": [
+      {
+        "text": "appliances",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          211.75588989257812,
+          689.8449096679688,
+          256.5365295410156,
+          699.8933715820312
+        ]
+      },
+      {
+        "text": "building",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          290.8014221191406,
+          711.8031005859375,
+          327.6383361816406,
+          721.8515625
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.13699340820312,
+      689.14208984375,
+      143.70822143554688,
+      699.0420532226562
+    ],
+    "y": 689.14208984375
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "Evaluation reports issued by the Canadian Construction Materials Centre, National Research Council of Canada, or an organization approved by the Provincial Building Administrator may be used in determining compliance with the requirements of this Code.",
+    "references": [
+      {
+        "text": "Provincial",
+        "page": 32,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          448.56494140625,
+          740.4240112304688,
+          492.9930419921875,
+          750.4724731445312
+        ]
+      },
+      {
+        "text": "Building Administrator",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          143.6999969482422,
+          75.4432144165039,
+          240.2062225341797,
+          85.49171447753906
+        ]
+      }
+    ],
+    "page": 32,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.14691162109375,
+      728.7420654296875,
+      143.7181396484375,
+      738.6420288085938
+    ],
+    "y": 728.7420654296875
+  },
+  {
+    "label": "Sentence",
+    "title": "3)",
+    "text": "The Provincial Building Administrator may issue lists of materials or products that satisfy the requirements of this Code and, after listing, may be used to fulfill the requirements of this Code.",
+    "references": [
+      {
+        "text": "Provincial Building Administrator",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          192.42979431152344,
+          103.28202056884766,
+          336.1193542480469,
+          113.33052062988281
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.1442108154297,
+      102.57920837402344,
+      167.71543884277344,
+      112.47920989990234
+    ],
+    "y": 102.57920837402344
+  },
+  {
+    "label": "Article",
+    "title": "1.2.2.2.",
+    "text": "Storage on the Building Site",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.70722198486328,
+      146.9807586669922,
+      111.71311950683594,
+      156.88075256347656
+    ],
+    "y": 146.9807586669922
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "All building materials, appliances and equipment on the building site shall be stored in such a way as to prevent the deterioration or impairment of their essential properties.",
+    "references": [
+      {
+        "text": "building",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          189.309326171875,
+          164.5432586669922,
+          226.1531524658203,
+          174.5917510986328
+        ]
+      },
+      {
+        "text": "appliances",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          272.2535095214844,
+          164.5432586669922,
+          316.7876892089844,
+          174.5917510986328
+        ]
+      },
+      {
+        "text": "building",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          417.924072265625,
+          164.5432586669922,
+          454.724365234375,
+          174.5917510986328
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.14422607421875,
+      163.84043884277344,
+      167.7154541015625,
+      173.7404327392578
+    ],
+    "y": 163.84043884277344
+  },
+  {
+    "label": "Article",
+    "title": "1.2.2.3.",
+    "text": "Used Materials, Appliances and Equipment",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.70723724365234,
+      208.2419891357422,
+      111.71907806396484,
+      218.14198303222656
+    ],
+    "y": 208.2419891357422
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Unless otherwise specified, used materials, appliances and equipment are permitted to be reused when they meet the requirements of this Code for new materials, appliances and equipment and are satisfactory for the intended use.",
+    "references": [
+      {
+        "text": "appliances",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          367.1578063964844,
+          225.8044891357422,
+          411.8752136230469,
+          235.8529815673828
+        ]
+      },
+      {
+        "text": "appliances",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          187.09669494628906,
+          247.7627410888672,
+          231.4972381591797,
+          257.8112487792969
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.14422607421875,
+      225.10166931152344,
+      167.7154541015625,
+      235.0016632080078
+    ],
+    "y": 225.10166931152344
+  },
+  {
+    "label": "Article",
+    "title": "1.2.2.4.",
+    "text": "Asbestos",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69734191894531,
+      269.50323486328125,
+      111.72403717041016,
+      279.4032287597656
+    ],
+    "y": 269.50323486328125
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Products containing asbestos shall not be installed in a building .",
+    "references": [
+      {
+        "text": "building",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          417.21722412109375,
+          287.06573486328125,
+          453.9393005371094,
+          297.1142578125
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13433837890625,
+      286.3629455566406,
+      167.70556640625,
+      296.262939453125
+    ],
+    "y": 286.3629455566406
+  },
+  {
+    "label": "Section",
+    "title": "Section 1.3.",
+    "text": "Divisions A, B and C of this Code",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 16.979999542236328,
+    "bbox": [
+      71.69999694824219,
+      317.1022033691406,
+      182.31283569335938,
+      334.0821838378906
+    ],
+    "y": 317.1022033691406
+  },
+  {
+    "label": "Subsection",
+    "title": "1.3.1.",
+    "text": "General",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      71.69999694824219,
+      346.52423095703125,
+      107.69672393798828,
+      358.4642333984375
+    ],
+    "y": 346.52423095703125
+  },
+  {
+    "label": "Article",
+    "title": "1.3.1.1.",
+    "text": "Scope of Division A",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      370.6003112792969,
+      111.73262786865234,
+      380.50030517578125
+    ],
+    "y": 370.6003112792969
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Division A contains the compliance and application provisions, objectives and functional statements of this Code.",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      387.4006042480469,
+      167.70822143554688,
+      397.30059814453125
+    ],
+    "y": 387.4006042480469
+  },
+  {
+    "label": "Article",
+    "title": "1.3.1.2.",
+    "text": "Scope of Division B",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.70000457763672,
+      420.8230285644531,
+      111.73263549804688,
+      430.7230224609375
+    ],
+    "y": 420.8230285644531
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Division B contains the acceptable solutions of this Code.",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      437.6827392578125,
+      167.70822143554688,
+      447.5827331542969
+    ],
+    "y": 437.6827392578125
+  },
+  {
+    "label": "Article",
+    "title": "1.3.1.3.",
+    "text": "Scope of Division C",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      460.066650390625,
+      111.73262786865234,
+      469.9666442871094
+    ],
+    "y": 460.066650390625
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Division C contains the administrative provisions of this Code.",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      476.9263610839844,
+      167.70822143554688,
+      486.82635498046875
+    ],
+    "y": 476.9263610839844
+  },
+  {
+    "label": "Article",
+    "title": "1.3.1.4.",
+    "text": "Internal Cross-references",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      499.3102722167969,
+      111.72074890136719,
+      509.21026611328125
+    ],
+    "y": 499.3102722167969
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Where the Division of a referenced provision is not specified in this Code, it shall mean that the referenced provision is in the same Division as the referencing provision.",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      516.1699829101562,
+      167.70822143554688,
+      526.0699462890625
+    ],
+    "y": 516.1699829101562
+  },
+  {
+    "label": "Subsection",
+    "title": "1.3.2.",
+    "text": "Application of Division A",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      71.69999694824219,
+      550.9442749023438,
+      107.67162322998047,
+      562.8842163085938
+    ],
+    "y": 550.9442749023438
+  },
+  {
+    "label": "Article",
+    "title": "1.3.2.1.",
+    "text": "Application of Parts 1, 2 and 3",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      575.0203247070312,
+      111.71183776855469,
+      584.9202880859375
+    ],
+    "y": 575.0203247070312
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Parts 1, 2 and 3 of Division A apply to all buildings covered in this Code. (See Article 1.1.1.1.)",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          358.08917236328125,
+          592.5234375,
+          398.71380615234375,
+          602.5718994140625
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      591.8206176757812,
+      167.70822143554688,
+      601.7205810546875
+    ],
+    "y": 591.8206176757812
+  },
+  {
+    "label": "Subsection",
+    "title": "1.3.3.",
+    "text": "Application of Division B",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      71.69999694824219,
+      626.604248046875,
+      107.67162322998047,
+      638.544189453125
+    ],
+    "y": 626.604248046875
+  },
+  {
+    "label": "Article",
+    "title": "1.3.3.1.",
+    "text": "Application of Parts 1, 7 and 8",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      650.6802978515625,
+      111.71183776855469,
+      660.5802612304688
+    ],
+    "y": 650.6802978515625
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Parts 1, 7 and 8 of Division B apply to all buildings covered in this Code. (See Article 1.1.1.1.)",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          356.59228515625,
+          668.1834106445312,
+          397.2178955078125,
+          678.2318725585938
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      667.4805908203125,
+      167.70822143554688,
+      677.3805541992188
+    ],
+    "y": 667.4805908203125
+  },
+  {
+    "label": "Article",
+    "title": "1.3.3.2.",
+    "text": "Application of Parts 3, 4, 5 and 6",
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.6900863647461,
+      700.9030151367188,
+      111.7019271850586,
+      710.802978515625
+    ],
+    "y": 700.9030151367188
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Parts 3, 4, 5, and 6 of Division B apply to all buildings described in Article 1.1.1.1. and",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          365.3924255371094,
+          718.4655151367188,
+          405.6686706542969,
+          728.5139770507812
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.1270751953125,
+      717.7626953125,
+      167.69830322265625,
+      727.6626586914062
+    ],
+    "y": 717.7626953125
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "classified as post-disaster buildings ,",
+    "references": [
+      {
+        "text": "post-disaster buildings",
+        "page": 33,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          228.6120147705078,
+          740.4237060546875,
+          323.30157470703125,
+          750.47216796875
+        ]
+      }
+    ],
+    "page": 33,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      159.4139862060547,
+      740.4237060546875,
+      167.69435119628906,
+      750.47216796875
+    ],
+    "y": 740.4237060546875
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "used for major occupancies classified as",
+    "references": [
+      {
+        "text": "major occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          188.36477661132812,
+          75.4432144165039,
+          265.0412902832031,
+          85.49171447753906
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.8800048828125,
+      75.4432144165039,
+      143.6959686279297,
+      85.49171447753906
+    ],
+    "y": 75.4432144165039
+  },
+  {
+    "label": "Subclause",
+    "title": "i)",
+    "text": "Group A, assembly occupancies ,",
+    "references": [
+      {
+        "text": "assembly occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          217.81430053710938,
+          86.48172760009766,
+          307.4677734375,
+          96.53022766113281
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      163.50091552734375,
+      86.48172760009766,
+      217.81430053710938,
+      96.53022766113281
+    ],
+    "y": 86.48172760009766
+  },
+  {
+    "label": "Subclause",
+    "title": "ii)",
+    "text": "Group B, care , treatment or detention occupancies , or",
+    "references": [
+      {
+        "text": "care",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          216.025390625,
+          97.46085357666016,
+          234.6878662109375,
+          107.50935363769531
+        ]
+      },
+      {
+        "text": "treatment",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          237.21237182617188,
+          97.46085357666016,
+          279.0368957519531,
+          107.50935363769531
+        ]
+      },
+      {
+        "text": "detention occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          291.088134765625,
+          97.46085357666016,
+          381.80584716796875,
+          107.50935363769531
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      160.57052612304688,
+      97.46085357666016,
+      216.025390625,
+      107.50935363769531
+    ],
+    "y": 97.46085357666016
+  },
+  {
+    "label": "Subclause",
+    "title": "iii)",
+    "text": "Group F, Division 1, high-hazard industrial occupancies , or",
+    "references": [
+      {
+        "text": "high-hazard industrial occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          264.9215087890625,
+          108.43997955322266,
+          408.59027099609375,
+          118.48847961425781
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.6995086669922,
+      108.43997955322266,
+      264.9215087890625,
+      118.48847961425781
+    ],
+    "y": 108.43997955322266
+  },
+  {
+    "label": "Clause",
+    "title": "c)",
+    "text": "exceeding 600 m 2 in building area or exceeding 3 storeys in building height used for major occupancies classified as",
+    "references": [
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          239.88209533691406,
+          119.48307037353516,
+          296.03094482421875,
+          129.5315704345703
+        ]
+      },
+      {
+        "text": "storeys",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          363.1064147949219,
+          119.48307037353516,
+          393.7389831542969,
+          129.5315704345703
+        ]
+      },
+      {
+        "text": "building height",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          405.2417907714844,
+          119.48307037353516,
+          469.8660583496094,
+          129.5315704345703
+        ]
+      },
+      {
+        "text": "major occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          188.36842346191406,
+          130.4622039794922,
+          265.0439453125,
+          140.5106964111328
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.98883056640625,
+      119.4784927368164,
+      143.7266845703125,
+      129.52699279785156
+    ],
+    "y": 119.4784927368164
+  },
+  {
+    "label": "Subclause",
+    "title": "i)",
+    "text": "Group C, residential occupancies ,",
+    "references": [
+      {
+        "text": "residential occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          217.15562438964844,
+          141.4413299560547,
+          312.5046081542969,
+          151.4898223876953
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      163.50357055664062,
+      141.4413299560547,
+      217.15562438964844,
+      151.4898223876953
+    ],
+    "y": 141.4413299560547
+  },
+  {
+    "label": "Subclause",
+    "title": "ii)",
+    "text": "Group D, business and personal services occupancies ,",
+    "references": [
+      {
+        "text": "business and personal services occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          217.64173889160156,
+          152.47984313964844,
+          392.6697692871094,
+          162.52833557128906
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      160.56326293945312,
+      152.47984313964844,
+      217.64173889160156,
+      162.52833557128906
+    ],
+    "y": 152.47984313964844
+  },
+  {
+    "label": "Subclause",
+    "title": "iii)",
+    "text": "Group E, mercantile occupancies , or",
+    "references": [
+      {
+        "text": "mercantile occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          216.1359100341797,
+          163.45896911621094,
+          311.5926513671875,
+          173.50746154785156
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.68234252929688,
+      163.45896911621094,
+      216.1359100341797,
+      173.50746154785156
+    ],
+    "y": 163.45896911621094
+  },
+  {
+    "label": "Subclause",
+    "title": "iv)",
+    "text": "Group F, Divisions 2 and 3, medium- and low-hazard industrial occupancies .",
+    "references": [
+      {
+        "text": "medium-",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          299.1076965332031,
+          174.43809509277344,
+          338.32763671875,
+          184.48658752441406
+        ]
+      },
+      {
+        "text": "low-hazard",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          358.3830261230469,
+          174.43809509277344,
+          406.4870910644531,
+          184.48658752441406
+        ]
+      },
+      {
+        "text": "industrial occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          175.74981689453125,
+          185.4766082763672,
+          266.3902282714844,
+          195.5251007080078
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.8704376220703,
+      174.43809509277344,
+      299.1076965332031,
+      184.48658752441406
+    ],
+    "y": 174.43809509277344
+  },
+  {
+    "label": "Article",
+    "title": "1.3.3.3.",
+    "text": "Application of Parts 9, 10 and 11",
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      47.713134765625,
+      206.9102020263672,
+      87.72496795654297,
+      216.81019592285156
+    ],
+    "y": 206.9102020263672
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Part 9 of Division B applies to all buildings described in Article 1.1.1.1. of 3 storeys or less in building height , having a building area not exceeding 600 m 2 , and used for major occupancies classified as",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          298.7691955566406,
+          223.99754333496094,
+          339.571044921875,
+          234.04603576660156
+        ]
+      },
+      {
+        "text": "storeys",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          124.65592956542969,
+          235.0360565185547,
+          155.35682678222656,
+          245.0845489501953
+        ]
+      },
+      {
+        "text": "building height",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          198.012939453125,
+          235.0360565185547,
+          262.66290283203125,
+          245.0845489501953
+        ]
+      },
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          306.5090637207031,
+          235.0360565185547,
+          362.662841796875,
+          245.0845489501953
+        ]
+      },
+      {
+        "text": "major occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          156.43765258789062,
+          246.0222625732422,
+          233.13792419433594,
+          256.0707702636719
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.15013122558594,
+      223.2947235107422,
+      143.7213592529297,
+      233.19471740722656
+    ],
+    "y": 223.2947235107422
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "Group B, Division 4, home-type care occupancies ,",
+    "references": [
+      {
+        "text": "home-type care occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          242.636962890625,
+          257.0013732910156,
+          356.35223388671875,
+          267.0498962402344
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.41403198242188,
+      257.0013732910156,
+      143.71023559570312,
+      267.0498962402344
+    ],
+    "y": 257.0013732910156
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "Group C, residential occupancies (see Note A-9.1.1.1.(1) of Division B),",
+    "references": [
+      {
+        "text": "residential occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          192.8954315185547,
+          268.0398864746094,
+          287.81170654296875,
+          278.0884094238281
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.86952209472656,
+      268.0398864746094,
+      143.68844604492188,
+      278.0884094238281
+    ],
+    "y": 268.0398864746094
+  },
+  {
+    "label": "Clause",
+    "title": "c)",
+    "text": "Group D, business and personal services occupancies ,",
+    "references": [
+      {
+        "text": "business and personal services occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          193.6804656982422,
+          279.01898193359375,
+          369.26397705078125,
+          289.0675048828125
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.94863891601562,
+      279.01898193359375,
+      143.689453125,
+      289.0675048828125
+    ],
+    "y": 279.01898193359375
+  },
+  {
+    "label": "Clause",
+    "title": "d)",
+    "text": "Group E, mercantile occupancies , or",
+    "references": [
+      {
+        "text": "mercantile occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          192.1955108642578,
+          289.9980773925781,
+          287.8621826171875,
+          300.0466003417969
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.26565551757812,
+      289.9980773925781,
+      143.66868591308594,
+      300.0466003417969
+    ],
+    "y": 289.9980773925781
+  },
+  {
+    "label": "Clause",
+    "title": "e)",
+    "text": "Group F, Divisions 2 and 3, medium- and low-hazard industrial occupancies .",
+    "references": [
+      {
+        "text": "medium-",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          272.0340270996094,
+          301.0365905761719,
+          310.7232360839844,
+          311.0851135253906
+        ]
+      },
+      {
+        "text": "low-hazard industrial occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          330.0876159667969,
+          301.0365905761719,
+          470.4775390625,
+          311.0851135253906
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.5823516845703,
+      301.0365905761719,
+      143.67263793945312,
+      311.0851135253906
+    ],
+    "y": 301.0365905761719
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "Part 10 of Division B applies to all buildings described in Article 1.1.1.1. conforming to Sentence (3) in which accommodation is provided for an industrial workforce living and working in a temporary location.",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          304.68035888671875,
+          317.42108154296875,
+          345.5376281738281,
+          327.4696044921875
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.11724853515625,
+      316.7182922363281,
+      143.6884765625,
+      326.6182861328125
+    ],
+    "y": 316.7182922363281
+  },
+  {
+    "label": "Sentence",
+    "title": "3)",
+    "text": "Part 10 of Division B applies to",
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.12713623046875,
+      355.06097412109375,
+      143.6983642578125,
+      364.9609680175781
+    ],
+    "y": 355.06097412109375
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "one- storey buildings",
+    "references": [
+      {
+        "text": "storey buildings",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          171.10353088378906,
+          366.8022766113281,
+          236.22373962402344,
+          376.8507995605469
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.4041290283203,
+      366.8022766113281,
+      143.69834899902344,
+      376.8507995605469
+    ],
+    "y": 366.8022766113281
+  },
+  {
+    "label": "Subclause",
+    "title": "i)",
+    "text": "without sleeping accommodation that are not more than 1 200 m 2 in building area or, if sprinklered , that are not more than 2 400 m 2 in building area , or",
+    "references": [
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          224.10171508789062,
+          388.7630920410156,
+          279.9713134765625,
+          398.8116149902344
+        ]
+      },
+      {
+        "text": "sprinklered",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          303.0482482910156,
+          388.7630920410156,
+          350.53363037109375,
+          398.8116149902344
+        ]
+      },
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          246.90208435058594,
+          399.8031005859375,
+          303.0262145996094,
+          409.85162353515625
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      163.48052978515625,
+      377.7813720703125,
+      426.6195983886719,
+      387.82989501953125
+    ],
+    "y": 377.7813720703125
+  },
+  {
+    "label": "Subclause",
+    "title": "ii)",
+    "text": "with sleeping accommodation that are not more than 600 m 2 in building area or, if sprinklered , that are not more than 1 200 m 2 in building area , and",
+    "references": [
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          184.3817138671875,
+          421.7630920410156,
+          240.80477905273438,
+          431.8116149902344
+        ]
+      },
+      {
+        "text": "sprinklered",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          264.42022705078125,
+          421.7630920410156,
+          312.15008544921875,
+          431.8116149902344
+        ]
+      },
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          224.28208923339844,
+          432.8031005859375,
+          280.4913330078125,
+          442.85162353515625
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      160.56419372558594,
+      410.7821960449219,
+      436.3515930175781,
+      420.8307189941406
+    ],
+    "y": 410.7821960449219
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "two- storey buildings",
+    "references": [
+      {
+        "text": "storey buildings",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          171.9606170654297,
+          443.7821960449219,
+          237.08082580566406,
+          453.8307189941406
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.88511657714844,
+      443.7821960449219,
+      143.6931610107422,
+      453.8307189941406
+    ],
+    "y": 443.7821960449219
+  },
+  {
+    "label": "Subclause",
+    "title": "i)",
+    "text": "without sleeping accommodation that are not more than 600 m 2 in building area or, if sprinklered , that are not more than 1 200 m 2 in building area , or",
+    "references": [
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          216.72171020507812,
+          465.8031005859375,
+          272.8398132324219,
+          475.85162353515625
+        ]
+      },
+      {
+        "text": "sprinklered",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          296.16424560546875,
+          465.8031005859375,
+          343.7773132324219,
+          475.85162353515625
+        ]
+      },
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          246.90208435058594,
+          476.7830810546875,
+          303.0262145996094,
+          486.83160400390625
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      163.49612426757812,
+      454.76129150390625,
+      426.63519287109375,
+      464.809814453125
+    ],
+    "y": 454.76129150390625
+  },
+  {
+    "label": "Subclause",
+    "title": "ii)",
+    "text": "with sleeping accommodation that are not more than 300 m 2 in building area or, if sprinklered , that are not more than 600 m 2 in building area .",
+    "references": [
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          216.72171020507812,
+          498.8031005859375,
+          272.8398132324219,
+          508.85162353515625
+        ]
+      },
+      {
+        "text": "sprinklered",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          296.16424560546875,
+          498.8031005859375,
+          343.7773132324219,
+          508.85162353515625
+        ]
+      },
+      {
+        "text": "building area",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          239.4617156982422,
+          509.7831115722656,
+          295.70660400390625,
+          519.8316040039062
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      160.56419372558594,
+      487.7621765136719,
+      413.5904541015625,
+      497.8106994628906
+    ],
+    "y": 487.7621765136719
+  },
+  {
+    "label": "Sentence",
+    "title": "4)",
+    "text": "Part 10 of Division B applies to Group D and Group F, Division 3 occupancies conforming to Sentence (3) for an industrial workforce working in a temporary location.",
+    "references": [
+      {
+        "text": "occupancies",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          440.9465637207031,
+          526.1676025390625,
+          491.36322021484375,
+          536.216064453125
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.1466064453125,
+      525.4647827148438,
+      143.71783447265625,
+      535.36474609375
+    ],
+    "y": 525.4647827148438
+  },
+  {
+    "label": "Sentence",
+    "title": "5)",
+    "text": "Except as permitted in Sentence (6), Part 11 of Division B applies to a building constructed within an airport vicinity protection area that has been established by an airport vicinity protection area regulation under the Municipal Government Act.",
+    "references": [
+      {
+        "text": "building",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          458.0743713378906,
+          564.5103149414062,
+          494.839111328125,
+          574.5587768554688
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.15650939941406,
+      563.8074951171875,
+      143.7277374267578,
+      573.7074584960938
+    ],
+    "y": 563.8074951171875
+  },
+  {
+    "label": "Sentence",
+    "title": "6)",
+    "text": "Part 11 of Division B does not apply",
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.15647888183594,
+      602.2095947265625,
+      143.7277069091797,
+      612.1095581054688
+    ],
+    "y": 602.2095947265625
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "to buildings for which a land use is allowed by an airport vicinity protection area regulation under the Municipal Government Act and the regulation does not place any conditions with respect to acoustic insulation,",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          160.39730834960938,
+          613.8914794921875,
+          200.9684600830078,
+          623.93994140625
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.4334716796875,
+      613.8914794921875,
+      143.7009735107422,
+      623.93994140625
+    ],
+    "y": 613.8914794921875
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "to any part of a building that is not designed for winter use when the outside temperature is below 0\u00b0C, or",
+    "references": [
+      {
+        "text": "building",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          218.64990234375,
+          646.88818359375,
+          255.29571533203125,
+          656.9366455078125
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.8988800048828,
+      646.88818359375,
+      143.7118682861328,
+      656.9366455078125
+    ],
+    "y": 646.88818359375
+  },
+  {
+    "label": "Clause",
+    "title": "c)",
+    "text": "to buildings that were completed before 30 November 1983 or for which a building permit was issued before 30 November 1983.",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          160.4032745361328,
+          668.90576171875,
+          201.09628295898438,
+          678.9542236328125
+        ]
+      },
+      {
+        "text": "building permit",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          151.7585906982422,
+          679.8848266601562,
+          215.15521240234375,
+          689.9332885742188
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.97799682617188,
+      668.90576171875,
+      143.6990203857422,
+      678.9542236328125
+    ],
+    "y": 668.90576171875
+  },
+  {
+    "label": "Article",
+    "title": "1.3.3.4.",
+    "text": "Building Size Determination",
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      47.719482421875,
+      701.3778076171875,
+      87.74617767333984,
+      711.2777709960938
+    ],
+    "y": 701.3778076171875
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Where a firewall divides a building , each portion of the building so divided shall be considered as a separate building , except when this requirement is specifically modified in other parts of this Code. (See Note A-1.3.3.4.(1).)",
+    "references": [
+      {
+        "text": "firewall",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          188.62814331054688,
+          718.4651489257812,
+          221.60110473632812,
+          728.5136108398438
+        ]
+      },
+      {
+        "text": "building",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          264.41961669921875,
+          718.4651489257812,
+          301.0960998535156,
+          728.5136108398438
+        ]
+      },
+      {
+        "text": "building",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          389.36151123046875,
+          718.4651489257812,
+          426.0736999511719,
+          728.5136108398438
+        ]
+      },
+      {
+        "text": "building",
+        "page": 34,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          241.261474609375,
+          729.4442749023438,
+          278.1776428222656,
+          739.4927368164062
+        ]
+      }
+    ],
+    "page": 34,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.15647888183594,
+      717.7623291015625,
+      143.7277069091797,
+      727.6622924804688
+    ],
+    "y": 717.7623291015625
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "Except as permitted in Sentence (3), where portions of a building are completely separated by a vertical fire separation that has a fire-resistance rating of not less than 1 h and extends through all storeys and service spaces of the separated portions, each separated portion is permitted to be considered as a separate building for the purpose of determining building height , provided",
+    "references": [
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          422.5520324707031,
+          75.4432144165039,
+          459.1622619628906,
+          85.49171447753906
+        ]
+      },
+      {
+        "text": "fire separation",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          244.06002807617188,
+          86.48172760009766,
+          304.36688232421875,
+          96.53022766113281
+        ]
+      },
+      {
+        "text": "fire-resistance rating",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          350.0484924316406,
+          86.48172760009766,
+          436.49432373046875,
+          96.53022766113281
+        ]
+      },
+      {
+        "text": "storeys",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          265.61334228515625,
+          97.46085357666016,
+          296.4637451171875,
+          107.50935363769531
+        ]
+      },
+      {
+        "text": "service spaces",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          316.0647277832031,
+          97.46085357666016,
+          374.0519714355469,
+          107.50935363769531
+        ]
+      },
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          413.0746765136719,
+          108.43997955322266,
+          449.7474060058594,
+          118.48847961425781
+        ]
+      },
+      {
+        "text": "building height",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          210.00698852539062,
+          119.4784927368164,
+          274.7471008300781,
+          129.52699279785156
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13999938964844,
+      74.74040222167969,
+      167.7112274169922,
+      84.6404037475586
+    ],
+    "y": 74.74040222167969
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "each separated portion is not more than 4 storeys in building height and is used only for assembly , residential , and business and personal services occupancies , and",
+    "references": [
+      {
+        "text": "storeys",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          361.3482971191406,
+          130.45762634277344,
+          392.038330078125,
+          140.50611877441406
+        ]
+      },
+      {
+        "text": "building height",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          403.2540283203125,
+          130.45762634277344,
+          468.05841064453125,
+          140.50611877441406
+        ]
+      },
+      {
+        "text": "assembly",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          245.4083709716797,
+          141.43675231933594,
+          284.5827331542969,
+          151.48524475097656
+        ]
+      },
+      {
+        "text": "residential",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          287.1665954589844,
+          141.43675231933594,
+          332.13531494140625,
+          151.48524475097656
+        ]
+      },
+      {
+        "text": "business and personal services",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          354.50933837890625,
+          141.43675231933594,
+          480.669921875,
+          151.48524475097656
+        ]
+      },
+      {
+        "text": "occupancies",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          175.7222900390625,
+          152.4752655029297,
+          223.43832397460938,
+          162.5237579345703
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      159.41702270507812,
+      130.45762634277344,
+      167.71421813964844,
+      140.50611877441406
+    ],
+    "y": 130.45762634277344
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "the unobstructed path of travel for a firefighter from the nearest street to one entrance of each separated portion is not more than 45 m. (See Note A-1.3.3.4.(2).)",
+    "references": [
+      {
+        "text": "street",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          457.3636169433594,
+          163.4543914794922,
+          481.9015197753906,
+          173.5028839111328
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.8625946044922,
+      163.4543914794922,
+      167.6844940185547,
+      173.5028839111328
+    ],
+    "y": 163.4543914794922
+  },
+  {
+    "label": "Sentence",
+    "title": "3)",
+    "text": "The vertical fire separation referred to in Sentence (2) may terminate at the floor assembly immediately above a basement provided the basement conforms to Article 3.2.1.2. of Division B.",
+    "references": [
+      {
+        "text": "fire separation",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          227.9952850341797,
+          204.25230407714844,
+          288.4614562988281,
+          214.30079650878906
+        ]
+      },
+      {
+        "text": "basement",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          304.3836669921875,
+          215.2908172607422,
+          344.6885070800781,
+          225.3393096923828
+        ]
+      },
+      {
+        "text": "basement",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          405.23199462890625,
+          215.2908172607422,
+          445.49029541015625,
+          225.3393096923828
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.1300811767578,
+      203.5494842529297,
+      167.70130920410156,
+      213.44947814941406
+    ],
+    "y": 203.5494842529297
+  },
+  {
+    "label": "Article",
+    "title": "1.3.3.5.",
+    "text": "Buildings Divided into Strata Space (See Note A-1.3.3.5.)",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69310760498047,
+      248.9707489013672,
+      111.70494842529297,
+      258.8707580566406
+    ],
+    "y": 248.9707489013672
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Where subdividing volumetric space creates a boundary in or through a building , which otherwise complies with this Code, and where such space is shown as strata space on a strata space plan,",
+    "references": [
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          143.7056884765625,
+          292.5108642578125,
+          177.7576904296875,
+          302.55938720703125
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13999938964844,
+      280.7695617675781,
+      167.7112274169922,
+      290.6695556640625
+    ],
+    "y": 280.7695617675781
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "such a building or portion of a building shall be considered as a single building not requiring internal firewalls or party walls along the strata space property lines, and",
+    "references": [
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          204.1590576171875,
+          314.46905517578125,
+          241.10284423828125,
+          324.517578125
+        ]
+      },
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          308.8575134277344,
+          314.46905517578125,
+          345.9062805175781,
+          324.517578125
+        ]
+      },
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          175.732177734375,
+          325.507568359375,
+          209.79112243652344,
+          335.55609130859375
+        ]
+      },
+      {
+        "text": "firewalls",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          308.1288146972656,
+          325.507568359375,
+          345.0499267578125,
+          335.55609130859375
+        ]
+      },
+      {
+        "text": "party walls",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          357.11602783203125,
+          325.507568359375,
+          405.1359558105469,
+          335.55609130859375
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      159.42689514160156,
+      314.46905517578125,
+      167.70033264160156,
+      324.517578125
+    ],
+    "y": 314.46905517578125
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "the limiting distances of such a building or portion of a building shall be measured only to the outside property lines of the land shown as a single parcel on a plan of survey registered under the Land Titles Act and its Regulations and need not be considered between separate strata spaces where these spaces form part of the same building .",
+    "references": [
+      {
+        "text": "limiting distances",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          189.52389526367188,
+          347.46575927734375,
+          264.9708557128906,
+          357.5142822265625
+        ]
+      },
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          307.87841796875,
+          347.46575927734375,
+          344.85986328125,
+          357.5142822265625
+        ]
+      },
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          412.3887023925781,
+          347.46575927734375,
+          449.41082763671875,
+          357.5142822265625
+        ]
+      },
+      {
+        "text": "building",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          359.07232666015625,
+          391.5009765625,
+          395.8914489746094,
+          401.54949951171875
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      158.86260986328125,
+      347.46575927734375,
+      167.67262268066406,
+      357.5142822265625
+    ],
+    "y": 347.46575927734375
+  },
+  {
+    "label": "Subsection",
+    "title": "1.3.4.",
+    "text": "Application of Division C",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      71.69999694824219,
+      415.584228515625,
+      107.67162322998047,
+      427.52423095703125
+    ],
+    "y": 415.584228515625
+  },
+  {
+    "label": "Article",
+    "title": "1.3.4.1.",
+    "text": "Application of Parts 1 and 2",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      440.62030029296875,
+      111.71183776855469,
+      450.5202941894531
+    ],
+    "y": 440.62030029296875
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Parts 1 and 2 of Division C apply to all buildings covered in this Code. (See Article 1.1.1.1.)",
+    "references": [
+      {
+        "text": "buildings",
+        "page": 35,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          348.3207092285156,
+          460.16278076171875,
+          389.0513916015625,
+          470.2113037109375
+        ]
+      }
+    ],
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      459.4599914550781,
+      167.70822143554688,
+      469.3599853515625
+    ],
+    "y": 459.4599914550781
+  },
+  {
+    "label": "Section",
+    "title": "Section 1.4.",
+    "text": "Terms and Abbreviations",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 16.979999542236328,
+    "bbox": [
+      71.69999694824219,
+      502.1422119140625,
+      182.31283569335938,
+      519.1221923828125
+    ],
+    "y": 502.1422119140625
+  },
+  {
+    "label": "Subsection",
+    "title": "1.4.1.",
+    "text": "Definitions of Words and Phrases",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 11.9399995803833,
+    "bbox": [
+      71.69999694824219,
+      532.6442260742188,
+      107.6823959350586,
+      544.5841674804688
+    ],
+    "y": 532.6442260742188
+  },
+  {
+    "label": "Article",
+    "title": "1.4.1.1.",
+    "text": "Non-defined Terms",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      71.69999694824219,
+      557.6802978515625,
+      111.7177734375,
+      567.5802612304688
+    ],
+    "y": 557.6802978515625
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Words and phrases used in this Code that are not included in the list of definitions in Article 1.4.1.2. shall have the meanings defined in the Safety Codes Act and its Regulations, or the meanings that are commonly assigned to them in the context in which they are used, taking into account the specialized use of terms by the various trades and professions to which the terminology applies.",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.13699340820312,
+      576.4605712890625,
+      167.70822143554688,
+      586.3605346679688
+    ],
+    "y": 576.4605712890625
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "Where objectives and functional statements are referred to in this Code, they shall be the objectives and functional statements described in Parts 2 and 3.",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.1468963623047,
+      639.276123046875,
+      167.71812438964844,
+      649.1760864257812
+    ],
+    "y": 639.276123046875
+  },
+  {
+    "label": "Sentence",
+    "title": "3)",
+    "text": "Where acceptable solutions are referred to in this Code, they shall be the provisions stated in Parts 3 to 11 of Division B.",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.1567840576172,
+      669.0949096679688,
+      167.72801208496094,
+      678.994873046875
+    ],
+    "y": 669.0949096679688
+  },
+  {
+    "label": "Sentence",
+    "title": "4)",
+    "text": "Where alternative solutions are referred to in this Code, they shall be the alternative solutions mentioned in Clause 1.2.1.1.(1)(b).",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.1666717529297,
+      698.9136962890625,
+      167.73789978027344,
+      708.8136596679688
+    ],
+    "y": 698.9136962890625
+  },
+  {
+    "label": "Sentence",
+    "title": "5)",
+    "text": "For words not defined by Sentence (1), reference should be made to the Oxford University Press 2004, \u201cCanadian Oxford Dictionary, 2nd Edition.\u201d",
+    "page": 35,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      157.1765594482422,
+      728.7324829101562,
+      167.74778747558594,
+      738.6324462890625
+    ],
+    "y": 728.7324829101562
+  }
+]
