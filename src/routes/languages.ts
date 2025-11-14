@@ -1,19 +1,19 @@
 // src/routes/languages.ts
 import express from "express";
-import { pool } from "../db";
+import prisma from "../db";
 
 const router = express.Router();
 
 // Get all languages
 router.get("/", async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT id, code, name, created_at 
-      FROM languages 
-      ORDER BY name
-    `);
-    res.json(result.rows);
-  } catch (error) {
+    const languages = await prisma.language.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+    res.json(languages);
+  } catch (error: unknown) {
     console.error("Error fetching languages:", error);
     res.status(500).json({ error: "Failed to fetch languages" });
   }
@@ -23,21 +23,16 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(
-      `
-      SELECT id, code, name, created_at 
-      FROM languages 
-      WHERE id = $1
-    `,
-      [id]
-    );
+    const language = await prisma.language.findUnique({
+      where: { id: parseInt(id) },
+    });
 
-    if (result.rows.length === 0) {
+    if (!language) {
       return res.status(404).json({ error: "Language not found" });
     }
 
-    res.json(result.rows[0]);
-  } catch (error) {
+    res.json(language);
+  } catch (error: unknown) {
     console.error("Error fetching language:", error);
     res.status(500).json({ error: "Failed to fetch language" });
   }
@@ -47,21 +42,16 @@ router.get("/:id", async (req, res) => {
 router.get("/code/:code", async (req, res) => {
   try {
     const { code } = req.params;
-    const result = await pool.query(
-      `
-      SELECT id, code, name, created_at 
-      FROM languages 
-      WHERE code = $1
-    `,
-      [code.toLowerCase()]
-    );
+    const language = await prisma.language.findUnique({
+      where: { code: code.toLowerCase() },
+    });
 
-    if (result.rows.length === 0) {
+    if (!language) {
       return res.status(404).json({ error: "Language not found" });
     }
 
-    res.json(result.rows[0]);
-  } catch (error) {
+    res.json(language);
+  } catch (error: unknown) {
     console.error("Error fetching language by code:", error);
     res.status(500).json({ error: "Failed to fetch language" });
   }

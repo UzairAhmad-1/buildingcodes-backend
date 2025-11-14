@@ -1,10 +1,10 @@
-// src/routes/search.ts - Updated version
+// src/routes/search.ts
 import express from "express";
-import { pool } from "../db";
+import prisma from "../db";
 
 const router = express.Router();
 
-// Search across all documents or specific document
+// Search across all documents or a specific document
 router.get("/", async (req, res) => {
   try {
     const { q, documentId, page = 1, limit = 10 } = req.query;
@@ -13,104 +13,83 @@ router.get("/", async (req, res) => {
       return res.status(400).json({ error: "Query parameter 'q' is required" });
     }
 
-    const offset = (Number(page) - 1) * Number(limit);
-    const searchTerm = `%${q}%`;
+    const pageNumber = Number(page);
+    const pageSize = Number(limit);
+    const skip = (pageNumber - 1) * pageSize;
 
-    let baseQuery = `
-      SELECT 
-        bcc.id,
-        bcc.parent_id,
-        bcc.content_type,
-        bcc.page_number,
-        bcc.reference_code,
-        bcc.title,
-        bcc.content_text,
-        bcc.sequence_order,
-        bcc.pdf_document_id,
-        bcc.font_family,
-        bcc.font_size,
-        bcc.bbox,
-        bcc.y_coordinate,
-        pd.title as document_title,
-        pd.jurisdiction_name,
-        pd.document_type_name,
-        pd.year,
-        COUNT(*) OVER() as total_count
-      FROM building_code_content bcc
-      JOIN (
-        SELECT 
-          pd.id,
-          pd.title,
-          j.name as jurisdiction_name,
-          dt.name as document_type_name,
-          pd.year
-        FROM pdf_documents pd
-        LEFT JOIN jurisdictions j ON pd.jurisdiction_id = j.id
-        LEFT JOIN document_types dt ON pd.document_type_id = dt.id
-      ) pd ON bcc.pdf_document_id = pd.id
-      WHERE (
-        bcc.content_text ILIKE $1 
-        OR bcc.title ILIKE $1 
-        OR bcc.reference_code ILIKE $1
-      )
-      AND (bcc.content_text IS NOT NULL AND bcc.content_text != '')
-    `;
+    // SIMPLE WHERE CLAUSE - No complex NOT operators
+    const whereClause: any = {
+      OR: [
+        { contentText: { contains: q as string, mode: "insensitive" } },
+        { title: { contains: q as string, mode: "insensitive" } },
+        { referenceCode: { contains: q as string, mode: "insensitive" } },
+      ],
+    };
 
-    let countQuery = `
-      SELECT COUNT(*) as total
-      FROM building_code_content bcc
-      WHERE (
-        bcc.content_text ILIKE $1 
-        OR bcc.title ILIKE $1 
-        OR bcc.reference_code ILIKE $1
-      )
-      AND (bcc.content_text IS NOT NULL AND bcc.content_text != '')
-    `;
-
-    const queryParams: any[] = [searchTerm];
-
-    // Add document filter if provided
     if (documentId) {
-      baseQuery += ` AND bcc.pdf_document_id = $${queryParams.length + 1}`;
-      countQuery += ` AND bcc.pdf_document_id = $${queryParams.length + 1}`;
-      queryParams.push(documentId);
+      whereClause.pdfDocumentId = documentId as string;
     }
 
-    // Add ordering - prioritize articles and reference codes
-    baseQuery += `
-      ORDER BY 
-        bcc.pdf_document_id,
-        bcc.sequence_order,
-        CASE 
-          WHEN bcc.content_type = 'article' THEN 1
-          WHEN bcc.content_type = 'subsection' THEN 2
-          WHEN bcc.content_type = 'sentence' THEN 3
-          WHEN bcc.content_type = 'clause' THEN 4
-          ELSE 5
-        END
-      LIMIT $${queryParams.length + 1} OFFSET $${queryParams.length + 2}
-    `;
+    console.log("Executing SIMPLE search query");
 
-    queryParams.push(Number(limit), offset);
+    // Fetch paginated content with related document info
+    const [results, totalCount] = await Promise.all([
+      prisma.buildingCodeContent.findMany({
+        where: whereClause,
+        include: {
+          pdfDocument: {
+            include: {
+              jurisdiction: true,
+              documentType: true,
+            },
+          },
+        },
+        orderBy: [{ pdfDocumentId: "asc" }, { sequenceOrder: "asc" }],
+        skip,
+        take: pageSize,
+      }),
+      prisma.buildingCodeContent.count({ where: whereClause }),
+    ]);
 
-    // Execute search query
-    const result = await pool.query(baseQuery, queryParams);
+    // Filter out empty/null content in APPLICATION CODE (not in database)
+    const filteredResults = results.filter(
+      (item) => item.contentText && item.contentText.trim() !== ""
+    );
 
-    // Get total count
-    const countResult = await pool.query(countQuery, queryParams.slice(0, -2));
-    const totalCount = parseInt(countResult.rows[0].total);
+    // Map results to match your previous structure (flat JSON)
+    const formattedResults = filteredResults.map((item) => ({
+      id: item.id,
+      parentId: item.parentId,
+      contentType: item.contentType,
+      pageNumber: item.pageNumber,
+      referenceCode: item.referenceCode,
+      title: item.title,
+      contentText: item.contentText,
+      sequenceOrder: item.sequenceOrder,
+      pdfDocumentId: item.pdfDocumentId,
+      fontFamily: item.fontFamily,
+      fontSize: item.fontSize,
+      bbox: item.bbox,
+      yCoordinate: item.yCoordinate,
+      document_title: item.pdfDocument?.title || null,
+      jurisdiction_name: item.pdfDocument?.jurisdiction?.name || null,
+      document_type_name: item.pdfDocument?.documentType?.name || null,
+      year: item.pdfDocument?.year || null,
+    }));
 
     res.json({
-      results: result.rows,
+      results: formattedResults,
       pagination: {
-        page: Number(page),
-        limit: Number(limit),
-        total: totalCount,
-        totalPages: Math.ceil(totalCount / Number(limit)),
+        page: pageNumber,
+        limit: pageSize,
+        total: totalCount, // This is total before filtering empty strings
+        totalPages: Math.ceil(totalCount / pageSize),
       },
     });
-  } catch (error) {
-    console.error("Search error:", error);
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    console.error("Search error:", errorMessage);
     res.status(500).json({ error: "Search failed" });
   }
 });

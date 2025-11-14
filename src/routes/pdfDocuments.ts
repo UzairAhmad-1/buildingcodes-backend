@@ -1,11 +1,44 @@
 // src/routes/pdfDocuments.ts
 import express from "express";
-import { pool } from "../db";
+import prisma from "../db";
 import { upload } from "../middleware/upload";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
 import fs from "fs";
+import {
+  BuildingCodeContent,
+  ContentReference,
+  PdfDocument,
+} from "@prisma/client";
 
 const router = express.Router();
+
+// Define interfaces for transformed documents
+interface TransformedPdfDocument extends Omit<PdfDocument, "fileSize"> {
+  fileSize: number | null;
+  jurisdiction_name?: string;
+  jurisdiction_code?: string;
+  document_type_name?: string;
+  language_name?: string;
+  language_code?: string;
+}
+
+interface HierarchyContent extends BuildingCodeContent {
+  references?: ContentReference[];
+  children?: HierarchyContent[];
+}
+
+// Helper function to convert BigInt to number for JSON serialization
+const transformPdfDocument = (doc: any): TransformedPdfDocument => {
+  return {
+    ...doc,
+    fileSize: doc.fileSize ? Number(doc.fileSize) : null,
+    jurisdiction_name: doc.jurisdiction?.name,
+    jurisdiction_code: doc.jurisdiction?.code,
+    document_type_name: doc.documentType?.name,
+    language_name: doc.language?.name,
+    language_code: doc.language?.code,
+  };
+};
 
 // Upload PDF document
 router.post(
@@ -46,44 +79,40 @@ router.post(
       console.log("File uploaded to:", req.file.path);
       console.log("File name:", req.file.filename);
 
-      // Insert into database - store ONLY the filename
-      const result = await pool.query(
-        `INSERT INTO pdf_documents (
-        file_name, original_file_name, file_size, file_path,
-        title, year, version, effective_date,
-        jurisdiction_id, document_type_id, language_id,
-        processing_status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-      RETURNING *`,
-        [
-          req.file.filename, // Store only the filename
-          req.file.originalname,
-          req.file.size,
-          req.file.filename, // Use filename as file_path too
+      // Insert into database using Prisma - convert fileSize to BigInt
+      const uploadedDocument = await prisma.pdfDocument.create({
+        data: {
+          fileName: req.file.filename,
+          originalFileName: req.file.originalname,
+          fileSize: BigInt(req.file.size), // Convert to BigInt for Prisma
+          filePath: req.file.filename,
           title,
-          parseInt(year),
-          version || null,
-          effective_date || null,
-          parseInt(jurisdiction_id),
-          parseInt(document_type_id),
-          parseInt(language_id),
-          "uploaded",
-        ]
-      );
+          year: parseInt(year),
+          version: version || null,
+          effectiveDate: effective_date ? new Date(effective_date) : null,
+          jurisdictionId: parseInt(jurisdiction_id),
+          documentTypeId: parseInt(document_type_id),
+          languageId: parseInt(language_id),
+          processingStatus: "uploaded",
+        },
+      });
 
-      const uploadedDocument = result.rows[0];
+      // Transform the response to convert BigInt to number
+      const responseDocument = transformPdfDocument(uploadedDocument);
 
       res.status(201).json({
         message: "PDF uploaded successfully",
-        document: uploadedDocument,
+        document: responseDocument,
       });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Upload error:", error);
 
       if (req.file) {
         fs.unlinkSync(req.file.path);
       }
 
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
       res.status(500).json({ error: "Failed to upload PDF document" });
     }
   }
@@ -95,63 +124,71 @@ router.delete("/:id", authenticateToken, async (req: AuthRequest, res) => {
     const { id } = req.params;
 
     // First get the document to find the file path
-    const documentResult = await pool.query(
-      "SELECT file_path FROM pdf_documents WHERE id = $1",
-      [id]
-    );
+    const document = await prisma.pdfDocument.findUnique({
+      where: { id },
+    });
 
-    if (documentResult.rows.length === 0) {
+    if (!document) {
       return res.status(404).json({ error: "PDF document not found" });
     }
 
-    const filePath = documentResult.rows[0].file_path;
-
-    // Delete from database
-    await pool.query("DELETE FROM pdf_documents WHERE id = $1", [id]);
+    // Delete from database (Prisma will handle related records due to cascading)
+    await prisma.pdfDocument.delete({
+      where: { id },
+    });
 
     // Delete the file
-    if (filePath && fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+    if (document.filePath && fs.existsSync(document.filePath)) {
+      fs.unlinkSync(document.filePath);
     }
 
     res.json({ message: "PDF document deleted successfully" });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Delete error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     res.status(500).json({ error: "Failed to delete PDF document" });
   }
 });
+
 // Get all PDF documents with related data
 router.get("/", async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT 
-        pd.id,
-        pd.file_name,
-        pd.original_file_name,
-        pd.file_size,
-        pd.title,
-        pd.year,
-        pd.version,
-        pd.effective_date,
-        pd.processing_status,
-        pd.processed_at,
-        pd.file_path,
-        pd.created_at,
-        pd.updated_at,
-        j.name as jurisdiction_name,
-        j.code as jurisdiction_code,
-        dt.name as document_type_name,
-        l.name as language_name,
-        l.code as language_code
-      FROM pdf_documents pd
-      LEFT JOIN jurisdictions j ON pd.jurisdiction_id = j.id
-      LEFT JOIN document_types dt ON pd.document_type_id = dt.id
-      LEFT JOIN languages l ON pd.language_id = l.id
-      ORDER BY pd.created_at DESC
-    `);
-    res.json(result.rows);
-  } catch (error) {
+    const documents = await prisma.pdfDocument.findMany({
+      include: {
+        jurisdiction: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+        documentType: {
+          select: {
+            name: true,
+          },
+        },
+        language: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    // Transform the data to convert BigInt to number
+    const transformedDocuments: TransformedPdfDocument[] = documents.map(
+      (doc) => transformPdfDocument(doc)
+    );
+    console.log("Fetched PDF documents:", transformedDocuments);
+    res.json(transformedDocuments);
+  } catch (error: unknown) {
     console.error("Error fetching PDF documents:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     res.status(500).json({ error: "Failed to fetch PDF documents" });
   }
 });
@@ -160,43 +197,41 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(
-      `
-      SELECT 
-        pd.id,
-        pd.file_name,
-        pd.original_file_name,
-        pd.file_size,
-        pd.title,
-        pd.year,
-        pd.version,
-        pd.effective_date,
-        pd.processing_status,
-        pd.processed_at,
-        pd.file_path,
-        pd.created_at,
-        pd.updated_at,
-        j.name as jurisdiction_name,
-        j.code as jurisdiction_code,
-        dt.name as document_type_name,
-        l.name as language_name,
-        l.code as language_code
-      FROM pdf_documents pd
-      LEFT JOIN jurisdictions j ON pd.jurisdiction_id = j.id
-      LEFT JOIN document_types dt ON pd.document_type_id = dt.id
-      LEFT JOIN languages l ON pd.language_id = l.id
-      WHERE pd.id = $1
-    `,
-      [id]
-    );
+    const document = await prisma.pdfDocument.findUnique({
+      where: { id },
+      include: {
+        jurisdiction: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+        documentType: {
+          select: {
+            name: true,
+          },
+        },
+        language: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+      },
+    });
 
-    if (result.rows.length === 0) {
+    if (!document) {
       return res.status(404).json({ error: "PDF document not found" });
     }
 
-    res.json(result.rows[0]);
-  } catch (error) {
+    // Transform the data
+    const transformedDocument = transformPdfDocument(document);
+
+    res.json(transformedDocument);
+  } catch (error: unknown) {
     console.error("Error fetching PDF document:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     res.status(500).json({ error: "Failed to fetch PDF document" });
   }
 });
@@ -205,40 +240,41 @@ router.get("/:id", async (req, res) => {
 router.get("/jurisdiction/:jurisdictionId", async (req, res) => {
   try {
     const { jurisdictionId } = req.params;
-    const result = await pool.query(
-      `
-      SELECT 
-        pd.id,
-        pd.file_name,
-        pd.original_file_name,
-        pd.file_size,
-        pd.title,
-        pd.year,
-        pd.version,
-        pd.effective_date,
-        pd.processing_status,
-        pd.processed_at,
-        pd.file_path,
-        pd.created_at,
-        pd.updated_at,
-        j.name as jurisdiction_name,
-        j.code as jurisdiction_code,
-        dt.name as document_type_name,
-        l.name as language_name,
-        l.code as language_code
-      FROM pdf_documents pd
-      LEFT JOIN jurisdictions j ON pd.jurisdiction_id = j.id
-      LEFT JOIN document_types dt ON pd.document_type_id = dt.id
-      LEFT JOIN languages l ON pd.language_id = l.id
-      WHERE pd.jurisdiction_id = $1
-      ORDER BY pd.year DESC, pd.title
-    `,
-      [jurisdictionId]
+    const documents = await prisma.pdfDocument.findMany({
+      where: {
+        jurisdictionId: parseInt(jurisdictionId),
+      },
+      include: {
+        jurisdiction: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+        documentType: {
+          select: {
+            name: true,
+          },
+        },
+        language: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+      },
+      orderBy: [{ year: "desc" }, { title: "asc" }],
+    });
+
+    const transformedDocuments: TransformedPdfDocument[] = documents.map(
+      (doc) => transformPdfDocument(doc)
     );
 
-    res.json(result.rows);
-  } catch (error) {
+    res.json(transformedDocuments);
+  } catch (error: unknown) {
     console.error("Error fetching PDF documents by jurisdiction:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     res.status(500).json({ error: "Failed to fetch PDF documents" });
   }
 });
@@ -247,169 +283,165 @@ router.get("/jurisdiction/:jurisdictionId", async (req, res) => {
 router.get("/type/:documentTypeId", async (req, res) => {
   try {
     const { documentTypeId } = req.params;
-    const result = await pool.query(
-      `
-      SELECT 
-        pd.id,
-        pd.file_name,
-        pd.original_file_name,
-        pd.file_size,
-        pd.title,
-        pd.year,
-        pd.version,
-        pd.effective_date,
-        pd.processing_status,
-        pd.processed_at,
-        pd.file_path,
-        pd.created_at,
-        pd.updated_at,
-        j.name as jurisdiction_name,
-        j.code as jurisdiction_code,
-        dt.name as document_type_name,
-        l.name as language_name,
-        l.code as language_code
-      FROM pdf_documents pd
-      LEFT JOIN jurisdictions j ON pd.jurisdiction_id = j.id
-      LEFT JOIN document_types dt ON pd.document_type_id = dt.id
-      LEFT JOIN languages l ON pd.language_id = l.id
-      WHERE pd.document_type_id = $1
-      ORDER BY pd.year DESC, pd.title
-    `,
-      [documentTypeId]
+    const documents = await prisma.pdfDocument.findMany({
+      where: {
+        documentTypeId: parseInt(documentTypeId),
+      },
+      include: {
+        jurisdiction: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+        documentType: {
+          select: {
+            name: true,
+          },
+        },
+        language: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+      },
+      orderBy: [{ year: "desc" }, { title: "asc" }],
+    });
+
+    const transformedDocuments: TransformedPdfDocument[] = documents.map(
+      (doc) => transformPdfDocument(doc)
     );
 
-    res.json(result.rows);
-  } catch (error) {
+    res.json(transformedDocuments);
+  } catch (error: unknown) {
     console.error("Error fetching PDF documents by type:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     res.status(500).json({ error: "Failed to fetch PDF documents" });
   }
 });
 
-// Get building code content for a specific PDF document
-// In your backend routes
-// Updated API Route to Include References
-const getDocumentContentWithReferences = async (documentId: string) => {
-  const result = await pool.query(
-    `
-    WITH RECURSIVE content_tree AS (
-      SELECT 
-        id,
-        parent_id,
-        content_type,
-        page_number,
-        reference_code,
-        title,
-        content_text,
-        sequence_order,
-        pdf_document_id,
-        font_family,
-        font_size,
-        bbox,
-        y_coordinate,
-        ARRAY[sequence_order] as path
-      FROM building_code_content 
-      WHERE parent_id IS NULL AND pdf_document_id = $1
-      
-      UNION ALL
-      
-      SELECT 
-        c.id,
-        c.parent_id,
-        c.content_type,
-        c.page_number,
-        c.reference_code,
-        c.title,
-        c.content_text,
-        c.sequence_order,
-        c.pdf_document_id,
-        c.font_family,
-        c.font_size,
-        c.bbox,
-        c.y_coordinate,
-        ct.path || c.sequence_order
-      FROM building_code_content c
-      JOIN content_tree ct ON c.parent_id = ct.id
-    )
-    SELECT 
-      ct.*,
-      COALESCE(
-        json_agg(
-          json_build_object(
-            'id', cr.id,
-            'reference_text', cr.reference_text,
-            'reference_type', cr.reference_type,
-            'target_content_id', cr.target_content_id,
-            'target_reference_code', cr.target_reference_code,
-            'hyperlink_target', cr.hyperlink_target,
-            'page_number', cr.page_number,
-            'font_family', cr.font_family,
-            'bbox', cr.bbox,
-            'reference_position', cr.reference_position
-          ) ORDER BY cr.reference_position
-        ) FILTER (WHERE cr.id IS NOT NULL),
-        '[]'::json
-      ) as references
-    FROM content_tree ct
-    LEFT JOIN content_references cr ON ct.id = cr.source_content_id
-    GROUP BY 
-      ct.id, ct.parent_id, ct.content_type, ct.page_number, 
-      ct.reference_code, ct.title, ct.content_text, ct.sequence_order,
-      ct.pdf_document_id, ct.font_family, ct.font_size, ct.bbox, 
-      ct.y_coordinate, ct.path
-    ORDER BY ct.path;
-    `,
-    [documentId]
-  );
-
-  return result.rows;
-};
-
-// Updated Router
+// Get building code content for a specific PDF document with references
 router.get("/:id/content", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const content = await getDocumentContentWithReferences(id);
-
-    res.json({
-      documentId: id,
-      content: content,
+    // Get all content items for this document with their references
+    const content = await prisma.buildingCodeContent.findMany({
+      where: {
+        pdfDocumentId: id,
+      },
+      include: {
+        sourceReferences: {
+          include: {
+            targetContent: {
+              select: {
+                id: true,
+                parentId: true,
+                contentType: true,
+                pageNumber: true,
+                referenceCode: true,
+                title: true,
+                contentText: true,
+                sequenceOrder: true,
+                pdfDocumentId: true,
+                fontFamily: true,
+                fontSize: true,
+                bbox: true,
+                yCoordinate: true,
+                isDefinition: true,
+                definitionTerm: true,
+              },
+            },
+          },
+          orderBy: {
+            referencePosition: "asc",
+          },
+        },
+      },
+      orderBy: {
+        sequenceOrder: "asc",
+      },
     });
-  } catch (error) {
+
+    // Build complete hierarchy recursively and transform field names to match original response
+    const buildHierarchy = (parentId: number | null): any[] => {
+      return content
+        .filter((item) => item.parentId === parentId)
+        .map((item) => {
+          // Transform references to match original structure
+          const transformedReferences = item.sourceReferences.map((ref) => ({
+            id: ref.id,
+            reference_text: ref.referenceText,
+            reference_type: ref.referenceType,
+            target_content_id: ref.targetContentId,
+            target_reference_code: ref.targetReferenceCode,
+            hyperlink_target: ref.hyperlinkTarget,
+            page_number: ref.pageNumber,
+            font_family: ref.fontFamily,
+            bbox: ref.bbox,
+            reference_position: ref.referencePosition,
+            target_content: ref.targetContent
+              ? {
+                  id: ref.targetContent.id,
+                  parent_id: ref.targetContent.parentId,
+                  content_type: ref.targetContent.contentType,
+                  page_number: ref.targetContent.pageNumber,
+                  reference_code: ref.targetContent.referenceCode,
+                  title: ref.targetContent.title,
+                  content_text: ref.targetContent.contentText,
+                  sequence_order: ref.targetContent.sequenceOrder,
+                  pdf_document_id: ref.targetContent.pdfDocumentId,
+                  font_family: ref.targetContent.fontFamily,
+                  font_size: ref.targetContent.fontSize,
+                  bbox: ref.targetContent.bbox,
+                  y_coordinate: ref.targetContent.yCoordinate,
+                  is_definition: ref.targetContent.isDefinition,
+                  definition_term: ref.targetContent.definitionTerm,
+                }
+              : null,
+          }));
+
+          return {
+            id: item.id,
+            parent_id: item.parentId,
+            content_type: item.contentType,
+            page_number: item.pageNumber,
+            reference_code: item.referenceCode,
+            title: item.title,
+            content_text: item.contentText,
+            sequence_order: item.sequenceOrder,
+            pdf_document_id: item.pdfDocumentId,
+            font_family: item.fontFamily,
+            font_size: item.fontSize,
+            bbox: item.bbox,
+            y_coordinate: item.yCoordinate,
+            is_definition: item.isDefinition,
+            definition_term: item.definitionTerm,
+            created_at: item.createdAt,
+            updated_at: item.updatedAt,
+            references: transformedReferences,
+            children: buildHierarchy(item.id),
+          };
+        });
+    };
+
+    const hierarchy = buildHierarchy(null);
+
+    const response = {
+      documentId: id,
+      content: hierarchy,
+    };
+
+    console.log("Fetched document content for document ID:", id);
+
+    res.json(response);
+  } catch (error: unknown) {
     console.error("Error fetching document content:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     res.status(500).json({ error: "Failed to fetch document content" });
-  }
-});
-// Add this to your server.ts or pdfDocuments.ts
-router.get("/debug/file-check/:filename", async (req, res) => {
-  try {
-    const { filename } = req.params;
-    const fs = require("fs");
-    const path = require("path");
-
-    const uploadsDir = path.join(process.cwd(), "uploads");
-    const filePath = path.join(uploadsDir, filename);
-
-    console.log("Looking for file:", filePath);
-
-    if (fs.existsSync(filePath)) {
-      res.json({
-        exists: true,
-        filename: filename,
-        fullPath: filePath,
-        url: `http://localhost:3001/uploads/${filename}`,
-        fileSize: fs.statSync(filePath).size,
-      });
-    } else {
-      res.json({
-        exists: false,
-        filename: filename,
-        fullPath: filePath,
-        error: "File not found on disk",
-      });
-    }
-  } catch (error) {
-    // res.status(500).json({ error: error.message });
   }
 });
 export default router;

@@ -1,0 +1,167 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContentType {
+  division
+  part
+  section
+  subsection
+  article
+  sentence
+  clause
+  subclause
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
+
+  @@map("admins")
+}
+
+model Jurisdiction {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  pdfDocuments PdfDocument[]
+  
+  @@map("jurisdictions")
+}
+
+model DocumentType {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  pdfDocuments PdfDocument[]
+  
+  @@map("document_types")
+}
+
+model Language {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  pdfDocuments PdfDocument[]
+  
+  @@map("languages")
+}
+
+model PdfDocument {
+  id               String   @id @default(uuid())
+  fileName         String   @map("file_name")
+  originalFileName String   @map("original_file_name")
+  fileSize         BigInt?  @map("file_size")
+  title            String
+  year             Int?
+  version          String?
+  effectiveDate    DateTime? @map("effective_date")
+  processingStatus String   @default("pending") @map("processing_status")
+  processedAt      DateTime? @map("processed_at")
+  filePath         String?  @map("file_path")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @map("updated_at")
+  
+  // Relations
+  jurisdictionId Int? @map("jurisdiction_id")
+  documentTypeId Int? @map("document_type_id")
+  languageId     Int? @map("language_id")
+  
+  jurisdiction Jurisdiction? @relation(fields: [jurisdictionId], references: [id])
+  documentType DocumentType? @relation(fields: [documentTypeId], references: [id])
+  language     Language?     @relation(fields: [languageId], references: [id])
+  
+  buildingCodeContent BuildingCodeContent[]
+  
+  @@map("pdf_documents")
+  @@index([jurisdictionId], name: "idx_pdf_documents_jurisdiction")
+  @@index([documentTypeId], name: "idx_pdf_documents_type")
+  @@index([languageId], name: "idx_pdf_documents_language")
+  @@index([year], name: "idx_pdf_documents_year")
+  @@index([processingStatus], name: "idx_pdf_documents_status")
+}
+
+model BuildingCodeContent {
+  id             Int         @id @default(autoincrement())
+  parentId       Int?        @map("parent_id")
+  contentType    ContentType
+  pageNumber     Int?        @map("page_number")
+  referenceCode  String?     @map("reference_code")
+  title          String?
+  contentText    String      @map("content_text")
+  sequenceOrder  Int         @map("sequence_order")
+  isDefinition   Boolean     @default(false) @map("is_definition")
+  fontFamily     String?     @map("font_family")
+  fontSize       Float?      @map("font_size")
+  bbox           Float[]
+  yCoordinate    Float?      @map("y_coordinate")
+  definitionTerm String?     @map("definition_term")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @default(now()) @map("updated_at")
+  
+  // Relations
+  pdfDocumentId String? @map("pdf_document_id")
+  
+  // Self-relation for parent-child hierarchy
+  parent   BuildingCodeContent?   @relation("ContentParent", fields: [parentId], references: [id])
+  children BuildingCodeContent[]  @relation("ContentParent")
+  
+  // Document relation
+  pdfDocument PdfDocument? @relation(fields: [pdfDocumentId], references: [id])
+  
+  // References
+  sourceReferences ContentReference[] @relation("SourceReferences")
+  targetReferences ContentReference[] @relation("TargetReferences")
+  
+  @@map("building_code_content")
+  @@index([pdfDocumentId], name: "idx_building_code_content_pdf_document")
+  @@index([parentId], name: "idx_building_code_parent")
+  @@index([referenceCode], name: "idx_building_code_reference")
+  @@index([sequenceOrder], name: "idx_building_code_sequence")
+  @@index([contentType], name: "idx_building_code_type")
+}
+
+model ContentReference {
+  id                  Int      @id @default(autoincrement())
+  referenceText       String   @map("reference_text")
+  referenceType       String   @default("definition") @map("reference_type")
+  targetReferenceCode String?  @map("target_reference_code")
+  pageNumber          Int?     @map("page_number")
+  fontFamily          String?  @map("font_family")
+  fontSize            Float?   @map("font_size")
+  bbox                Float[]
+  confidenceScore     Float    @default(1.0) @map("confidence_score")
+  hyperlinkTarget     String?  @map("hyperlink_target")
+  referencePosition   Int?     @map("reference_position")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @default(now()) @map("updated_at")
+  
+  // Relations
+  sourceContentId Int @map("source_content_id")
+  targetContentId Int? @map("target_content_id")
+  
+  sourceContent BuildingCodeContent @relation("SourceReferences", fields: [sourceContentId], references: [id])
+  targetContent BuildingCodeContent? @relation("TargetReferences", fields: [targetContentId], references: [id])
+  
+  @@map("content_references")
+  @@index([sourceContentId], name: "idx_content_refs_source")
+  @@index([targetContentId], name: "idx_content_refs_target")
+  @@index([targetReferenceCode], name: "idx_content_refs_code")
+  @@index([pageNumber], name: "idx_content_refs_page")
+}

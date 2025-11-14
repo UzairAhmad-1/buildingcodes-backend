@@ -1,26 +1,9 @@
 // scripts/importData.ts
-import { Pool } from "pg";
+import { PrismaClient, ContentType } from "@prisma/client";
 import fs from "fs";
-import csv from "csv-parser";
 import path from "path";
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "code_db",
-  password: "ahmad",
-  port: 5432,
-});
-
-type ContentType =
-  | "division"
-  | "part"
-  | "section"
-  | "subsection"
-  | "article"
-  | "sentence"
-  | "clause"
-  | "subclause";
+const prisma = new PrismaClient();
 
 interface Reference {
   text: string;
@@ -45,9 +28,9 @@ interface PdfDocumentParams {
   file_name: string;
   original_file_name: string;
   file_size: number;
-  jurisdiction_id: number;
-  document_type_id: number;
-  language_id: number;
+  jurisdiction_name: string;
+  document_type_name: string;
+  language_code: string;
   title: string;
   year: number;
   version?: string;
@@ -60,30 +43,74 @@ const contentCache = new Map<
   string,
   {
     id: number;
-    reference_code: string;
-    title: string;
+    reference_code: string | null;
+    title: string | null;
     content_text: string;
     is_definition: boolean;
-    definition_term?: string;
+    definition_term?: string | null;
   }
 >();
 
 // Store definition terms for quick lookup
 const definitionTerms = new Map<string, number>();
 
+// Database lookup cache
+let dbCache: {
+  jurisdictions: Map<string, number>;
+  documentTypes: Map<string, number>;
+  languages: Map<string, number>;
+} = {
+  jurisdictions: new Map(),
+  documentTypes: new Map(),
+  languages: new Map(),
+};
+
+// Initialize database cache
+const initializeDbCache = async () => {
+  console.log("🔍 Initializing database cache...");
+
+  // Load jurisdictions
+  const jurisdictions = await prisma.jurisdiction.findMany();
+  dbCache.jurisdictions.clear();
+  jurisdictions.forEach((j) => {
+    dbCache.jurisdictions.set(j.name.toLowerCase(), j.id);
+    dbCache.jurisdictions.set(j.code.toLowerCase(), j.id);
+    console.log(`  Jurisdiction: ${j.name} (${j.code}) -> ID: ${j.id}`);
+  });
+
+  // Load document types
+  const documentTypes = await prisma.documentType.findMany();
+  dbCache.documentTypes.clear();
+  documentTypes.forEach((dt) => {
+    dbCache.documentTypes.set(dt.name.toLowerCase(), dt.id);
+    console.log(`  Document Type: ${dt.name} -> ID: ${dt.id}`);
+  });
+
+  // Load languages
+  const languages = await prisma.language.findMany();
+  dbCache.languages.clear();
+  languages.forEach((l) => {
+    dbCache.languages.set(l.code.toLowerCase(), l.id);
+    dbCache.languages.set(l.name.toLowerCase(), l.id);
+    console.log(`  Language: ${l.name} (${l.code}) -> ID: ${l.id}`);
+  });
+
+  console.log("✅ Database cache initialized");
+};
+
 const determineContentType = (label: string): ContentType => {
   const typeMap: { [key: string]: ContentType } = {
-    Division: "division",
-    Part: "part",
-    Section: "section",
-    Subsection: "subsection",
-    Article: "article",
-    Sentence: "sentence",
-    Clause: "clause",
-    Subclause: "subclause",
-    Body: "part",
+    Division: ContentType.division,
+    Part: ContentType.part,
+    Section: ContentType.section,
+    Subsection: ContentType.subsection,
+    Article: ContentType.article,
+    Sentence: ContentType.sentence,
+    Clause: ContentType.clause,
+    Subclause: ContentType.subclause,
+    Body: ContentType.part,
   };
-  return typeMap[label] || "section";
+  return typeMap[label] || ContentType.section;
 };
 
 const extractReferenceCode = (text: string, title: string): string => {
@@ -160,44 +187,87 @@ const extractDefinitionTerm = (text: string): string | null => {
   return null;
 };
 
-// Function to create PDF document entry
+// Function to create PDF document entry using names instead of IDs
 const createPdfDocument = async (
   params: PdfDocumentParams
 ): Promise<string> => {
-  const result = await pool.query(
-    `INSERT INTO pdf_documents 
-     (file_name, original_file_name, file_size, jurisdiction_id, 
-      document_type_id, language_id, title, year, version, 
-      effective_date, file_path, processing_status, processed_at)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) 
-     RETURNING id`,
-    [
-      params.file_name,
-      params.original_file_name,
-      params.file_size,
-      params.jurisdiction_id,
-      params.document_type_id,
-      params.language_id,
-      params.title,
-      params.year,
-      params.version || null,
-      params.effective_date || null,
-      params.file_path || null,
-      "completed",
-      new Date(),
-    ]
+  // Look up jurisdiction ID
+  const jurisdictionId = dbCache.jurisdictions.get(
+    params.jurisdiction_name.toLowerCase()
   );
+  if (!jurisdictionId) {
+    const availableJurisdictions = Array.from(dbCache.jurisdictions.entries())
+      .filter(([key]) => key.length > 2) // Filter out codes, keep names
+      .map(([key, id]) => `${key} (ID: ${id})`)
+      .join(", ");
+    throw new Error(
+      `Jurisdiction "${params.jurisdiction_name}" not found. Available: ${availableJurisdictions}`
+    );
+  }
 
-  return result.rows[0].id;
+  // Look up document type ID
+  const documentTypeId = dbCache.documentTypes.get(
+    params.document_type_name.toLowerCase()
+  );
+  if (!documentTypeId) {
+    const availableTypes = Array.from(dbCache.documentTypes.entries())
+      .map(([key, id]) => `${key} (ID: ${id})`)
+      .join(", ");
+    throw new Error(
+      `Document type "${params.document_type_name}" not found. Available: ${availableTypes}`
+    );
+  }
+
+  // Look up language ID
+  const languageId = dbCache.languages.get(params.language_code.toLowerCase());
+  if (!languageId) {
+    const availableLanguages = Array.from(dbCache.languages.entries())
+      .map(([key, id]) => `${key} (ID: ${id})`)
+      .join(", ");
+    throw new Error(
+      `Language "${params.language_code}" not found. Available: ${availableLanguages}`
+    );
+  }
+
+  console.log(`📄 Creating PDF document with:`);
+  console.log(
+    `   Jurisdiction: ${params.jurisdiction_name} (ID: ${jurisdictionId})`
+  );
+  console.log(
+    `   Document Type: ${params.document_type_name} (ID: ${documentTypeId})`
+  );
+  console.log(`   Language: ${params.language_code} (ID: ${languageId})`);
+
+  const pdfDocument = await prisma.pdfDocument.create({
+    data: {
+      fileName: params.file_name,
+      originalFileName: params.original_file_name,
+      fileSize: BigInt(params.file_size),
+      jurisdictionId: jurisdictionId,
+      documentTypeId: documentTypeId,
+      languageId: languageId,
+      title: params.title,
+      year: params.year,
+      version: params.version || null,
+      effectiveDate: params.effective_date
+        ? new Date(params.effective_date)
+        : null,
+      filePath: params.file_path || null,
+      processingStatus: "completed",
+      processedAt: new Date(),
+    },
+  });
+
+  return pdfDocument.id;
 };
 
-// Improved function to find target content for a reference
+// Improved function to find target content for a reference using Prisma
 const findTargetContent = async (
   referenceText: string,
   pdfDocumentId: string
 ): Promise<{
   id: number;
-  reference_code: string;
+  reference_code: string | null;
   hyperlink_target: string;
 } | null> => {
   try {
@@ -212,80 +282,63 @@ const findTargetContent = async (
       if (definitionContent) {
         return {
           id: definitionContent.id,
-          reference_code: definitionContent.reference_code || "",
+          reference_code: definitionContent.reference_code || null,
           hyperlink_target: `#definition-${definitionContent.id}`,
         };
       }
     }
 
-    // Try to find definition articles that match the reference text
-    const definitionQuery = `
-      SELECT id, reference_code, title, content_text, is_definition, definition_term
-      FROM building_code_content 
-      WHERE pdf_document_id = $1 
-        AND is_definition = true
-        AND (
-          definition_term ILIKE $2 
-          OR content_text ILIKE $3
-          OR title ILIKE $2
-        )
-      ORDER BY 
-        CASE 
-          WHEN definition_term ILIKE $2 THEN 1
-          WHEN content_text ILIKE $3 THEN 2
-          WHEN title ILIKE $2 THEN 3
-          ELSE 4
-        END,
-        sequence_order
-      LIMIT 5
-    `;
+    // Try to find definition articles that match the reference text using Prisma
+    const definitionResults = await prisma.buildingCodeContent.findMany({
+      where: {
+        pdfDocumentId: pdfDocumentId,
+        isDefinition: true,
+        OR: [
+          { definitionTerm: { contains: referenceText, mode: "insensitive" } },
+          {
+            contentText: { contains: `${referenceText} `, mode: "insensitive" },
+          },
+          { title: { contains: referenceText, mode: "insensitive" } },
+        ],
+      },
+      orderBy: [
+        { definitionTerm: "asc" }, // Prioritize exact definition term matches
+        { sequenceOrder: "asc" },
+      ],
+      take: 5,
+    });
 
-    const definitionResults = await pool.query(definitionQuery, [
-      pdfDocumentId,
-      `%${referenceText}%`,
-      `%${referenceText} %`,
-    ]);
-
-    if (definitionResults.rows.length > 0) {
-      const bestMatch = definitionResults.rows[0];
+    if (definitionResults.length > 0) {
+      const bestMatch = definitionResults[0];
       return {
         id: bestMatch.id,
-        reference_code: bestMatch.reference_code || "",
+        reference_code: bestMatch.referenceCode,
         hyperlink_target: `#definition-${bestMatch.id}`,
       };
     }
 
     // Fallback: find any relevant content
-    const fallbackQuery = `
-      SELECT id, reference_code, title, content_text
-      FROM building_code_content 
-      WHERE pdf_document_id = $1 
-        AND (
-          content_text ILIKE $2 
-          OR title ILIKE $2
-          OR reference_code = $3
-        )
-      ORDER BY 
-        CASE 
-          WHEN reference_code = $3 THEN 1
-          WHEN content_text ILIKE $2 THEN 2
-          ELSE 3
-        END,
-        sequence_order
-      LIMIT 3
-    `;
+    const fallbackResults = await prisma.buildingCodeContent.findMany({
+      where: {
+        pdfDocumentId: pdfDocumentId,
+        OR: [
+          { contentText: { contains: referenceText, mode: "insensitive" } },
+          { title: { contains: referenceText, mode: "insensitive" } },
+          { referenceCode: referenceText },
+        ],
+      },
+      orderBy: [
+        { referenceCode: "asc" }, // Prioritize exact reference code matches
+        { sequenceOrder: "asc" },
+      ],
+      take: 3,
+    });
 
-    const fallbackResults = await pool.query(fallbackQuery, [
-      pdfDocumentId,
-      `%${referenceText}%`,
-      referenceText,
-    ]);
-
-    if (fallbackResults.rows.length > 0) {
-      const result = fallbackResults.rows[0];
+    if (fallbackResults.length > 0) {
+      const result = fallbackResults[0];
       return {
         id: result.id,
-        reference_code: result.reference_code || "",
+        reference_code: result.referenceCode,
         hyperlink_target: `#content-${result.id}`,
       };
     }
@@ -305,29 +358,35 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
   const rows: JsonRow[] = JSON.parse(rawData);
 
   try {
-    // Clear existing data for this document
-    await pool.query(
-      "DELETE FROM content_references WHERE source_content_id IN (SELECT id FROM building_code_content WHERE pdf_document_id = $1)",
-      [pdfDocumentId]
-    );
-    await pool.query(
-      "DELETE FROM building_code_content WHERE pdf_document_id = $1",
-      [pdfDocumentId]
-    );
-    console.log("Cleared existing data for this document");
+    // Clear existing data for this document using Prisma
+    await prisma.contentReference.deleteMany({
+      where: {
+        sourceContent: {
+          pdfDocumentId: pdfDocumentId,
+        },
+      },
+    });
+
+    await prisma.buildingCodeContent.deleteMany({
+      where: {
+        pdfDocumentId: pdfDocumentId,
+      },
+    });
+
+    console.log("🧹 Cleared existing data for this document");
 
     let hierarchyStack: { type: ContentType; id: number }[] = [];
     let sequenceOrder = 0;
 
     const hierarchy: ContentType[] = [
-      "division",
-      "part",
-      "section",
-      "subsection",
-      "article",
-      "sentence",
-      "clause",
-      "subclause",
+      ContentType.division,
+      ContentType.part,
+      ContentType.section,
+      ContentType.subsection,
+      ContentType.article,
+      ContentType.sentence,
+      ContentType.clause,
+      ContentType.subclause,
     ];
 
     // First pass: insert all content and identify definitions
@@ -362,32 +421,27 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         }
       }
 
-      // Insert into database
-      const result = await pool.query(
-        `INSERT INTO building_code_content 
-         (parent_id, content_type, page_number, reference_code, title, 
-          content_text, sequence_order, pdf_document_id, font_family, font_size, 
-          bbox, y_coordinate, is_definition, definition_term)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`,
-        [
-          parentId,
-          contentType,
-          pageNumber,
-          referenceCode,
-          title,
-          row.text,
-          sequenceOrder,
-          pdfDocumentId,
-          row.font,
-          row.size,
-          row.bbox,
-          row.y,
-          isDefinition,
-          definitionTerm,
-        ]
-      );
+      // Insert into database using Prisma
+      const newContent = await prisma.buildingCodeContent.create({
+        data: {
+          parentId: parentId,
+          contentType: contentType,
+          pageNumber: pageNumber,
+          referenceCode: referenceCode || null,
+          title: title || null,
+          contentText: row.text,
+          sequenceOrder: sequenceOrder,
+          pdfDocumentId: pdfDocumentId,
+          fontFamily: row.font,
+          fontSize: row.size,
+          bbox: row.bbox,
+          yCoordinate: row.y,
+          isDefinition: isDefinition,
+          definitionTerm: definitionTerm,
+        },
+      });
 
-      const newId = result.rows[0].id;
+      const newId = newContent.id;
 
       // Store definition terms for reference resolution
       if (isDefinition && definitionTerm) {
@@ -408,36 +462,67 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       sequenceOrder++;
     }
 
-    console.log(`Successfully imported ${rows.length} content rows`);
-    console.log(`Found ${definitionTerms.size} definition terms`);
+    console.log(`✅ Successfully imported ${rows.length} content rows`);
+    console.log(`📚 Found ${definitionTerms.size} definition terms`);
 
-    // Build content cache
-    console.log("Building content cache for reference resolution...");
-    const allContent = await pool.query(
-      `SELECT id, reference_code, title, content_text, content_type, is_definition, definition_term
-       FROM building_code_content 
-       WHERE pdf_document_id = $1 
-       ORDER BY sequence_order`,
-      [pdfDocumentId]
-    );
+    // Build content cache using Prisma
+    console.log("🔍 Building content cache for reference resolution...");
+    const allContent = await prisma.buildingCodeContent.findMany({
+      where: {
+        pdfDocumentId: pdfDocumentId,
+      },
+      select: {
+        id: true,
+        referenceCode: true,
+        title: true,
+        contentText: true,
+        contentType: true,
+        isDefinition: true,
+        definitionTerm: true,
+      },
+      orderBy: {
+        sequenceOrder: "asc",
+      },
+    });
 
-    allContent.rows.forEach((row) => {
-      const cacheKey = `${pdfDocumentId}_${row.content_text}`;
-      contentCache.set(cacheKey, row);
+    allContent.forEach((row) => {
+      const cacheKey = `${pdfDocumentId}_${row.contentText}`;
+      contentCache.set(cacheKey, {
+        id: row.id,
+        reference_code: row.referenceCode,
+        title: row.title,
+        content_text: row.contentText,
+        is_definition: row.isDefinition,
+        definition_term: row.definitionTerm,
+      });
 
-      if (row.reference_code) {
-        const refCacheKey = `${pdfDocumentId}_${row.reference_code}`;
-        contentCache.set(refCacheKey, row);
+      if (row.referenceCode) {
+        const refCacheKey = `${pdfDocumentId}_${row.referenceCode}`;
+        contentCache.set(refCacheKey, {
+          id: row.id,
+          reference_code: row.referenceCode,
+          title: row.title,
+          content_text: row.contentText,
+          is_definition: row.isDefinition,
+          definition_term: row.definitionTerm,
+        });
       }
 
-      if (row.definition_term) {
-        const termCacheKey = `${pdfDocumentId}_${row.definition_term.toLowerCase()}`;
-        contentCache.set(termCacheKey, row);
+      if (row.definitionTerm) {
+        const termCacheKey = `${pdfDocumentId}_${row.definitionTerm.toLowerCase()}`;
+        contentCache.set(termCacheKey, {
+          id: row.id,
+          reference_code: row.referenceCode,
+          title: row.title,
+          content_text: row.contentText,
+          is_definition: row.isDefinition,
+          definition_term: row.definitionTerm,
+        });
       }
     });
 
-    // Second pass: process references with hyperlink targets
-    console.log("Processing references with hyperlink targets...");
+    // Second pass: process references with hyperlink targets using Prisma
+    console.log("🔗 Processing references with hyperlink targets...");
     let referenceCount = 0;
     let unresolvedReferences = 0;
 
@@ -461,24 +546,20 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
           pdfDocumentId
         );
 
-        await pool.query(
-          `INSERT INTO content_references 
-           (source_content_id, target_content_id, reference_text, reference_type, 
-            target_reference_code, page_number, font_family, bbox, hyperlink_target, reference_position)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-          [
-            sourceContentId,
-            targetContent?.id || null,
-            reference.text,
-            "definition", // Most references are to definitions
-            targetContent?.reference_code || null,
-            reference.page,
-            reference.font,
-            reference.bbox,
-            targetContent?.hyperlink_target || null,
-            i, // Position in the references array
-          ]
-        );
+        await prisma.contentReference.create({
+          data: {
+            sourceContentId: sourceContentId,
+            targetContentId: targetContent?.id || null,
+            referenceText: reference.text,
+            referenceType: "definition",
+            targetReferenceCode: targetContent?.reference_code || null,
+            pageNumber: reference.page,
+            fontFamily: reference.font,
+            bbox: reference.bbox,
+            hyperlinkTarget: targetContent?.hyperlink_target || null,
+            referencePosition: i,
+          },
+        });
 
         referenceCount++;
         if (targetContent) {
@@ -492,8 +573,8 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       }
     }
 
-    console.log(`Successfully processed ${referenceCount} references`);
-    console.log(`Unresolved references: ${unresolvedReferences}`);
+    console.log(`✅ Successfully processed ${referenceCount} references`);
+    console.log(`❌ Unresolved references: ${unresolvedReferences}`);
   } catch (error) {
     console.error("Error during import:", error);
     throw error;
@@ -503,16 +584,19 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
 // Main function to run the complete import process
 const runCompleteImport = async () => {
   try {
+    // Initialize database cache first
+    await initializeDbCache();
+
     const jsonFilePath = path.join(__dirname, "merged_spans_sample.json");
 
-    console.log("Creating PDF document entry...");
+    console.log("📄 Creating PDF document entry...");
     const pdfDocumentId = await createPdfDocument({
       file_name: "national-building-code-2023-alberta.pdf",
       original_file_name: "National Building Code – 2023 Alberta Edition.pdf",
       file_size: fs.statSync(jsonFilePath).size,
-      jurisdiction_id: 1,
-      document_type_id: 1,
-      language_id: 1,
+      jurisdiction_name: "Alberta", // Use name instead of hardcoded ID
+      document_type_name: "Codes", // Use name instead of hardcoded ID
+      language_code: "en", // Use code instead of hardcoded ID
       title: "National Building Code – 2023 Alberta Edition",
       year: 2023,
       version: "2023",
@@ -520,11 +604,11 @@ const runCompleteImport = async () => {
       file_path: "/documents/national-building-code-2023-alberta.pdf",
     });
 
-    console.log(`Created PDF document with ID: ${pdfDocumentId}`);
+    console.log(`✅ Created PDF document with ID: ${pdfDocumentId}`);
     await importJsonData(jsonFilePath, pdfDocumentId);
-    console.log("Data import completed successfully");
+    console.log("✅ Data import completed successfully");
   } catch (error) {
-    console.error("Import process failed:", error);
+    console.error("❌ Import process failed:", error);
     throw error;
   }
 };
@@ -532,12 +616,12 @@ const runCompleteImport = async () => {
 // Run the complete import process
 runCompleteImport()
   .then(() => {
-    console.log("Complete import process finished successfully");
-    pool.end();
+    console.log("🎉 Complete import process finished successfully");
+    prisma.$disconnect();
     process.exit(0);
   })
   .catch((error) => {
-    console.error("Complete import process failed:", error);
-    pool.end();
+    console.error("💥 Complete import process failed:", error);
+    prisma.$disconnect();
     process.exit(1);
   });

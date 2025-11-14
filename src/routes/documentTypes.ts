@@ -1,19 +1,19 @@
 // src/routes/documentTypes.ts
 import express from "express";
-import { pool } from "../db";
+import prisma from "../db";
 
 const router = express.Router();
 
 // Get all document types
 router.get("/", async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT id, name, description, created_at 
-      FROM document_types 
-      ORDER BY name
-    `);
-    res.json(result.rows);
-  } catch (error) {
+    const documentTypes = await prisma.documentType.findMany({
+      orderBy: {
+        name: 'asc'
+      }
+    });
+    res.json(documentTypes);
+  } catch (error: unknown) {
     console.error("Error fetching document types:", error);
     res.status(500).json({ error: "Failed to fetch document types" });
   }
@@ -23,21 +23,16 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(
-      `
-      SELECT id, name, description, created_at 
-      FROM document_types 
-      WHERE id = $1
-    `,
-      [id]
-    );
+    const documentType = await prisma.documentType.findUnique({
+      where: { id: parseInt(id) }
+    });
 
-    if (result.rows.length === 0) {
+    if (!documentType) {
       return res.status(404).json({ error: "Document type not found" });
     }
 
-    res.json(result.rows[0]);
-  } catch (error) {
+    res.json(documentType);
+  } catch (error: unknown) {
     console.error("Error fetching document type:", error);
     res.status(500).json({ error: "Failed to fetch document type" });
   }

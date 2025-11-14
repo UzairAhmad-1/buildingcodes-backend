@@ -1,7 +1,8 @@
+// src/routes/adminAuth.ts
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { pool } from "../db";
+import prisma from "../db";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
 
 const router = express.Router();
@@ -16,18 +17,16 @@ router.post("/login", async (req, res) => {
     }
 
     // Find admin by email
-    const result = await pool.query("SELECT * FROM admins WHERE email = $1", [
-      email,
-    ]);
+    const admin = await prisma.admin.findUnique({
+      where: { email },
+    });
 
-    if (result.rows.length === 0) {
+    if (!admin) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const admin = result.rows[0];
-
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, admin.password_hash);
+    const isValidPassword = await bcrypt.compare(password, admin.passwordHash);
     if (!isValidPassword) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
@@ -52,7 +51,7 @@ router.post("/login", async (req, res) => {
         name: admin.name,
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -61,17 +60,22 @@ router.post("/login", async (req, res) => {
 // Get current admin profile
 router.get("/profile", authenticateToken, async (req: AuthRequest, res) => {
   try {
-    const result = await pool.query(
-      "SELECT id, email, name, created_at FROM admins WHERE id = $1",
-      [req.admin.id]
-    );
+    const admin = await prisma.admin.findUnique({
+      where: { id: req.admin.id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true,
+      },
+    });
 
-    if (result.rows.length === 0) {
+    if (!admin) {
       return res.status(404).json({ error: "Admin not found" });
     }
 
-    res.json({ admin: result.rows[0] });
-  } catch (error) {
+    res.json({ admin });
+  } catch (error: unknown) {
     console.error("Profile error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -79,8 +83,7 @@ router.get("/profile", authenticateToken, async (req: AuthRequest, res) => {
 
 // Admin logout (client-side token removal)
 router.post("/logout", (req, res) => {
-  // Logout is handled client-side by removing the token
-  // No need for authentication check since we're just clearing the token
   res.json({ message: "Logout successful" });
 });
+
 export default router;
