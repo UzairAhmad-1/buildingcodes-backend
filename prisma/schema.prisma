@@ -17,6 +17,8 @@ enum ContentType {
   sentence
   clause
   subclause
+  see_also   
+  definition  
 }
 
 model Admin {

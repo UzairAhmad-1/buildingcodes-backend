@@ -23,6 +23,7 @@ interface JsonRow {
   bbox: number[];
   y: number;
   references?: Reference[];
+  term?: string; // For DefTerm
 }
 
 interface PdfDocumentParams {
@@ -99,7 +100,7 @@ const initializeDbCache = async () => {
   console.log("✅ Database cache initialized");
 };
 
-const determineContentType = (label: string): ContentType => {
+const determineContentType = (label: string): ContentType | null => {
   const typeMap: { [key: string]: ContentType } = {
     Division: ContentType.division,
     Part: ContentType.part,
@@ -110,7 +111,15 @@ const determineContentType = (label: string): ContentType => {
     Clause: ContentType.clause,
     Subclause: ContentType.subclause,
     Body: ContentType.part,
+    SeeAlso: ContentType.see_also,
+    DefTerm: ContentType.definition,
   };
+
+  // Skip Table labels
+  if (label === "Table") {
+    return null;
+  }
+
   return typeMap[label] || ContentType.section;
 };
 
@@ -138,8 +147,19 @@ const extractReferenceCode = (text: string, title: string): string => {
 const extractTitle = (
   text: string,
   referenceCode: string,
-  jsonTitle: string
+  jsonTitle: string,
+  label: string
 ): string => {
+  // For SeeAlso, use the text as-is
+  if (label === "SeeAlso") {
+    return text.trim();
+  }
+
+  // For DefTerm, use the term if available
+  if (label === "DefTerm") {
+    return jsonTitle || text.trim();
+  }
+
   if (jsonTitle && jsonTitle !== referenceCode) {
     return jsonTitle;
   }
@@ -156,6 +176,11 @@ const extractTitle = (
 
 // Check if content is a definition
 const isDefinitionContent = (text: string, label: string): boolean => {
+  // DefTerm is always a definition
+  if (label === "DefTerm") {
+    return true;
+  }
+
   // Articles and sentences that define terms are usually definitions
   if (label === "Article" || label === "Sentence") {
     const lowerText = text.toLowerCase();
@@ -164,14 +189,31 @@ const isDefinitionContent = (text: string, label: string): boolean => {
       lowerText.includes("includes") ||
       lowerText.includes("defined as") ||
       /^[^.]*: [^.]*\.$/.test(text)
-    ); // Pattern like "Term: definition."
+    );
   }
   return false;
 };
 
 // Extract definition term from definition content
-const extractDefinitionTerm = (text: string): string | null => {
-  // Patterns for definition extraction
+const extractDefinitionTerm = (
+  text: string,
+  label: string,
+  jsonTitle?: string
+): string | null => {
+  // For DefTerm, use the provided term field or extract from text
+  if (label === "DefTerm") {
+    if (jsonTitle) {
+      return jsonTitle;
+    }
+    // Extract term from DefTerm text pattern: "Term means definition"
+    const match = text.match(/^([^,]+?)\s+means/);
+    if (match) {
+      return match[1].trim();
+    }
+    return text.split(" means")[0]?.trim() || null;
+  }
+
+  // Patterns for definition extraction for other content types
   const patterns = [
     /^([^:]+):/, // "Term: definition"
     /^([^\.]+) means/, // "Term means definition"
@@ -198,7 +240,7 @@ const createPdfDocument = async (
   );
   if (!jurisdictionId) {
     const availableJurisdictions = Array.from(dbCache.jurisdictions.entries())
-      .filter(([key]) => key.length > 2) // Filter out codes, keep names
+      .filter(([key]) => key.length > 2)
       .map(([key, id]) => `${key} (ID: ${id})`)
       .join(", ");
     throw new Error(
@@ -302,10 +344,7 @@ const findTargetContent = async (
           { title: { contains: referenceText, mode: "insensitive" } },
         ],
       },
-      orderBy: [
-        { definitionTerm: "asc" }, // Prioritize exact definition term matches
-        { sequenceOrder: "asc" },
-      ],
+      orderBy: [{ definitionTerm: "asc" }, { sequenceOrder: "asc" }],
       take: 5,
     });
 
@@ -328,10 +367,7 @@ const findTargetContent = async (
           { referenceCode: referenceText },
         ],
       },
-      orderBy: [
-        { referenceCode: "asc" }, // Prioritize exact reference code matches
-        { sequenceOrder: "asc" },
-      ],
+      orderBy: [{ referenceCode: "asc" }, { sequenceOrder: "asc" }],
       take: 3,
     });
 
@@ -388,6 +424,8 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       ContentType.sentence,
       ContentType.clause,
       ContentType.subclause,
+      ContentType.see_also,
+      ContentType.definition,
     ];
 
     // First pass: insert all content and identify definitions
@@ -395,14 +433,31 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
 
     for (const row of rows) {
       const contentType = determineContentType(row.label);
+
+      // Skip Table labels and any other null content types
+      if (contentType === null) {
+        console.log(`⏭️  Skipping Table: ${row.text.substring(0, 50)}...`);
+        continue;
+      }
+
       const referenceCode = extractReferenceCode(row.text, row.title);
-      const title = extractTitle(row.text, referenceCode, row.title);
+
+      // Use the term field for DefTerm if available
+      const displayTitle =
+        row.label === "DefTerm" && row.term ? row.term : row.title;
+      const title = extractTitle(
+        row.text,
+        referenceCode,
+        displayTitle,
+        row.label
+      );
+
       const pageNumber = row.page;
 
       // Check if this is definition content
       const isDefinition = isDefinitionContent(row.text, row.label);
       const definitionTerm = isDefinition
-        ? extractDefinitionTerm(row.text)
+        ? extractDefinitionTerm(row.text, row.label, displayTitle)
         : null;
 
       console.log(`Processing: ${row.text.substring(0, 50)}...`);
@@ -410,19 +465,28 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         `  Type: ${contentType}, Ref: ${referenceCode}, Is Definition: ${isDefinition}`
       );
 
-      // Determine parent based on hierarchy
+      // Special handling for SeeAlso - it should be a child of the previous content
       let parentId: number | null = null;
-      for (let i = hierarchyStack.length - 1; i >= 0; i--) {
-        const stackItem = hierarchyStack[i];
-        const currentIndex = hierarchy.indexOf(contentType);
-        const stackIndex = hierarchy.indexOf(stackItem.type);
-        if (stackIndex < currentIndex) {
-          parentId = stackItem.id;
-          break;
+
+      if (contentType === ContentType.see_also) {
+        // SeeAlso should be attached to the most recent content item
+        if (hierarchyStack.length > 0) {
+          parentId = hierarchyStack[hierarchyStack.length - 1].id;
+        }
+      } else {
+        // Regular hierarchy determination for other content types
+        for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+          const stackItem = hierarchyStack[i];
+          const currentIndex = hierarchy.indexOf(contentType);
+          const stackIndex = hierarchy.indexOf(stackItem.type);
+          if (stackIndex < currentIndex) {
+            parentId = stackItem.id;
+            break;
+          }
         }
       }
 
-      // Insert into database using Prisma
+      // Insert into database using Prisma WITHOUT font, bbox, yCoordinate
       const newContent = await prisma.buildingCodeContent.create({
         data: {
           parentId: parentId,
@@ -433,10 +497,7 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
           contentText: row.text,
           sequenceOrder: sequenceOrder,
           pdfDocumentId: pdfDocumentId,
-          fontFamily: row.font,
-          fontSize: row.size,
-          bbox: row.bbox,
-          yCoordinate: row.y,
+          // Removed: fontFamily, fontSize, bbox, yCoordinate
           isDefinition: isDefinition,
           definitionTerm: definitionTerm,
         },
@@ -454,16 +515,23 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       const contentKey = `${row.text}_${pageNumber}`;
       contentMap.set(contentKey, newId);
 
-      // Update hierarchy
-      const currentIndex = hierarchy.indexOf(contentType);
-      hierarchyStack = hierarchyStack.filter(
-        (item) => hierarchy.indexOf(item.type) < currentIndex
-      );
-      hierarchyStack.push({ type: contentType, id: newId });
+      // Update hierarchy (don't push SeeAlso to stack as it doesn't create new hierarchy levels)
+      if (contentType !== ContentType.see_also) {
+        const currentIndex = hierarchy.indexOf(contentType);
+        hierarchyStack = hierarchyStack.filter(
+          (item) => hierarchy.indexOf(item.type) < currentIndex
+        );
+        hierarchyStack.push({ type: contentType, id: newId });
+      }
+
       sequenceOrder++;
     }
 
-    console.log(`✅ Successfully imported ${rows.length} content rows`);
+    console.log(
+      `✅ Successfully imported ${contentMap.size} content rows (skipped ${
+        rows.length - contentMap.size
+      } tables)`
+    );
     console.log(`📚 Found ${definitionTerms.size} definition terms`);
 
     // Build content cache using Prisma
@@ -534,9 +602,7 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       const sourceContentId = contentMap.get(contentKey);
 
       if (!sourceContentId) {
-        console.log(
-          `Could not find source content for: ${row.text.substring(0, 50)}`
-        );
+        // This might be a table that was skipped, so skip its references too
         continue;
       }
 
@@ -555,8 +621,7 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
             referenceType: "definition",
             targetReferenceCode: targetContent?.reference_code || null,
             pageNumber: reference.page,
-            fontFamily: reference.font,
-            bbox: reference.bbox,
+            // Removed: fontFamily, bbox from references too
             hyperlinkTarget: targetContent?.hyperlink_target || null,
             hyperlinkText: reference.link_text || null,
             referencePosition: i,
@@ -596,9 +661,9 @@ const runCompleteImport = async () => {
       file_name: "national-building-code-2023-alberta.pdf",
       original_file_name: "National Building Code – 2023 Alberta Edition.pdf",
       file_size: fs.statSync(jsonFilePath).size,
-      jurisdiction_name: "Alberta", // Use name instead of hardcoded ID
-      document_type_name: "Codes", // Use name instead of hardcoded ID
-      language_code: "en", // Use code instead of hardcoded ID
+      jurisdiction_name: "Alberta",
+      document_type_name: "Codes",
+      language_code: "en",
       title: "National Building Code – 2023 Alberta Edition",
       year: 2023,
       version: "2023",
