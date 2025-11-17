@@ -10,6 +10,7 @@ interface Reference {
   page: number;
   font: string;
   bbox: number[];
+  link_text: string;
 }
 
 interface JsonRow {
@@ -557,6 +558,7 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
             fontFamily: reference.font,
             bbox: reference.bbox,
             hyperlinkTarget: targetContent?.hyperlink_target || null,
+            hyperlinkText: reference.link_text || null,
             referencePosition: i,
           },
         });
