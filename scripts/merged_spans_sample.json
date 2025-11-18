@@ -10378,7 +10378,6 @@
     ],
     "y": 258.7321472167969
   },
-
   {
     "label": "Part",
     "title": "Part 2",
@@ -106729,7 +106728,7 @@
           198.23182678222656, 318.3200378417969, 252.7352752685547,
           328.3685607910156
         ],
-        "link_text": "Access to exit   a floor area that provides access to an exit serving the floor area ."
+        "link_text": "Access to exit means that part of a means of egress within a floor area that provides access to an exit serving the floor area ."
       },
       {
         "text": "ramps",
@@ -115722,7 +115721,217 @@
     ],
     "y": 233.35838317871094
   },
-
+  {
+    "label": "Section",
+    "title": "Section 9.8.",
+    "text": "",
+    "page": 258,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      119.693359375, 256.0194396972656, 170.0348663330078, 266.0679626464844
+    ],
+    "y": 256.0194396972656
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "Exterior stairs, ramps , landings, handrails and guards serving a single dwelling unit , and loads on guards serving not more than two dwelling units , shall conform to the appropriate requirements in Section 9.8.",
+    "references": [
+      {
+        "text": "ramps",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          216.00750732421875, 272.1564636230469, 243.61463928222656,
+          282.2049865722656
+        ]
+      },
+      {
+        "text": "guards",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          353.581787109375, 272.1564636230469, 384.0144348144531,
+          282.2049865722656
+        ]
+      },
+      {
+        "text": "dwelling",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          456.0201721191406, 272.1564636230469, 493.6529541015625,
+          282.2049865722656
+        ]
+      },
+      {
+        "text": "unit",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          119.71316528320312, 283.1949768066406, 136.9292755126953,
+          293.2434997558594
+        ]
+      },
+      {
+        "text": "guards",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          198.85572814941406, 283.1949768066406, 229.142822265625,
+          293.2434997558594
+        ]
+      },
+      {
+        "text": "dwelling units",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          348.939697265625, 283.1949768066406, 410.10693359375,
+          293.2434997558594
+        ]
+      }
+    ],
+    "page": 258,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.13755798339844, 271.45367431640625, 143.7087860107422,
+      281.3536682128906
+    ],
+    "y": 271.45367431640625
+  },
+  {
+    "label": "Article",
+    "title": "3.3.4.8.",
+    "text": "Protection of Openable Windows",
+    "page": 258,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      47.71050262451172, 315.54827880859375, 87.7253189086914, 325.4482727050781
+    ],
+    "y": 315.54827880859375
+  },
+  {
+    "label": "Sentence",
+    "title": "1)",
+    "text": "Except as provided in Sentence (2), openable windows in suites of residential occupancy shall be protected by",
+    "references": [
+      {
+        "text": "suites",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          406.1399230957031, 332.3880615234375, 432.1522216796875,
+          342.43658447265625
+        ]
+      },
+      {
+        "text": "residential",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          443.6471252441406, 332.3880615234375, 488.44366455078125,
+          342.43658447265625
+        ]
+      },
+      {
+        "text": "occupancy",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          119.71319580078125, 343.3671569824219, 161.9287872314453,
+          353.4156799316406
+        ],
+        "link_text": "Occupancy means the use or intended use of a building or part thereof for the shelter or support of persons, animals or property."
+      }
+    ],
+    "page": 258,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.14749145507812, 331.6258850097656, 143.71871948242188, 341.52587890625
+    ],
+    "y": 331.6258850097656
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "a guard with a minimum height of 1 070 mm constructed in accordance with Article 3.3.1.18., or",
+    "references": [
+      {
+        "text": "guard",
+        "page": 258,
+        "font": "PalatinoLinotype,Italic",
+        "bbox": [
+          156.7035675048828, 354.34625244140625, 183.39988708496094,
+          364.394775390625
+        ],
+        "link_text": "Guard means a protective barrier around openings in floors or at the open sides of stairs, landings, balconies, mezzanines , galleries, raised walkways or other locations to prevent accidental falls from one level to another. Such a barrier may or may not have openings through it."
+      }
+    ],
+    "page": 258,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.4344024658203, 354.34625244140625, 143.7108154296875, 364.394775390625
+    ],
+    "y": 354.34625244140625
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "a mechanism that can only be released with the use of tools or special knowledge to control the free swinging or sliding operation of the openable part of the window so as to limit any clear unobstructed opening to not more than 100 mm measured either vertically or horizontally.",
+    "page": 258,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.89981079101562, 376.36383056640625, 143.7286376953125,
+      386.412353515625
+    ],
+    "y": 376.36383056640625
+  },
+  {
+    "label": "Sentence",
+    "title": "2)",
+    "text": "Windows need not be protected in accordance with Sentence (1) where",
+    "page": 258,
+    "font": "HelveticaLTPro-Black",
+    "size": 9.899999618530273,
+    "bbox": [
+      133.1573944091797, 424.7947082519531, 143.72862243652344,
+      434.6947021484375
+    ],
+    "y": 424.7947082519531
+  },
+  {
+    "label": "Clause",
+    "title": "a)",
+    "text": "the only opening having greater dimensions than those allowed by Clause (1)(b) is located higher than 1 070 mm above the finished floor, or",
+    "page": 258,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      135.43438720703125, 436.4765930175781, 143.7365264892578,
+      446.5251159667969
+    ],
+    "y": 436.4765930175781
+  },
+  {
+    "label": "Clause",
+    "title": "b)",
+    "text": "the bottom edge of the openable portion of the window is located less than 1 800 mm above the floor or ground on the other side of the window.",
+    "page": 258,
+    "font": "PalatinoLinotype",
+    "size": 9.899999618530273,
+    "bbox": [
+      134.89979553222656, 458.49420166015625, 143.71971130371094,
+      468.542724609375
+    ],
+    "y": 458.49420166015625
+  },
   {
     "label": "Subsection",
     "title": "3.3.5.",
@@ -155172,7 +155381,6 @@
     ],
     "y": 718.3889770507812
   },
-
   {
     "label": "Part",
     "title": "Part 4",
@@ -177600,7 +177808,7 @@
   {
     "label": "Clause",
     "title": "(d) final design of all structural framing elements and supplemental energy dissipation system components.",
-    "text": "A-4.1.8.21.(4)(a) Non-linear Dynamic Analysis. Three-dimensional Non-linear Dynamic Analysis is a complex process requiring special expertise. Guidance on Non-linear Dynamic Analysis can be found in the Commentary entitled Design for Seismic Effects in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.2.1.(1) Subsurface Investigation. Where acceptable information on subsurface conditions already exists, the investigation may not require further physical subsurface exploration or testing. A-4.2.2.3.(1) Responsibilities of the Designer as Defined in Part 4. In certain situations, such as when the design is highly technical, it may be necessary for the “other suitably qualified person” to be someone responsible to the designer. In such cases the authority having jurisdiction may wish to order that the review be done by the designer. A-4.2.4.1.(1) Innovative Designs. It is important that innovative approaches to foundation design be carried out by a person especially qualified in the specific method applied and that the design provide a level of safety and performance at least equivalent to that provided for or implicit in the design carried out by the methods referred to in Part 4. Provision must be made for monitoring the subsequent performance of such structures so that the long-term sufficiency of the design can be evaluated. A-4.2.4.1.(3) Ultimate Limit States for Foundations. Information on ultimate limit states for foundations, including terminology and resistance factors, can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.4.1.(5) Design of Foundations for Differential Movements. Information on the design of foundations for differential movements can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.4.4.(1) Depth of Foundations. When adfreezing has occurred and subsequent freezing results in soil expansion beneath this area, the resulting uplift effect is sometimes referred to as frost jacking. A heated building that is insulated to prevent heat loss through the foundation walls should be considered as an unheated structure unless the effect of the insulation is taken into account in determining the maximum depth of frost penetration. A-4.2.5.1.(1) Excavations. Information on excavations can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.6.1.(1) Shallow Foundations. Information on shallow foundations can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.7.1.(1) Deep Foundation Units. A deep foundation unit can be pre-manufactured or cast-in-place; it can be driven, jacked, jetted, screwed, bored or excavated; it can be of wood, concrete, steel or a combination thereof. A-4.2.7.2.(1) Deep Foundations. Information on deep foundations can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.7.2.(2) Load Testing of Piles. ASTM D1143/D1143M, “Standard Test Methods for Deep Foundations Under Static Axial Compressive Load,” defines routine load test procedures that have been extensively used. A-4.3.3.1.(1) Precast Concrete. CSA A23.3, “Design of concrete structures,” requires precast concrete members to conform to CSA A23.4, “Precast concrete – Materials and construction.” A-4.3.4.1.(1) Welded Construction. Qualification for fabricators and erectors of welded construction is found in Clause 24.3 of CSA S16, “Design of steel structures.” A-4.3.4.2.(1) Cold-Formed Stainless Steel Members. There is currently no Canadian standard for the design of cold-formed stainless steel structural members. As an interim measure, design may be carried out using the limit states design provisions of ASCE/SEI 8, “Specification for the Design of Cold-Formed Stainless Steel Structural Members,” except that load factors, load combinations and load combination factors shall be in accordance with Subsection 4.1.3. A-4.3.6.1.(1) Design Basis for Glass. The load factors in Tables 4.1.3.2.-A and 4.1.3.2.-B must be applied to the adjusted wind load before designing in accordance with the referenced standard. Additional information is given in the Commentary entitled Wind Load and Effects in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.4.2.1.(1) Design Basis for Storage Garages and Repair Garages. Although the scope of CSA S413, “Parking structures,” is limited to structural steel and reinforced concrete (including prestressed and post-tensioned), the intent of Sentence 4.4.2.1.(1) is to require any type of material used in the construction of storage garages and repair garages to conform to the performance level outlined in the standard. See the Commentary entitled Live Loads in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).”",
+    "text": "A-4.1.8.21.(4)(a) Non-linear Dynamic Analysis. Three-dimensional Non-linear Dynamic Analysis is a complex process requiring special expertise. Guidance on Non-linear Dynamic Analysis can be found in the Commentary entitled Design for Seismic Effects in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.2.1.(1) Subsurface Investigation. Where acceptable information on subsurface conditions already exists, the investigation may not require further physical subsurface exploration or testing. A-4.2.2.3.(1) Responsibilities of the Designer as Defined in Part 4. In certain situations, such as when the design is highly technical, it may be necessary for the “other suitably qualified person” to be someone responsible to the designer. In such cases the authority having jurisdiction may wish to order that the review be done by the designer. A-4.2.4.1.(1) Innovative Designs. It is important that innovative approaches to foundation design be carried out by a person especially qualified in the specific method applied and that the design provide a level of safety and performance at least equivalent to that provided for or implicit in the design carried out by the methods referred to in Part 4. Provision must be made for monitoring the subsequent performance of such structures so that the long-term sufficiency of the design can be evaluated. A-4.2.4.1.(3) Ultimate Limit States for Foundations. Information on ultimate limit states for foundations, including terminology and resistance factors, can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.4.1.(5) Design of Foundations for Differential Movements. Information on the design of foundations for differential movements can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.4.4.(1) Depth of Foundations. When adfreezing has occurred and subsequent freezing results in soil expansion beneath this area, the resulting uplift effect is sometimes referred to as frost jacking. A heated building that is insulated to prevent heat loss through the foundation walls should be considered as an unheated structure unless the effect of the insulation is taken into account in determining the maximum depth of frost penetration. A-4.2.5.1.(1) Excavations. Information on excavations can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.6.1.(1) Shallow Foundations. Information on shallow foundations can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.7.1.(1) Deep Foundation Units. A deep foundation unit can be pre-manufactured or cast-in-place; it can be driven, jacked, jetted, screwed, bored or excavated; it can be of wood, concrete, steel or a combination thereof. A-4.2.7.2.(1) Deep Foundations. Information on deep foundations can be found in the Commentary entitled Foundations in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.2.7.2.(2) Load Testing of Piles. ASTM D1143/D1143M, “Standard Test Methods for Deep Foundations Under Static Axial Compressive Load,” defines routine load test procedures that have been extensively used. A-4.3.3.1.(1) Precast Concrete. CSA A23.3, “Design of concrete structures,” requires precast concrete members to conform to CSA A23.4, “Precast concrete – Materials and construction.” A-4.3.4.1.(1) Welded Construction. Qualification for fabricators and erectors of welded construction is found in Clause 24.3 of CSA S16, “Design of steel structures.” A-4.3.4.2.(1) Cold-Formed Stainless Steel Members. There is currently no Canadian standard for the design of cold-formed stainless steel structural members. As an interim measure, design may be carried out using the limit states design provisions of ASCE/SEI 8, “Specification for the Design of Cold-Formed Stainless Steel Structural Members,” except that load factors, load combinations and load combination factors shall be in accordance with Subsection 4.1.3. A-4.3.6.1.(1) Design Basis for Glass. The load factors in Tables 4.1.3.2.-A and 4.1.3.2.-B must be applied to the adjusted wind load before designing in accordance with the referenced standard. Additional information is given in the Commentary entitled Wind Load and Effects in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” A-4.4.2.1.(1) Design Basis for Storage Garages and Repair Garages. Although the scope of CSA S413, “Parking structures,” is limited to structural steel and reinforced concrete (including prestressed and post-tensioned), the intent of Sentence 4.4.2.1.(1) is to require any type of material used in the construction of storage garages and repair garages to conform to the performance level outlined in the standard. See the Commentary entitled Live Loads in the “Structural Commentaries (User's Guide – NBC 2020: Part 4 of Division B).” Notes to Part 5 ................ 5-23",
     "page": 542,
     "font": "PalatinoLinotype",
     "size": 9.899999618530273,
@@ -184353,7 +184561,7 @@
   {
     "label": "Section",
     "title": "Section 5.8. applies to the separation of dwelling units from",
-    "text": "other dwelling units and from spaces where noise may be generated with regard to sound transmission irrespective of Clause 5.1.2.1.(1)(b), which deals with the separation of dissimilar environments. It is understood that, at any time, there is the potential for sound levels to be quite different in adjoining dwelling units. A-5.8.1.2. Using ASTC in lieu of STC. A designer may choose to use an ASTC rating of equal or higher numerical value than the required STC to show compliance where STC ratings are required. An ASTC measurement or calculation will always yield a value equal to or lower than the STC for the same configuration, as the ASTC includes flanking transmission. A-5.8.1.4. Methods of Calculating ASTC. The technical concepts, terminology, and calculation procedures relating to the detailed and simplified ASTC calculation methods are discussed in detail, with numerous worked examples, in the NRC publication entitled “Guide to Calculating Airborne Sound Transmission in Buildings.” This Guide includes references to readily-available sources of pertinent data. For many common constructions, the calculations required by Article 5.8.1.4. can be performed using software tools, such as soundPATHS, which is available on the NRC's website. The simplified calculation method may not always identify the prominent flanking paths. Furthermore, it corresponds more closely with the results of the detailed calculation method where the separating assembly and the flanking constructions are both constructed according to the same method, i.e. either both are lightweight construction (steel or wood framing) or both are heavyweight construction (masonry or concrete). A-5.8.1.4.(4)(b) Assemblies that Behave Like Homogeneous Panels. Examples of assemblies that behave like homogeneous panels include cast-in-place concrete, precast concrete, precast hollow-core concrete, concrete block masonry, and mass timber panels. For the purpose of calculating the ASTC rating for construction using mass timber panel walls or floor assemblies in accordance with the detailed method described in Sentence 5.8.1.4.(4), a mass timber panel behaves as a homogeneous panel, notwithstanding that it has an average structural loss factor greater than 0.03. Further information on the calculation of the ASTC rating for mass timber panel assemblies can be found in the NRC publication entitled “Guide to Calculating Airborne Sound Transmission in Buildings.” A-5.9.1.1.(1) Selection of Materials and Components and Compliance with Referenced Standards. It is important to note that Sentence 5.9.1.1.(1) is stated in such a way that the selection of materials and components is not limited to those traditionally recognized as serving particular functions or those for which a standard is identified in Table 5.9.1.1. This approach permits more flexibility than is provided by similar requirements in Part 9. As long as the selected material meets the performance requirements stated elsewhere in Part 5, the material may be used to serve the required function. However, where the selected material or component, or its installation, falls within the scope of any of the standards listed in Table 5.9.1.1., the material, component or installation must comply with that standard. For example, if some resistance to heat transfer is required between two interior spaces and standard partition construction will provide the necessary resistance, the installation of one of the “thermal insulation” materials identified in the standard list is not required. If, on the other hand, one decides to install glass fibre insulation, the material must conform to CAN/ULC-S702.1, “Standard for Mineral Fibre Thermal Insulation for Buildings, Part 1: Material Specification.” A-Table 5.9.1.1. Selection and Installation of Sealants. Analysis of many sealant joint failures indicates that the majority of failures can be attributed to improper joint preparation and deficient installation of the sealant and various joint components. The following ASTM guidelines describe several aspects that should be considered when applying sealants in unprotected environments to achieve a durable application: • ASTM C1193, “Standard Specification for Use of Joint Sealants,” and • ASTM C1472, “Standard Guide for Calculating Movement and Other Effects When Establishing Sealant Joint Width.” The sealant manufacturer's literature should always be consulted for recommended procedures and materials. A-5.9.2.1.(3) Airtightness and Watertightness of Wired Glass Windows. Fixed wired glass assemblies are sometimes permitted as closures in vertical fire separations. The airtightness and watertightness requirements are waived for these windows when used in such an application, in recognition of the fact that the availability of assemblies that meet both the requirements of the window standards and the requirements for fire resistance may be limited. However, control of air and water leakage should not be ignored: measures should be taken to attempt to comply with applicable requirements. A-5.9.2.2. Manufactured Windows, Doors and Skylights. Design Values CSA A440S1, “Canadian Supplement to AAMA/WDMA/CSA 101/I.S.2/A440-17, North American Fenestration Standard/Specification for windows, doors, and skylights,” requires that the individual performance levels achieved by the product for structural resistance, water penetration resistance and air leakage resistance be reported on the product's performance label. Storm Doors and Windows Where storm doors and storm windows are not incorporated in a rated window or door assembly, they should be designed and constructed to comply with the applicable requirements of Part 5 regarding such properties as appropriate air leakage and structural loads. Forced Entry Test Even though the performance label on rated windows, doors and skylights does not explicitly indicate that the product has passed the forced entry resistance test, products are required to pass this test in order to be rated. A-5.9.2.3.(1) Installation and Field Testing of Windows, Doors and Skylights. Installation The installation details of windows, doors, skylights and their components must be appropriately designed and implemented for the building envelope assembly to perform acceptably overall. The proper design of the installation details provides the information necessary to integrate the structure and air, vapour and moisture barrier functions of windows, doors and skylights into the overall design of the building envelope assembly. Construction should be carried out in accordance with these details to achieve an appropriate level of long-term performance. Further guidance on installation detailing can be found in CSA A440.4, “Window, door, and skylight installation.” Field Testing It is recommended that the performance of installed windows, doors and skylights be field tested early in the envelope construction phase so that any discontinuities can be readily identified and corrected before construction of the building envelope assembly is completed. Additional field testing during subsequent construction phases to monitor installation consistency is also recommended. Field test procedures should be carried out in accordance with test standards such as ASTM E783, “Standard Test Method for Field Measurement of Air Leakage Through Installed Exterior Windows and Doors,” and ASTM E1105, “Standard Test Method for Field Determination of Water Penetration of Installed Exterior Windows, Skylights, Doors, and Curtain Walls, by Uniform or Cyclic Static Air Pressure Difference.” Further guidance can be found in CSA A440.4, “Window, door, and skylight installation,” which also includes performance requirements developed in accordance with AAMA/WDMA/CSA 101/I.S.2/A440, “North American Fenestration Standard/Specification for windows, doors, and skylights,” to be used when performing field testing. A-5.9.2.4.(3) Heat Transfer through Fire-Rated Glazed Assemblies. Thermal bridging through fire-rated glazed assemblies should not be ignored; measures should be taken to minimize condensation consistent with the intent of Sentence 5.9.2.4.(2). A-5.9.3. Testing Standards for Other Fenestration Assemblies. Subsection 5.9.3. references ASTM test methods. The following AAMA standards can also be used to evaluate the performance characteristics of other fenestration assemblies: • AAMA 501, “Methods of Test for Exterior Walls,” • AAMA 501.1, “Standard Test Method for Water Penetration of Windows, Curtain Walls and Doors Using Dynamic Pressure,” • AAMA 501.2, “Quality Assurance and Diagnostic Water Leakage Field Check of Installed Storefronts, Curtain Walls, and Sloped Glazing Systems,” • AAMA 501.4, “Recommended Static Test Method for Evaluating Curtain Wall and Storefront Systems Subjected to Seismic and Wind-Induced Inter-Story Drifts,” • AAMA 501.5, “Test Method for Thermal Cycling of Exterior Walls,” and • AAMA 501.6, “Recommended Dynamic Test Method for Determining the Seismic Drift Causing Glass Fallout from a Wall System.” A-5.9.3.1.(1) Terminology for Other Fenestration Assemblies. Curtain Wall A curtain wall is considered to be a continuous wall cladding assembly (which may include fenestration and opaque portions) that is hung away from the edge of the primary floor structure. Curtain wall assemblies do not generally support vertical loads other than their own weight. Anchorage is typically provided by anchors that connect back to the floor structure. Curtain wall assemblies can be either “stick built,” meaning each main unit is assembled on-site, or a “unitized” system, meaning factory-assembled main units are installed and connected together on-site. Window Wall A window wall is considered to be a wall cladding assembly (which may include fenestration and opaque portions) that spans from the top of a primary floor structure to the underside of the next higher primary floor structure. Window wall assemblies do not generally support vertical loads other than their own weight. Primary provision for anchorage occurs at head and sill connections with the adjoining floor structure. Window wall assemblies may include separate or integral floor edge covers. Storefront A storefront is considered to be a non-residential assembly (which may include fenestration and opaque portions) consisting of one or more elements that could include doors, windows and curtain wall framing. Storefronts do not generally support vertical loads other than their own weight. Storefront profiles are typically narrow, rectilinear framing members that hold a combination of pocket glazing and applied glazing stops to securely retain the infills. Vertical framing members typically span the height of one floor or are retained within a structural punched opening. Storefront assemblies are designed/selected to take into account the anticipated service and exposure conditions, which may be different than those for other portions of the building. Glazed Architectural Structures Glazed architectural structures are considered glazing assemblies that are supported in a non-traditional manner, such as corner-clamped, point-supported, linear-supported and edge-clamped glazing. Structural support systems can include, but are not limited to, tension cables, tension rods, steel and glass. Glazed architectural structures do not generally support vertical loads other than their own weight. These assemblies are designed/selected to take into account the anticipated service and exposure conditions, which may be different than those for other portions of the building. Skylights that are not covered by AAMA/WDMA/CSA 101/I.S.2/A440, “North American Fenestration Standard/Specification for windows, doors, and skylights,” are considered glazed architectural structures. A-5.9.3.2.(1) Structural and Environmental Loads. The applicable laboratory test method for demonstrating adequate structural performance of other fenestration assemblies is ASTM E330/E330M, “Standard Test Method for Structural Performance of Exterior Windows, Doors, Skylights and Curtain Walls by Uniform Static Air Pressure Difference.” A-5.9.3.3.(1) Resistance to Condensation. Notwithstanding that other fenestration assemblies are not fully covered under the testing scope of CSA A440.2, “Fenestration energy performance,” the test method described therein can be used to evaluate their resistance to condensation, with technical modifications to accommodate differences in the size and configuration of the specimen. It is also common practice to use one cold cycle of AAMA 501.5, “Test Method for Thermal Cycling of Exterior Walls,” to assess the potential for condensation. Both methods can be used for mock-ups in laboratory performance evaluations, however, only the test method in CSA A440.2 should be used if a Temperature Index is required. In most cases, the project specification documents establish the hygrothermal conditions (i.e., exterior temperature, interior temperature, interior relative humidity) for which the potential for condensation should be minimized. Under these conditions, the aforementioned test methods can be used to aid in the selection of the appropriate system performance to minimize the potential for interior surface condensation. In all cases, care should be taken in the construction and configuration of the specimen, as these parameters may have an impact on its thermal performance and resistance to condensation. These parameters may include, without limitation, interior wall construction and finishes, heating systems, ventilation systems, etc., to simulate the actual in-service conditions as closely as practicable. A-5.9.3.4.(2) Air Leakage. Air Leakage Rate and Test Pressure A lower air leakage rate and/or higher differential test pressure can be selected for specific applications of other fenestration assemblies where tight control of airflow is required to prevent interstitial condensation (e.g., in concealed spaces), improve thermal comfort (e.g., in hospitals, seniors' residences), or prevent the migration of airborne contaminants (e.g., in food and drug research, manufacturing applications, biological laboratories). It is typical of other fenestration assemblies to be used as the sole building envelope component; where this is the case, a correspondingly higher degree of airtightness may be required. In addition, higher test pressure differentials can be used to evaluate assemblies with low air leakage, such as non-operable or fixed fenestration systems whose air leakage rates are not easily measurable at the lower standard pressure differentials. Standard Test Methods The applicable laboratory test method for determining the rate of air leakage is ASTM E283, “Standard Test Method for Determining Rate of Air Leakage Through Exterior Windows, Curtain Walls, and Doors Under Specified Pressure Differences Across the Specimen.” If field testing for air leakage is to be conducted, the applicable test method is ASTM E783, “Standard Test Method for Field Measurement of Air Leakage Through Installed Exterior Windows and Doors.” A-5.9.3.4.(3) Systems Excluded from Air Leakage Requirements. The systems listed in Sentence 5.9.3.4.(3) perform different functions than other fenestration assemblies and are therefore exempted from complying with the air leakage requirements. A-5.9.3.5.(2) Standard Test Methods. The applicable laboratory test method for determining the water penetration resistance of curtain walls and storefront assemblies is ASTM E331, “Standard Test Method for Water Penetration of Exterior Windows, Skylights, Doors, and Curtain Walls by Uniform Static Air Pressure Difference.” The applicable laboratory test method for window wall assemblies is either ASTM E331 or ASTM E547, “Standard Test Method for Water Penetration of Exterior Windows, Skylights, Doors, and Curtain Walls by Cyclic Static Air Pressure Difference.” If field testing for water penetration is to be conducted, the applicable test method is ASTM E1105, “Standard Test Method for Field Determination of Water Penetration of Installed Exterior Windows, Skylights, Doors, and Curtain Walls, by Uniform or Cyclic Static Air Pressure Difference.” A-5.9.3.5.(3) Water Penetration. Notwithstanding that other fenestration assemblies are not covered under the testing scope of CSA A440S1, “Canadian Supplement to AAMA/WDMA/CSA 101/I.S.2/A440-17, North American Fenestration Standard/Specification for windows, doors, and skylights,” they must be tested at the driving rain wind pressure calculated in accordance with the procedure described therein. A-5.9.3.5.(4) Systems Excluded from Water Penetration Requirements. The systems listed in Sentence 5.9.3.5.(4) perform different functions than other fenestration assemblies and are therefore exempted from complying with the water penetration requirements. A-5.9.4.1.(1) Exterior Insulation Finish Systems (EIFS). The reference to CAN/ULC-S716.1, “Standard for Exterior Insulation and Finish Systems (EIFS) - Materials and Systems,” in Clause 5.9.4.1.(1)(b) does not preclude the use of other component materials that may also meet the intent of the Code. For example, using mineral-fibre insulation in lieu of other rigid insulation types, mechanical fastening methods for the insulation component in lieu of adhesive, or a type of water-resistive barrier other than a liquid-applied water-resistive barrier could be acceptable. The following two companion standards facilitate the application of and conformance with CAN/ULC-S716.1: • CAN/ULC-S716.2, “Standard for Exterior Insulation and Finish Systems (EIFS) - Installation of EIFS Components and Water Resistive Barrier,” and • CAN/ULC-S716.3, “Standard for Exterior Insulation and Finish System (EIFS) - Design Application.” Additional information on EIFS design and installation can be found in the EIFS Council of Canada's “EIFS Practice Manual” and the manufacturer's literature. EIFS Selection CAN/ULC-S716.1 provides minimum performance criteria for EIFS materials and systems that are tested under specific laboratory test protocols identified in the standard. However, compliance with this standard does not ensure that a system is appropriate for all projects. When selecting an EIFS product, designers should consider all relevant criteria—not only those covered by the tests in CAN/ULC-S716.1—including, but not limited to, • building exposure • local climate characteristics (wind, precipitation, temperature variations, solar exposure) • intended building use • intended resistance to damage and deterioration • construction tolerances • constructability Design and Construction of EIFS Drainage Cavity The drainage capacity and thermal performance of the EIFS assembly can be affected by the dimensions and configuration of the EIFS drainage cavity. EIFS are installed over other building materials such as sheathing and primary structural components, which have various construction installation tolerances. Designers should take into consideration the cumulative effects of construction tolerances and sequencing when specifying the drainage method and the cavity dimensions and configuration in order to ensure adequate drainage. Designers should also take into account the impact of air movement, which varies depending on cavity size and the extent of venting, on the EIFS' thermal performance when reviewing the overall thermal performance of the building envelope. ASTM C1363, “Standard Test Method for Thermal Performance of Building Materials and Envelope Assemblies by Means of a Hot Box Apparatus,” presents one method for assessing the thermal performance of assemblies.",
+    "text": "other dwelling units and from spaces where noise may be generated with regard to sound transmission irrespective of Clause 5.1.2.1.(1)(b), which deals with the separation of dissimilar environments. It is understood that, at any time, there is the potential for sound levels to be quite different in adjoining dwelling units. A-5.8.1.2. Using ASTC in lieu of STC. A designer may choose to use an ASTC rating of equal or higher numerical value than the required STC to show compliance where STC ratings are required. An ASTC measurement or calculation will always yield a value equal to or lower than the STC for the same configuration, as the ASTC includes flanking transmission. A-5.8.1.4. Methods of Calculating ASTC. The technical concepts, terminology, and calculation procedures relating to the detailed and simplified ASTC calculation methods are discussed in detail, with numerous worked examples, in the NRC publication entitled “Guide to Calculating Airborne Sound Transmission in Buildings.” This Guide includes references to readily-available sources of pertinent data. For many common constructions, the calculations required by Article 5.8.1.4. can be performed using software tools, such as soundPATHS, which is available on the NRC's website. The simplified calculation method may not always identify the prominent flanking paths. Furthermore, it corresponds more closely with the results of the detailed calculation method where the separating assembly and the flanking constructions are both constructed according to the same method, i.e. either both are lightweight construction (steel or wood framing) or both are heavyweight construction (masonry or concrete). A-5.8.1.4.(4)(b) Assemblies that Behave Like Homogeneous Panels. Examples of assemblies that behave like homogeneous panels include cast-in-place concrete, precast concrete, precast hollow-core concrete, concrete block masonry, and mass timber panels. For the purpose of calculating the ASTC rating for construction using mass timber panel walls or floor assemblies in accordance with the detailed method described in Sentence 5.8.1.4.(4), a mass timber panel behaves as a homogeneous panel, notwithstanding that it has an average structural loss factor greater than 0.03. Further information on the calculation of the ASTC rating for mass timber panel assemblies can be found in the NRC publication entitled “Guide to Calculating Airborne Sound Transmission in Buildings.” A-5.9.1.1.(1) Selection of Materials and Components and Compliance with Referenced Standards. It is important to note that Sentence 5.9.1.1.(1) is stated in such a way that the selection of materials and components is not limited to those traditionally recognized as serving particular functions or those for which a standard is identified in Table 5.9.1.1. This approach permits more flexibility than is provided by similar requirements in Part 9. As long as the selected material meets the performance requirements stated elsewhere in Part 5, the material may be used to serve the required function. However, where the selected material or component, or its installation, falls within the scope of any of the standards listed in Table 5.9.1.1., the material, component or installation must comply with that standard. For example, if some resistance to heat transfer is required between two interior spaces and standard partition construction will provide the necessary resistance, the installation of one of the “thermal insulation” materials identified in the standard list is not required. If, on the other hand, one decides to install glass fibre insulation, the material must conform to CAN/ULC-S702.1, “Standard for Mineral Fibre Thermal Insulation for Buildings, Part 1: Material Specification.” A-Table 5.9.1.1. Selection and Installation of Sealants. Analysis of many sealant joint failures indicates that the majority of failures can be attributed to improper joint preparation and deficient installation of the sealant and various joint components. The following ASTM guidelines describe several aspects that should be considered when applying sealants in unprotected environments to achieve a durable application: • ASTM C1193, “Standard Specification for Use of Joint Sealants,” and • ASTM C1472, “Standard Guide for Calculating Movement and Other Effects When Establishing Sealant Joint Width.” The sealant manufacturer's literature should always be consulted for recommended procedures and materials. A-5.9.2.1.(3) Airtightness and Watertightness of Wired Glass Windows. Fixed wired glass assemblies are sometimes permitted as closures in vertical fire separations. The airtightness and watertightness requirements are waived for these windows when used in such an application, in recognition of the fact that the availability of assemblies that meet both the requirements of the window standards and the requirements for fire resistance may be limited. However, control of air and water leakage should not be ignored: measures should be taken to attempt to comply with applicable requirements. A-5.9.2.2. Manufactured Windows, Doors and Skylights. Design Values CSA A440S1, “Canadian Supplement to AAMA/WDMA/CSA 101/I.S.2/A440-17, North American Fenestration Standard/Specification for windows, doors, and skylights,” requires that the individual performance levels achieved by the product for structural resistance, water penetration resistance and air leakage resistance be reported on the product's performance label. Storm Doors and Windows Where storm doors and storm windows are not incorporated in a rated window or door assembly, they should be designed and constructed to comply with the applicable requirements of Part 5 regarding such properties as appropriate air leakage and structural loads. Forced Entry Test Even though the performance label on rated windows, doors and skylights does not explicitly indicate that the product has passed the forced entry resistance test, products are required to pass this test in order to be rated. A-5.9.2.3.(1) Installation and Field Testing of Windows, Doors and Skylights. Installation The installation details of windows, doors, skylights and their components must be appropriately designed and implemented for the building envelope assembly to perform acceptably overall. The proper design of the installation details provides the information necessary to integrate the structure and air, vapour and moisture barrier functions of windows, doors and skylights into the overall design of the building envelope assembly. Construction should be carried out in accordance with these details to achieve an appropriate level of long-term performance. Further guidance on installation detailing can be found in CSA A440.4, “Window, door, and skylight installation.” Field Testing It is recommended that the performance of installed windows, doors and skylights be field tested early in the envelope construction phase so that any discontinuities can be readily identified and corrected before construction of the building envelope assembly is completed. Additional field testing during subsequent construction phases to monitor installation consistency is also recommended. Field test procedures should be carried out in accordance with test standards such as ASTM E783, “Standard Test Method for Field Measurement of Air Leakage Through Installed Exterior Windows and Doors,” and ASTM E1105, “Standard Test Method for Field Determination of Water Penetration of Installed Exterior Windows, Skylights, Doors, and Curtain Walls, by Uniform or Cyclic Static Air Pressure Difference.” Further guidance can be found in CSA A440.4, “Window, door, and skylight installation,” which also includes performance requirements developed in accordance with AAMA/WDMA/CSA 101/I.S.2/A440, “North American Fenestration Standard/Specification for windows, doors, and skylights,” to be used when performing field testing. A-5.9.2.4.(3) Heat Transfer through Fire-Rated Glazed Assemblies. Thermal bridging through fire-rated glazed assemblies should not be ignored; measures should be taken to minimize condensation consistent with the intent of Sentence 5.9.2.4.(2). A-5.9.3. Testing Standards for Other Fenestration Assemblies. Subsection 5.9.3. references ASTM test methods. The following AAMA standards can also be used to evaluate the performance characteristics of other fenestration assemblies: • AAMA 501, “Methods of Test for Exterior Walls,” • AAMA 501.1, “Standard Test Method for Water Penetration of Windows, Curtain Walls and Doors Using Dynamic Pressure,” • AAMA 501.2, “Quality Assurance and Diagnostic Water Leakage Field Check of Installed Storefronts, Curtain Walls, and Sloped Glazing Systems,” • AAMA 501.4, “Recommended Static Test Method for Evaluating Curtain Wall and Storefront Systems Subjected to Seismic and Wind-Induced Inter-Story Drifts,” • AAMA 501.5, “Test Method for Thermal Cycling of Exterior Walls,” and • AAMA 501.6, “Recommended Dynamic Test Method for Determining the Seismic Drift Causing Glass Fallout from a Wall System.” A-5.9.3.1.(1) Terminology for Other Fenestration Assemblies. Curtain Wall A curtain wall is considered to be a continuous wall cladding assembly (which may include fenestration and opaque portions) that is hung away from the edge of the primary floor structure. Curtain wall assemblies do not generally support vertical loads other than their own weight. Anchorage is typically provided by anchors that connect back to the floor structure. Curtain wall assemblies can be either “stick built,” meaning each main unit is assembled on-site, or a “unitized” system, meaning factory-assembled main units are installed and connected together on-site. Window Wall A window wall is considered to be a wall cladding assembly (which may include fenestration and opaque portions) that spans from the top of a primary floor structure to the underside of the next higher primary floor structure. Window wall assemblies do not generally support vertical loads other than their own weight. Primary provision for anchorage occurs at head and sill connections with the adjoining floor structure. Window wall assemblies may include separate or integral floor edge covers. Storefront A storefront is considered to be a non-residential assembly (which may include fenestration and opaque portions) consisting of one or more elements that could include doors, windows and curtain wall framing. Storefronts do not generally support vertical loads other than their own weight. Storefront profiles are typically narrow, rectilinear framing members that hold a combination of pocket glazing and applied glazing stops to securely retain the infills. Vertical framing members typically span the height of one floor or are retained within a structural punched opening. Storefront assemblies are designed/selected to take into account the anticipated service and exposure conditions, which may be different than those for other portions of the building. Glazed Architectural Structures Glazed architectural structures are considered glazing assemblies that are supported in a non-traditional manner, such as corner-clamped, point-supported, linear-supported and edge-clamped glazing. Structural support systems can include, but are not limited to, tension cables, tension rods, steel and glass. Glazed architectural structures do not generally support vertical loads other than their own weight. These assemblies are designed/selected to take into account the anticipated service and exposure conditions, which may be different than those for other portions of the building. Skylights that are not covered by AAMA/WDMA/CSA 101/I.S.2/A440, “North American Fenestration Standard/Specification for windows, doors, and skylights,” are considered glazed architectural structures. A-5.9.3.2.(1) Structural and Environmental Loads. The applicable laboratory test method for demonstrating adequate structural performance of other fenestration assemblies is ASTM E330/E330M, “Standard Test Method for Structural Performance of Exterior Windows, Doors, Skylights and Curtain Walls by Uniform Static Air Pressure Difference.” A-5.9.3.3.(1) Resistance to Condensation. Notwithstanding that other fenestration assemblies are not fully covered under the testing scope of CSA A440.2, “Fenestration energy performance,” the test method described therein can be used to evaluate their resistance to condensation, with technical modifications to accommodate differences in the size and configuration of the specimen. It is also common practice to use one cold cycle of AAMA 501.5, “Test Method for Thermal Cycling of Exterior Walls,” to assess the potential for condensation. Both methods can be used for mock-ups in laboratory performance evaluations, however, only the test method in CSA A440.2 should be used if a Temperature Index is required. In most cases, the project specification documents establish the hygrothermal conditions (i.e., exterior temperature, interior temperature, interior relative humidity) for which the potential for condensation should be minimized. Under these conditions, the aforementioned test methods can be used to aid in the selection of the appropriate system performance to minimize the potential for interior surface condensation. In all cases, care should be taken in the construction and configuration of the specimen, as these parameters may have an impact on its thermal performance and resistance to condensation. These parameters may include, without limitation, interior wall construction and finishes, heating systems, ventilation systems, etc., to simulate the actual in-service conditions as closely as practicable. A-5.9.3.4.(2) Air Leakage. Air Leakage Rate and Test Pressure A lower air leakage rate and/or higher differential test pressure can be selected for specific applications of other fenestration assemblies where tight control of airflow is required to prevent interstitial condensation (e.g., in concealed spaces), improve thermal comfort (e.g., in hospitals, seniors' residences), or prevent the migration of airborne contaminants (e.g., in food and drug research, manufacturing applications, biological laboratories). It is typical of other fenestration assemblies to be used as the sole building envelope component; where this is the case, a correspondingly higher degree of airtightness may be required. In addition, higher test pressure differentials can be used to evaluate assemblies with low air leakage, such as non-operable or fixed fenestration systems whose air leakage rates are not easily measurable at the lower standard pressure differentials. Standard Test Methods The applicable laboratory test method for determining the rate of air leakage is ASTM E283, “Standard Test Method for Determining Rate of Air Leakage Through Exterior Windows, Curtain Walls, and Doors Under Specified Pressure Differences Across the Specimen.” If field testing for air leakage is to be conducted, the applicable test method is ASTM E783, “Standard Test Method for Field Measurement of Air Leakage Through Installed Exterior Windows and Doors.” A-5.9.3.4.(3) Systems Excluded from Air Leakage Requirements. The systems listed in Sentence 5.9.3.4.(3) perform different functions than other fenestration assemblies and are therefore exempted from complying with the air leakage requirements. A-5.9.3.5.(2) Standard Test Methods. The applicable laboratory test method for determining the water penetration resistance of curtain walls and storefront assemblies is ASTM E331, “Standard Test Method for Water Penetration of Exterior Windows, Skylights, Doors, and Curtain Walls by Uniform Static Air Pressure Difference.” The applicable laboratory test method for window wall assemblies is either ASTM E331 or ASTM E547, “Standard Test Method for Water Penetration of Exterior Windows, Skylights, Doors, and Curtain Walls by Cyclic Static Air Pressure Difference.” If field testing for water penetration is to be conducted, the applicable test method is ASTM E1105, “Standard Test Method for Field Determination of Water Penetration of Installed Exterior Windows, Skylights, Doors, and Curtain Walls, by Uniform or Cyclic Static Air Pressure Difference.” A-5.9.3.5.(3) Water Penetration. Notwithstanding that other fenestration assemblies are not covered under the testing scope of CSA A440S1, “Canadian Supplement to AAMA/WDMA/CSA 101/I.S.2/A440-17, North American Fenestration Standard/Specification for windows, doors, and skylights,” they must be tested at the driving rain wind pressure calculated in accordance with the procedure described therein. A-5.9.3.5.(4) Systems Excluded from Water Penetration Requirements. The systems listed in Sentence 5.9.3.5.(4) perform different functions than other fenestration assemblies and are therefore exempted from complying with the water penetration requirements. A-5.9.4.1.(1) Exterior Insulation Finish Systems (EIFS). The reference to CAN/ULC-S716.1, “Standard for Exterior Insulation and Finish Systems (EIFS) - Materials and Systems,” in Clause 5.9.4.1.(1)(b) does not preclude the use of other component materials that may also meet the intent of the Code. For example, using mineral-fibre insulation in lieu of other rigid insulation types, mechanical fastening methods for the insulation component in lieu of adhesive, or a type of water-resistive barrier other than a liquid-applied water-resistive barrier could be acceptable. The following two companion standards facilitate the application of and conformance with CAN/ULC-S716.1: • CAN/ULC-S716.2, “Standard for Exterior Insulation and Finish Systems (EIFS) - Installation of EIFS Components and Water Resistive Barrier,” and • CAN/ULC-S716.3, “Standard for Exterior Insulation and Finish System (EIFS) - Design Application.” Additional information on EIFS design and installation can be found in the EIFS Council of Canada's “EIFS Practice Manual” and the manufacturer's literature. EIFS Selection CAN/ULC-S716.1 provides minimum performance criteria for EIFS materials and systems that are tested under specific laboratory test protocols identified in the standard. However, compliance with this standard does not ensure that a system is appropriate for all projects. When selecting an EIFS product, designers should consider all relevant criteria—not only those covered by the tests in CAN/ULC-S716.1—including, but not limited to, • building exposure • local climate characteristics (wind, precipitation, temperature variations, solar exposure) • intended building use • intended resistance to damage and deterioration • construction tolerances • constructability Design and Construction of EIFS Drainage Cavity The drainage capacity and thermal performance of the EIFS assembly can be affected by the dimensions and configuration of the EIFS drainage cavity. EIFS are installed over other building materials such as sheathing and primary structural components, which have various construction installation tolerances. Designers should take into consideration the cumulative effects of construction tolerances and sequencing when specifying the drainage method and the cavity dimensions and configuration in order to ensure adequate drainage. Designers should also take into account the impact of air movement, which varies depending on cavity size and the extent of venting, on the EIFS' thermal performance when reviewing the overall thermal performance of the building envelope. ASTM C1363, “Standard Test Method for Thermal Performance of Building Materials and Envelope Assemblies by Means of a Hot Box Apparatus,” presents one method for assessing the thermal performance of assemblies. Notes to Part 6 ................ 6-21",
     "page": 580,
     "font": "PalatinoLinotype",
     "size": 9.899999618530273,
@@ -184363,7 +184571,6 @@
     ],
     "y": 193.04551696777344
   },
-
   {
     "label": "Part",
     "title": "Part 6",
@@ -192279,7 +192486,6 @@
     ],
     "y": 310.2715148925781
   },
-
   {
     "label": "Part",
     "title": "Part 7",
@@ -202179,7 +202385,6 @@
     ],
     "y": 76.0935287475586
   },
-
   {
     "label": "Part",
     "title": "Part 8",
@@ -207552,7 +207757,6 @@
     ],
     "y": 227.28030395507812
   },
-
   {
     "label": "Part",
     "title": "Part 1",
@@ -207792,7 +207996,6 @@
     ],
     "y": 728.738525390625
   },
-
   {
     "label": "Part",
     "title": "Part 2",
@@ -219953,7 +220156,6 @@
     ],
     "y": 227.28030395507812
   },
-
   {
     "label": "Part",
     "title": "Part 9",
@@ -343645,7 +343847,6 @@
     ],
     "y": 591.1443481445312
   },
-
   {
     "label": "Part",
     "title": "Part 10",
@@ -349303,7 +349504,6 @@
     ],
     "y": 76.0935287475586
   },
-
   {
     "label": "Part",
     "title": "Part 11",
@@ -350396,7 +350596,7 @@
   {
     "label": "Table",
     "title": "Table 11.3.1.1. (Continued)",
-    "text": "Provision Functional Statements and Objectives (1) 11.2.2.1. Mechanical Ventilation [F50,F52-OH1.1] (1) [F110-OH10.1] Notes to Table 11.3.1.1.: (1) See Parts 2 and 3 of Division A. Index A Abbreviations acronyms, 1.3.2.1. symbols and, 1.2.2.1. terms and, 1.4.1.2. [A] Acceptable solutions, 1.1.2.1., 1.2.1.1. [A] Access attics or roof spaces, 3.6.4.4., 9.19.2.1. chimneys, 6.3.3.4. crawl spaces, 3.6.4.6., 9.18.2.1., 9.18.4.1. fire dampers, 3.1.8.10. hatchways to roof, 9.19.2.1. horizontal service spaces, 3.6.4.5., 9.18.2.1., 9.18.4.1., 9.19.2.1. HVAC equipment, 6.2.1.6., 6.3.2.15., 9.33.4.4. smoke dampers, 3.1.8.11. roof access, 3.6.4.7., 6.2.1.6., 9.33.1.2. Access to exits capacity, 3.3.1.17., 9.9.3. corridors in assembly occupancy, 3.3.2.6. corridor width, 3.3.1.9. dead-end corridors, 9.9.7.3. definition, 1.4.1.2. [A] dimensions, 9.9.3. doors, 3.3.1.13., 3.3.2.7., 9.9.6., 9.9.7.4. doors, sliding, 3.3.1.12. doors, transparent, 3.3.1.20. dwelling units, 9.9.9. within floor areas, 3.3.1.3. headroom clearance, 3.3.1.8., 9.9.3.4. independent access to, 9.9.7.5. lighting, 9.9.12.2. podiums, terraces, platforms and contained open spaces, 9.9.7.1. residential occupancy, 3.3.4.4. roofs, 3.3.1.3., 9.9.7.1. service rooms, 9.9.7.5. suites, 9.9.7.2. transparent panels, 3.3.1.20. travel distance, 9.9.7.6. when exits are means of egress, 9.9.7. width, 9.9.3.2., 9.9.3.3. Access for firefighting access routes, 3.2.5.4., 3.2.5.5., 3.2.5.6. basements, 3.2.5.2., 9.10.20.2. and building size determination, 1.3.3.4. [A] provisions, 9.10.20. roof area, 3.2.5.3. storeys below ground, 3.2.2.15. storeys above grade, 3.2.5.1. street frontages, 3.2.2.10. Accessibility (see Barrier-free) Accessible change space, 3.8.2.8., 3.8.3.13. Access openings construction barricades, 8.2.1.3. HVAC systems, 6.8.1.1. Access panels, 3.2.5.1., 9.10.20.1. Access routes design, 3.2.5.6. location, 3.2.5.5., 9.10.20.3. need for, 3.2.5.4. self-service storage buildings, 3.9.2.3. as streets, 3.2.2.10. Access to physician clinics and offices, 3.8.5. application, 3.8.5.1. assistive listening system, 3.8.5.2. doors, 3.8.5.2. doorways, 3.8.5.2. examination and treatment rooms, 3.8.5.3. waiting areas, 3.8.5.2. Acoustic insulation factor, 1.4.1.2. [A] , 11.2.1.2., 11.2.1.3., 11.2.3.1. Adaptable dwelling units, 3.8.4. application (where required), 3.8.4.1. bathrooms, 3.8.4.3. general accessibility, 3.8.4.2. kitchens, 3.8.4.4. Adaptable seats, 3.8.2.3., 3.8.3.22. Adaptive technology (see Assistive listening systems) Adfreezing, 1.4.1.2. [A] , 4.2.4.4. Adhesives ceramic wall tiles, 9.29.10.3. ducts, 3.6.5.4., 9.33.6.4. Administration of the Code, 2.2. [C] Administrator (see Provincial Barrier-Free Administrator, and Provincial Building Administrator) Admixtures concrete, 9.3.1.8. mortar and grout, 9.20.3.2. Aggregate for built-up-roofing, 9.26.11.1., 9.26.11.4. for concrete, 9.3.1.1., 9.3.1.4., 9.3.1.7. [A] – Reference occurs in Division A. [C] – Reference occurs in Division C. All other references occur in Division B. for mortar, 5.9.1.1., 9.20.3.1., 9.20.3.2., 9.29.10.2. for stucco, 9.28.2.2., 9.28.5.1. Air circulation, 6.3.2.7., 9.33.6.7. combustion, 9.33.5.5. discharged from evaporative heat rejection,",
+    "text": "Provision Functional Statements and Objectives (1) 11.2.2.1. Mechanical Ventilation [F50,F52-OH1.1] (1) [F110-OH10.1] Notes to Table 11.3.1.1.: (1) See Parts 2 and 3 of Division A.",
     "page": 1515,
     "font": "HelveticaLTPro-BdNarrow",
     "size": 9.899999618530273,
