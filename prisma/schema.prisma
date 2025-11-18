@@ -131,7 +131,7 @@ model BuildingCodeContent {
   sourceReferences ContentReference[] @relation("SourceReferences")
   targetReferences ContentReference[] @relation("TargetReferences")
   
-  @@map("building_code_content")
+  @@map("building_code_content") 
   @@index([pdfDocumentId], name: "idx_building_code_content_pdf_document")
   @@index([parentId], name: "idx_building_code_parent")
   @@index([referenceCode], name: "idx_building_code_reference")

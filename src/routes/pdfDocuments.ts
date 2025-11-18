@@ -16,6 +16,7 @@ const navigationCache = new Map<string, any>();
 const contentCache = new Map<string, any>();
 
 // Helper function to transform field names
+
 const transformContentItem = (item: any) => ({
   id: item.id,
   parent_id: item.parentId,
@@ -26,14 +27,15 @@ const transformContentItem = (item: any) => ({
   content_text: item.contentText,
   sequence_order: item.sequenceOrder,
   pdf_document_id: item.pdfDocumentId,
-  font_family: item.fontFamily,
-  font_size: item.fontSize,
-  bbox: item.bbox,
-  y_coordinate: item.yCoordinate,
-  is_definition: item.isDefinition,
-  definition_term: item.definitionTerm,
-  created_at: item.createdAt,
-  updated_at: item.updatedAt,
+  // EXCLUDED FIELDS:
+  // font_family: item.fontFamily,
+  // font_size: item.fontSize,
+  // bbox: item.bbox,
+  // y_coordinate: item.yCoordinate,
+  // is_definition: item.isDefinition,
+  // definition_term: item.definitionTerm,
+  // created_at: item.createdAt,
+  // updated_at: item.updatedAt,
 });
 
 const transformReference = (ref: any) => ({
@@ -44,12 +46,10 @@ const transformReference = (ref: any) => ({
   target_reference_code: ref.targetReferenceCode,
   hyperlink_target: ref.hyperlinkTarget,
   page_number: ref.pageNumber,
-  font_family: ref.fontFamily,
-  bbox: ref.bbox,
   reference_position: ref.referencePosition,
-  target_content: ref.targetContent
-    ? transformContentItem(ref.targetContent)
-    : null,
+  hyperlink_text: ref.hyperlinkText,
+  // Remove target_content entirely since it's pointing to wrong content
+  target_content: null,
 });
 
 // Define interfaces for transformed documents
@@ -465,27 +465,6 @@ router.get("/:id/content/:contentId", async (req, res) => {
       where: { id: parseInt(contentId) },
       include: {
         sourceReferences: {
-          include: {
-            targetContent: {
-              select: {
-                id: true,
-                parentId: true,
-                contentType: true,
-                pageNumber: true,
-                referenceCode: true,
-                title: true,
-                contentText: true,
-                sequenceOrder: true,
-                pdfDocumentId: true,
-                fontFamily: true,
-                fontSize: true,
-                bbox: true,
-                yCoordinate: true,
-                isDefinition: true,
-                definitionTerm: true,
-              },
-            },
-          },
           orderBy: {
             referencePosition: "asc",
           },
@@ -518,12 +497,7 @@ router.get("/:id/content/:contentId", async (req, res) => {
                   contentText: true,
                   sequenceOrder: true,
                   pdfDocumentId: true,
-                  fontFamily: true,
-                  fontSize: true,
-                  bbox: true,
-                  yCoordinate: true,
-                  isDefinition: true,
-                  definitionTerm: true,
+                  // Excluded: fontFamily, fontSize, bbox, yCoordinate, isDefinition, definitionTerm
                 },
               },
             },
