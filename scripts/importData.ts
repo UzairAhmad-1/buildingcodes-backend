@@ -428,6 +428,11 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       ContentType.definition,
     ];
 
+    // Track the current definition that clauses should be attached to
+    let currentDefinitionId: number | null = null;
+    // Track the current sentence that definitions should be attached to
+    let currentSentenceId: number | null = null;
+
     // First pass: insert all content and identify definitions
     const contentMap = new Map<string, number>();
 
@@ -465,16 +470,70 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         `  Type: ${contentType}, Ref: ${referenceCode}, Is Definition: ${isDefinition}`
       );
 
-      // Special handling for SeeAlso - it should be a child of the previous content
       let parentId: number | null = null;
 
+      // Handle hierarchy based on content type
       if (contentType === ContentType.see_also) {
         // SeeAlso should be attached to the most recent content item
         if (hierarchyStack.length > 0) {
           parentId = hierarchyStack[hierarchyStack.length - 1].id;
         }
+      } else if (contentType === ContentType.sentence) {
+        // Sentence - find parent from hierarchy and set as current sentence
+        for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+          const stackItem = hierarchyStack[i];
+          const currentIndex = hierarchy.indexOf(contentType);
+          const stackIndex = hierarchy.indexOf(stackItem.type);
+          if (stackIndex < currentIndex) {
+            parentId = stackItem.id;
+            break;
+          }
+        }
+        // Reset current definition when we encounter a new sentence
+        currentDefinitionId = null;
+      } else if (contentType === ContentType.definition) {
+        // Definition - should be child of current sentence
+        if (currentSentenceId) {
+          parentId = currentSentenceId;
+          console.log(
+            `  → Attaching definition to sentence ID: ${currentSentenceId}`
+          );
+        } else {
+          // Fallback: find parent from hierarchy
+          for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+            const stackItem = hierarchyStack[i];
+            const currentIndex = hierarchy.indexOf(contentType);
+            const stackIndex = hierarchy.indexOf(stackItem.type);
+            if (stackIndex < currentIndex) {
+              parentId = stackItem.id;
+              break;
+            }
+          }
+        }
+      } else if (
+        contentType === ContentType.clause ||
+        contentType === ContentType.subclause
+      ) {
+        // Clauses and subclauses between definitions should be part of the current definition
+        if (currentDefinitionId) {
+          parentId = currentDefinitionId;
+          console.log(
+            `  → Attaching clause to definition ID: ${currentDefinitionId}`
+          );
+        } else {
+          // If no current definition, find parent from hierarchy
+          for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+            const stackItem = hierarchyStack[i];
+            const currentIndex = hierarchy.indexOf(contentType);
+            const stackIndex = hierarchy.indexOf(stackItem.type);
+            if (stackIndex < currentIndex) {
+              parentId = stackItem.id;
+              break;
+            }
+          }
+        }
       } else {
-        // Regular hierarchy determination for other content types
+        // Regular content - find parent from hierarchy
         for (let i = hierarchyStack.length - 1; i >= 0; i--) {
           const stackItem = hierarchyStack[i];
           const currentIndex = hierarchy.indexOf(contentType);
@@ -503,12 +562,26 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         },
       });
 
-      const newId = newContent.id;
+      const newId: number = newContent.id;
 
       // Store definition terms for reference resolution
       if (isDefinition && definitionTerm) {
         definitionTerms.set(definitionTerm.toLowerCase(), newId);
         console.log(`  ✓ Definition term: "${definitionTerm}"`);
+
+        // Set as current definition for subsequent clauses
+        currentDefinitionId = newId;
+        console.log(`  → Set as current definition ID: ${currentDefinitionId}`);
+      } else if (contentType === ContentType.definition) {
+        // For definition content without a specific term, still set as current definition
+        currentDefinitionId = newId;
+        console.log(`  → Set as current definition ID: ${currentDefinitionId}`);
+      }
+
+      // Track current sentence
+      if (contentType === ContentType.sentence) {
+        currentSentenceId = newId;
+        console.log(`  → Set as current sentence ID: ${currentSentenceId}`);
       }
 
       // Store in content map
