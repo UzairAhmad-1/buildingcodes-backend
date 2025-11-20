@@ -15,6 +15,20 @@ const router = express.Router();
 const navigationCache = new Map<string, any>();
 const contentCache = new Map<string, any>();
 
+// Helper function to check if content has children
+async function hasChildren(
+  contentId: number,
+  pdfDocumentId: string
+): Promise<boolean> {
+  const childCount = await prisma.buildingCodeContent.count({
+    where: {
+      parentId: contentId,
+      pdfDocumentId: pdfDocumentId,
+    },
+  });
+  return childCount > 0;
+}
+
 // Helper function to transform field names
 
 const transformContentItem = (item: any) => ({
@@ -361,8 +375,6 @@ router.get("/type/:documentTypeId", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch PDF documents" });
   }
 });
-
-// Get building code content for a specific PDF document with references
 router.get("/:id/content", async (req, res) => {
   try {
     const { id } = req.params;
@@ -454,27 +466,234 @@ router.get("/:id/content", async (req, res) => {
   }
 });
 
-// Get specific content item with full hierarchy
-// In your routes/pdfDocuments.ts - Update the content item endpoint
 router.get("/:id/content/:contentId", async (req, res) => {
   try {
     const { id, contentId } = req.params;
+    const numericContentId = parseInt(contentId);
 
-    // Get the main content item
-    const contentItem = await prisma.buildingCodeContent.findUnique({
-      where: { id: parseInt(contentId) },
-      include: {
-        sourceReferences: {
-          orderBy: {
-            referencePosition: "asc",
-          },
-        },
-      },
+    console.log("Requested contentId:", numericContentId);
+
+    // 1. Fetch the main content item
+    const mainContent = await prisma.buildingCodeContent.findUnique({
+      where: { id: numericContentId },
     });
 
-    if (!contentItem) {
-      return res.status(404).json({ error: "Content item not found" });
+    if (!mainContent) {
+      return res.status(404).json({ error: "Content not found" });
     }
+
+    console.log("Main Content Type:", mainContent.contentType);
+
+    // 2. Find the next item of the same type to calculate row gap
+    let nextSameType = null;
+    let rowGap = 0;
+
+    if (mainContent.contentType === "division") {
+      // For divisions, find next division
+      nextSameType = await prisma.buildingCodeContent.findFirst({
+        where: {
+          pdfDocumentId: id,
+          contentType: "division",
+          sequenceOrder: { gt: mainContent.sequenceOrder },
+        },
+        orderBy: { sequenceOrder: "asc" },
+      });
+
+      const startSeq = mainContent.sequenceOrder;
+      const endSeq = nextSameType
+        ? nextSameType.sequenceOrder - 1
+        : Number.MAX_SAFE_INTEGER;
+      rowGap = endSeq - startSeq;
+
+      console.log("Next Division:", nextSameType?.id || "Not found");
+      console.log("Current Division Sequence:", startSeq);
+      console.log(
+        "Next Division Sequence:",
+        nextSameType?.sequenceOrder || "END OF DOCUMENT"
+      );
+    } else {
+      // For other content types (parts, sections, etc.), find next item with same parent
+      nextSameType = await prisma.buildingCodeContent.findFirst({
+        where: {
+          pdfDocumentId: id,
+          parentId: mainContent.parentId,
+          contentType: mainContent.contentType,
+          sequenceOrder: { gt: mainContent.sequenceOrder },
+        },
+        orderBy: { sequenceOrder: "asc" },
+      });
+
+      const startSeq = mainContent.sequenceOrder;
+
+      // FIX: If no next same type found, find the next item with different type but same parent level
+      let endSeq;
+      if (nextSameType) {
+        endSeq = nextSameType.sequenceOrder - 1;
+      } else {
+        // Find the next item with the same parent (any type) to determine the actual end
+        const nextAnyTypeSameParent =
+          await prisma.buildingCodeContent.findFirst({
+            where: {
+              pdfDocumentId: id,
+              parentId: mainContent.parentId,
+              sequenceOrder: { gt: mainContent.sequenceOrder },
+            },
+            orderBy: { sequenceOrder: "asc" },
+          });
+
+        if (nextAnyTypeSameParent) {
+          endSeq = nextAnyTypeSameParent.sequenceOrder - 1;
+        } else {
+          // If no next item with same parent, find the next item with parent's parent (moving up one level)
+          const parentItem = await prisma.buildingCodeContent.findUnique({
+            where: { id: mainContent.parentId! },
+            select: { parentId: true },
+          });
+
+          if (parentItem?.parentId) {
+            const nextInParentLevel =
+              await prisma.buildingCodeContent.findFirst({
+                where: {
+                  pdfDocumentId: id,
+                  parentId: parentItem.parentId,
+                  sequenceOrder: { gt: mainContent.sequenceOrder },
+                },
+                orderBy: { sequenceOrder: "asc" }, // FIXED: Removed extra quote
+              });
+            endSeq = nextInParentLevel
+              ? nextInParentLevel.sequenceOrder - 1
+              : mainContent.sequenceOrder + 100; // Safe fallback
+          } else {
+            // Final fallback - use a reasonable small number
+            endSeq = mainContent.sequenceOrder + 100;
+          }
+        }
+      }
+
+      rowGap = endSeq - startSeq;
+
+      console.log(
+        `Next ${mainContent.contentType}:`,
+        nextSameType?.id || "Not found"
+      );
+      console.log(`Current ${mainContent.contentType} Sequence:`, startSeq);
+      console.log(
+        `Next ${mainContent.contentType} Sequence:`,
+        nextSameType?.sequenceOrder || "Not applicable"
+      );
+      console.log(`Calculated end sequence:`, endSeq);
+    }
+
+    console.log("Row Gap:", rowGap);
+
+    // 3. Check if content is large (more than 1000 rows) - but only if we have a valid row gap
+    if (rowGap > 1000 && rowGap < 1000000) {
+      // Added upper bound to catch the MAX_SAFE_INTEGER case
+      console.log(
+        `Large ${mainContent.contentType} detected → returning only immediate children`
+      );
+
+      // Determine what child content type to show based on current type
+      let childContentType = "";
+      switch (mainContent.contentType) {
+        case "division":
+          childContentType = "part";
+          break;
+        case "part":
+          childContentType = "section";
+          break;
+        case "section":
+          childContentType = "subsection";
+          break;
+        case "subsection":
+          childContentType = "article";
+          break;
+        case "article":
+          childContentType = "sentence";
+          break;
+        default:
+          childContentType = ""; // Show all children for other types
+      }
+
+      // Build query for immediate children
+      const whereClause: any = {
+        pdfDocumentId: id,
+        parentId: numericContentId,
+      };
+
+      // Only filter by contentType if we specified one
+      if (childContentType) {
+        whereClause.contentType = childContentType;
+      }
+
+      // Fetch only immediate children
+      const immediateChildren = await prisma.buildingCodeContent.findMany({
+        where: whereClause,
+        include: {
+          sourceReferences: {
+            include: {
+              targetContent: {
+                select: {
+                  id: true,
+                  parentId: true,
+                  contentType: true,
+                  pageNumber: true,
+                  referenceCode: true,
+                  title: true,
+                  contentText: true,
+                  sequenceOrder: true,
+                  pdfDocumentId: true,
+                },
+              },
+            },
+            orderBy: {
+              referencePosition: "asc",
+            },
+          },
+        },
+        orderBy: { sequenceOrder: "asc" },
+      });
+
+      // Check which children have their own children
+      const childrenWithMetadata = await Promise.all(
+        immediateChildren.map(async (child) => {
+          const hasChildItems = await hasChildren(child.id, id);
+          return {
+            ...transformContentItem(child),
+            references: child.sourceReferences.map(transformReference),
+            link: `/api/pdf-documents/${id}/content?parentId=${child.id}`,
+            hasChildren: hasChildItems,
+            isLargeSection: hasChildItems,
+          };
+        })
+      );
+
+      const response = {
+        ...transformContentItem(mainContent),
+        references: [],
+        children: childrenWithMetadata,
+        metadata: {
+          isLargeContent: true,
+          contentType: mainContent.contentType,
+          totalRowsInSection: rowGap + 1,
+          message: `${mainContent.contentType} is large. Showing only immediate children for better performance.`,
+          childCount: childrenWithMetadata.length,
+          childType: childContentType || "all",
+        },
+      };
+
+      console.log(
+        `Returning ${childrenWithMetadata.length} ${
+          childContentType || "children"
+        } instead of ${rowGap + 1} total rows`
+      );
+      return res.json(response);
+    }
+
+    // 4. Small content or invalid row gap → return full hierarchy
+    console.log(
+      `Small ${mainContent.contentType} or invalid gap → returning full hierarchy`
+    );
 
     // Recursive function to get full hierarchy
     const getContentHierarchy = async (parentId: number): Promise<any[]> => {
@@ -497,7 +716,6 @@ router.get("/:id/content/:contentId", async (req, res) => {
                   contentText: true,
                   sequenceOrder: true,
                   pdfDocumentId: true,
-                  // Excluded: fontFamily, fontSize, bbox, yCoordinate, isDefinition, definitionTerm
                 },
               },
             },
@@ -525,18 +743,32 @@ router.get("/:id/content/:contentId", async (req, res) => {
       return childrenWithHierarchy;
     };
 
-    const children = await getContentHierarchy(parseInt(contentId));
+    const children = await getContentHierarchy(numericContentId);
 
     const response = {
-      ...transformContentItem(contentItem),
-      references: contentItem.sourceReferences.map(transformReference),
+      ...transformContentItem(mainContent),
+      references: [],
       children: children,
+      metadata: {
+        isLargeContent: false,
+        contentType: mainContent.contentType,
+        totalRowsInSection: rowGap + 1,
+        message: "Showing full content hierarchy",
+        childCount: children.length,
+      },
     };
 
-    res.json(response);
-  } catch (error: unknown) {
-    console.error("Error fetching content item:", error);
-    res.status(500).json({ error: "Failed to fetch content item" });
+    console.log(
+      `Returning full hierarchy with ${children.length} immediate children`
+    );
+    return res.json(response);
+  } catch (error) {
+    console.error("Error fetching content:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    res
+      .status(500)
+      .json({ error: "Failed to fetch content", details: errorMessage });
   }
 });
 
