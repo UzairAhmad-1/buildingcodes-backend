@@ -727,7 +727,7 @@ const runCompleteImport = async () => {
     // Initialize database cache first
     await initializeDbCache();
 
-    const jsonFilePath = path.join(__dirname, "merged_spans_sample.json");
+    const jsonFilePath = path.join(__dirname, "merged_spans.json");
 
     console.log("📄 Creating PDF document entry...");
     const pdfDocumentId = await createPdfDocument({
