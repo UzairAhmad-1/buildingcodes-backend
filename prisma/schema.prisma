@@ -19,6 +19,10 @@ enum ContentType {
   subclause
   see_also   
   definition  
+  paragraph
+  note_section  
+  note_item     
+  note_content  
 }
 
 model Admin {

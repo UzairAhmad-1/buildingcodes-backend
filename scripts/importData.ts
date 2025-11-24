@@ -23,7 +23,7 @@ interface JsonRow {
   bbox: number[];
   y: number;
   references?: Reference[];
-  term?: string; // For DefTerm
+  term?: string;
 }
 
 interface PdfDocumentParams {
@@ -46,7 +46,6 @@ const contentCache = new Map<
   {
     id: number;
     reference_code: string | null;
-    title: string | null;
     content_text: string;
     is_definition: boolean;
     definition_term?: string | null;
@@ -113,64 +112,147 @@ const determineContentType = (label: string): ContentType | null => {
     Body: ContentType.part,
     SeeAlso: ContentType.see_also,
     DefTerm: ContentType.definition,
+    // New note types
+    NoteSection: ContentType.note_section,
+    NoteItem: ContentType.note_item,
+    NoteContent: ContentType.note_content,
   };
 
   // Skip Table labels
-  if (label === "Table") {
+  if (label === "Table" || label === "Symbol") {
     return null;
   }
 
   return typeMap[label] || ContentType.section;
 };
 
-const extractReferenceCode = (text: string, title: string): string => {
-  if (title && /^[\d\.a-z\)]+$/.test(title.replace(/\s/g, ""))) {
-    return title;
+const extractReferenceCode = (
+  title: string,
+  text: string,
+  label: string
+): string => {
+  // For NoteSection and NoteItem, always use title as reference code
+  if ((label === "NoteSection" || label === "NoteItem") && title) {
+    return title.trim();
   }
 
-  const patterns = [
-    /^([\d\.]+)\s/,
-    /^([a-z]\))\s/,
-    /^(i+\))\s/,
-    /^([A-Z]\))\s/,
-  ];
+  // For DefTerm, use term if available (this comes from the title parameter)
+  if (label === "DefTerm" && title) {
+    return title.trim();
+  }
 
-  for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) {
-      return match[1].replace(")", "");
+  // For high-level structural elements (Division, Part, Section), use title as reference code
+  const structuralElements = [
+    "Division",
+    "Part",
+    "Section",
+    "Subsection",
+    "Article",
+  ];
+  if (structuralElements.includes(label) && title) {
+    return title.trim();
+  }
+
+  // For NoteContent, use empty reference code
+  if (label === "NoteContent") {
+    return "";
+  }
+
+  // For Sentence, check if we should use title or text
+  if (label === "Sentence") {
+    // If title exists and text is empty, use title as content, not reference code
+    if (title && (!text || text.trim() === "")) {
+      return "";
+    }
+    // If both title and text exist, use title pattern as reference code if it matches
+    if (title && /^[\d\.\)]+$/.test(title.replace(/\s/g, ""))) {
+      return title.trim();
     }
   }
+
+  // Use title as reference code if it matches pattern
+  if (title && /^[\d\.a-z\)\-]+$/.test(title.replace(/\s/g, ""))) {
+    return title.trim();
+  }
+
+  // Extract from text as fallback only for certain types
+  const extractFromTextTypes = ["Clause", "Subclause", "Sentence"];
+  if (extractFromTextTypes.includes(label)) {
+    const patterns = [
+      /^([\d\.\-]+)\s/,
+      /^([a-z]\))\s/,
+      /^(i+\))\s/,
+      /^([A-Z]\))\s/,
+    ];
+
+    for (const pattern of patterns) {
+      const match = text.match(pattern);
+      if (match) {
+        return match[1].replace(")", "").trim();
+      }
+    }
+  }
+
   return "";
 };
 
-const extractTitle = (
+const extractContentText = (
   text: string,
+  title: string,
   referenceCode: string,
-  jsonTitle: string,
   label: string
 ): string => {
+  // For NoteSection and NoteItem, use text as content text (title goes to reference code)
+  if (label === "NoteSection" || label === "NoteItem") {
+    return text.trim();
+  }
+
+  // For DefTerm, use the text as content text (term goes to title/reference code)
+  if (label === "DefTerm") {
+    return text.trim();
+  }
+
+  // For Sentence where title exists but text is empty, use title as content
+  if (label === "Sentence" && title && (!text || text.trim() === "")) {
+    return title.trim();
+  }
+
   // For SeeAlso, use the text as-is
   if (label === "SeeAlso") {
     return text.trim();
   }
 
-  // For DefTerm, use the term if available
-  if (label === "DefTerm") {
-    return jsonTitle || text.trim();
+  // For NoteContent, use the text as-is
+  if (label === "NoteContent") {
+    return text.trim();
   }
 
-  if (jsonTitle && jsonTitle !== referenceCode) {
-    return jsonTitle;
+  // For high-level structural elements, use text as content
+  const structuralElements = [
+    "Division",
+    "Part",
+    "Section",
+    "Subsection",
+    "Article",
+  ];
+  if (structuralElements.includes(label)) {
+    return text.trim();
   }
 
-  if (referenceCode) {
+  // Remove reference code from text if present
+  if (referenceCode && text.startsWith(referenceCode)) {
     return text
       .replace(referenceCode, "")
       .replace(/^[\.\)\s]*/, "")
       .replace(/\s*:\s*$/, "")
       .trim();
   }
+
+  // If text is empty but title has content, use title
+  if ((!text || text.trim() === "") && title && title.trim() !== "") {
+    return title.trim();
+  }
+
   return text.trim();
 };
 
@@ -194,18 +276,23 @@ const isDefinitionContent = (text: string, label: string): boolean => {
   return false;
 };
 
-// Extract definition term from definition content
 const extractDefinitionTerm = (
   text: string,
   label: string,
-  jsonTitle?: string
+  jsonTitle?: string,
+  jsonTerm?: string // Add this parameter
 ): string | null => {
   // For DefTerm, use the provided term field or extract from text
   if (label === "DefTerm") {
+    // First priority: use the explicit term field from JSON
+    if (jsonTerm) {
+      return jsonTerm;
+    }
+    // Second priority: use the title field
     if (jsonTitle) {
       return jsonTitle;
     }
-    // Extract term from DefTerm text pattern: "Term means definition"
+    // Fallback: extract term from DefTerm text pattern: "Term means definition"
     const match = text.match(/^([^,]+?)\s+means/);
     if (match) {
       return match[1].trim();
@@ -229,7 +316,6 @@ const extractDefinitionTerm = (
   }
   return null;
 };
-
 // Function to create PDF document entry using names instead of IDs
 const createPdfDocument = async (
   params: PdfDocumentParams
@@ -341,7 +427,7 @@ const findTargetContent = async (
           {
             contentText: { contains: `${referenceText} `, mode: "insensitive" },
           },
-          { title: { contains: referenceText, mode: "insensitive" } },
+          { referenceCode: referenceText },
         ],
       },
       orderBy: [{ definitionTerm: "asc" }, { sequenceOrder: "asc" }],
@@ -363,7 +449,6 @@ const findTargetContent = async (
         pdfDocumentId: pdfDocumentId,
         OR: [
           { contentText: { contains: referenceText, mode: "insensitive" } },
-          { title: { contains: referenceText, mode: "insensitive" } },
           { referenceCode: referenceText },
         ],
       },
@@ -419,19 +504,27 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       ContentType.division,
       ContentType.part,
       ContentType.section,
+      ContentType.note_section, // NoteSection at same level as Section (siblings under Part)
       ContentType.subsection,
+      ContentType.note_item, // NoteItem at same level as Subsection
       ContentType.article,
       ContentType.sentence,
       ContentType.clause,
       ContentType.subclause,
       ContentType.see_also,
       ContentType.definition,
+      ContentType.note_content, // NoteContent at bottom level
+      ContentType.paragraph,
     ];
 
     // Track the current definition that clauses should be attached to
     let currentDefinitionId: number | null = null;
     // Track the current sentence that definitions should be attached to
     let currentSentenceId: number | null = null;
+    // Track the current note section for note items
+    let currentNoteSectionId: number | null = null;
+    // Track the current note item for note content
+    let currentNoteItemId: number | null = null;
 
     // First pass: insert all content and identify definitions
     const contentMap = new Map<string, number>();
@@ -445,38 +538,124 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         continue;
       }
 
-      const referenceCode = extractReferenceCode(row.text, row.title);
-
-      // Use the term field for DefTerm if available
-      const displayTitle =
-        row.label === "DefTerm" && row.term ? row.term : row.title;
-      const title = extractTitle(
+      const referenceCode = extractReferenceCode(
+        row.title,
         row.text,
+        row.label
+      );
+      const contentText = extractContentText(
+        row.text,
+        row.title,
         referenceCode,
-        displayTitle,
         row.label
       );
 
       const pageNumber = row.page;
 
       // Check if this is definition content
-      const isDefinition = isDefinitionContent(row.text, row.label);
+      const isDefinition = isDefinitionContent(contentText, row.label);
       const definitionTerm = isDefinition
-        ? extractDefinitionTerm(row.text, row.label, displayTitle)
+        ? extractDefinitionTerm(contentText, row.label, row.title, row.term) // Add row.term here
         : null;
 
-      console.log(`Processing: ${row.text.substring(0, 50)}...`);
+      console.log(`Processing: ${contentText.substring(0, 50)}...`);
       console.log(
-        `  Type: ${contentType}, Ref: ${referenceCode}, Is Definition: ${isDefinition}`
+        `  Type: ${contentType}, Label: ${row.label}, Ref: ${referenceCode}, Is Definition: ${isDefinition}`
       );
 
       let parentId: number | null = null;
 
-      // Handle hierarchy based on content type
+      // Handle hierarchy based on content type and label
       if (contentType === ContentType.see_also) {
         // SeeAlso should be attached to the most recent content item
         if (hierarchyStack.length > 0) {
           parentId = hierarchyStack[hierarchyStack.length - 1].id;
+        }
+      } else if (contentType === ContentType.note_section) {
+        // NoteSection starts a new section hierarchy - reset note tracking
+        currentNoteSectionId = null;
+        currentNoteItemId = null;
+
+        // NoteSection should be a direct child of Part (same as Section)
+        // Find the most recent Part in the hierarchy stack
+        for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+          const stackItem = hierarchyStack[i];
+          if (stackItem.type === ContentType.part) {
+            parentId = stackItem.id;
+            console.log(`  → Attaching NoteSection to Part ID: ${parentId}`);
+            break;
+          }
+        }
+
+        // If no Part found, fallback to hierarchy-based parent finding
+        if (!parentId) {
+          for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+            const stackItem = hierarchyStack[i];
+            const currentIndex = hierarchy.indexOf(contentType);
+            const stackIndex = hierarchy.indexOf(stackItem.type);
+            if (stackIndex < currentIndex) {
+              parentId = stackItem.id;
+              break;
+            }
+          }
+        }
+      } else if (contentType === ContentType.note_item) {
+        // NoteItem should be child of current NoteSection
+        if (currentNoteSectionId) {
+          parentId = currentNoteSectionId;
+          console.log(
+            `  → Attaching NoteItem to NoteSection ID: ${currentNoteSectionId}`
+          );
+        } else {
+          // Fallback: find parent from hierarchy (should be a NoteSection)
+          for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+            const stackItem = hierarchyStack[i];
+            if (stackItem.type === ContentType.note_section) {
+              parentId = stackItem.id;
+              console.log(
+                `  → Attaching NoteItem to NoteSection ID: ${parentId} (fallback)`
+              );
+              break;
+            }
+          }
+
+          // If no NoteSection found, use hierarchy-based parent finding
+          if (!parentId) {
+            for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+              const stackItem = hierarchyStack[i];
+              const currentIndex = hierarchy.indexOf(contentType);
+              const stackIndex = hierarchy.indexOf(stackItem.type);
+              if (stackIndex < currentIndex) {
+                parentId = stackItem.id;
+                break;
+              }
+            }
+          }
+        }
+      } else if (contentType === ContentType.note_content) {
+        // NoteContent should be child of current NoteItem
+        if (currentNoteItemId) {
+          parentId = currentNoteItemId;
+          console.log(
+            `  → Attaching NoteContent to NoteItem ID: ${currentNoteItemId}`
+          );
+        } else if (currentNoteSectionId) {
+          // Fallback: attach to NoteSection if no NoteItem
+          parentId = currentNoteSectionId;
+          console.log(
+            `  → Attaching NoteContent to NoteSection ID: ${currentNoteSectionId}`
+          );
+        } else {
+          // Final fallback: find parent from hierarchy
+          for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+            const stackItem = hierarchyStack[i];
+            const currentIndex = hierarchy.indexOf(contentType);
+            const stackIndex = hierarchy.indexOf(stackItem.type);
+            if (stackIndex < currentIndex) {
+              parentId = stackItem.id;
+              break;
+            }
+          }
         }
       } else if (contentType === ContentType.sentence) {
         // Sentence - find parent from hierarchy and set as current sentence
@@ -545,15 +724,15 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         }
       }
 
-      // Insert into database using Prisma WITHOUT font, bbox, yCoordinate
+      // Insert into database using Prisma WITHOUT font, bbox, yCoordinate and WITHOUT title column
       const newContent = await prisma.buildingCodeContent.create({
         data: {
           parentId: parentId,
           contentType: contentType,
           pageNumber: pageNumber,
           referenceCode: referenceCode || null,
-          title: title || null,
-          contentText: row.text,
+          title: null, // Title column is not used - all content goes in contentText
+          contentText: contentText,
           sequenceOrder: sequenceOrder,
           pdfDocumentId: pdfDocumentId,
           // Removed: fontFamily, fontSize, bbox, yCoordinate
@@ -584,17 +763,41 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         console.log(`  → Set as current sentence ID: ${currentSentenceId}`);
       }
 
+      // Track note hierarchy
+      if (contentType === ContentType.note_section) {
+        currentNoteSectionId = newId;
+        console.log(
+          `  → Set as current NoteSection ID: ${currentNoteSectionId}`
+        );
+      } else if (contentType === ContentType.note_item) {
+        currentNoteItemId = newId;
+        console.log(`  → Set as current NoteItem ID: ${currentNoteItemId}`);
+      }
+
       // Store in content map
-      const contentKey = `${row.text}_${pageNumber}`;
+      const contentKey = `${contentText}_${pageNumber}`;
       contentMap.set(contentKey, newId);
 
       // Update hierarchy (don't push SeeAlso to stack as it doesn't create new hierarchy levels)
-      if (contentType !== ContentType.see_also) {
+      if (
+        contentType !== ContentType.see_also &&
+        contentType !== ContentType.note_content
+      ) {
         const currentIndex = hierarchy.indexOf(contentType);
-        hierarchyStack = hierarchyStack.filter(
-          (item) => hierarchy.indexOf(item.type) < currentIndex
-        );
+
+        // Filter out items that are lower or equal in hierarchy
+        hierarchyStack = hierarchyStack.filter((item) => {
+          const itemIndex = hierarchy.indexOf(item.type);
+          return itemIndex < currentIndex;
+        });
+
         hierarchyStack.push({ type: contentType, id: newId });
+
+        console.log(
+          `  → Updated hierarchy stack: [${hierarchyStack
+            .map((item) => ContentType[item.type])
+            .join(", ")}]`
+        );
       }
 
       sequenceOrder++;
@@ -616,7 +819,6 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       select: {
         id: true,
         referenceCode: true,
-        title: true,
         contentText: true,
         contentType: true,
         isDefinition: true,
@@ -632,7 +834,6 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       contentCache.set(cacheKey, {
         id: row.id,
         reference_code: row.referenceCode,
-        title: row.title,
         content_text: row.contentText,
         is_definition: row.isDefinition,
         definition_term: row.definitionTerm,
@@ -643,7 +844,6 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         contentCache.set(refCacheKey, {
           id: row.id,
           reference_code: row.referenceCode,
-          title: row.title,
           content_text: row.contentText,
           is_definition: row.isDefinition,
           definition_term: row.definitionTerm,
@@ -655,7 +855,6 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         contentCache.set(termCacheKey, {
           id: row.id,
           reference_code: row.referenceCode,
-          title: row.title,
           content_text: row.contentText,
           is_definition: row.isDefinition,
           definition_term: row.definitionTerm,
@@ -727,7 +926,7 @@ const runCompleteImport = async () => {
     // Initialize database cache first
     await initializeDbCache();
 
-    const jsonFilePath = path.join(__dirname, "merged_spans.json");
+    const jsonFilePath = path.join(__dirname, "merged_spans_new.json");
 
     console.log("📄 Creating PDF document entry...");
     const pdfDocumentId = await createPdfDocument({

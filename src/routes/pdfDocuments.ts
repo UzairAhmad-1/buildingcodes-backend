@@ -47,7 +47,7 @@ const transformContentItem = (item: any) => ({
   // bbox: item.bbox,
   // y_coordinate: item.yCoordinate,
   // is_definition: item.isDefinition,
-  // definition_term: item.definitionTerm,
+  definition_term: item.definitionTerm,
   // created_at: item.createdAt,
   // updated_at: item.updatedAt,
 });
@@ -487,6 +487,7 @@ router.get("/:id/content/:contentId", async (req, res) => {
     // 2. Find the next item of the same type to calculate row gap
     let nextSameType = null;
     let rowGap = 0;
+    let isLastDivision = false;
 
     if (mainContent.contentType === "division") {
       // For divisions, find next division
@@ -500,95 +501,137 @@ router.get("/:id/content/:contentId", async (req, res) => {
       });
 
       const startSeq = mainContent.sequenceOrder;
-      const endSeq = nextSameType
-        ? nextSameType.sequenceOrder - 1
-        : Number.MAX_SAFE_INTEGER;
-      rowGap = endSeq - startSeq;
 
-      console.log("Next Division:", nextSameType?.id || "Not found");
-      console.log("Current Division Sequence:", startSeq);
-      console.log(
-        "Next Division Sequence:",
-        nextSameType?.sequenceOrder || "END OF DOCUMENT"
-      );
-    } else {
-      // For other content types (parts, sections, etc.), find next item with same parent
-      nextSameType = await prisma.buildingCodeContent.findFirst({
-        where: {
-          pdfDocumentId: id,
-          parentId: mainContent.parentId,
-          contentType: mainContent.contentType,
-          sequenceOrder: { gt: mainContent.sequenceOrder },
-        },
-        orderBy: { sequenceOrder: "asc" },
-      });
-
-      const startSeq = mainContent.sequenceOrder;
-
-      // FIX: If no next same type found, find the next item with different type but same parent level
-      let endSeq;
       if (nextSameType) {
-        endSeq = nextSameType.sequenceOrder - 1;
+        // Normal case: there's a next division
+        const endSeq = nextSameType.sequenceOrder - 1;
+        rowGap = endSeq - startSeq;
+        console.log("Next Division:", nextSameType.id);
+        console.log("Next Division Sequence:", nextSameType.sequenceOrder);
       } else {
-        // Find the next item with the same parent (any type) to determine the actual end
-        const nextAnyTypeSameParent =
+        // Special case: this is the last division in the document
+        isLastDivision = true;
+
+        // Calculate actual row gap by finding the last content item in this division
+        const lastContentInDivision =
           await prisma.buildingCodeContent.findFirst({
             where: {
               pdfDocumentId: id,
-              parentId: mainContent.parentId,
-              sequenceOrder: { gt: mainContent.sequenceOrder },
-            },
-            orderBy: { sequenceOrder: "asc" },
-          });
-
-        if (nextAnyTypeSameParent) {
-          endSeq = nextAnyTypeSameParent.sequenceOrder - 1;
-        } else {
-          // If no next item with same parent, find the next item with parent's parent (moving up one level)
-          const parentItem = await prisma.buildingCodeContent.findUnique({
-            where: { id: mainContent.parentId! },
-            select: { parentId: true },
-          });
-
-          if (parentItem?.parentId) {
-            const nextInParentLevel =
-              await prisma.buildingCodeContent.findFirst({
-                where: {
-                  pdfDocumentId: id,
-                  parentId: parentItem.parentId,
-                  sequenceOrder: { gt: mainContent.sequenceOrder },
+              OR: [
+                { id: numericContentId },
+                { parentId: numericContentId },
+                {
+                  parent: {
+                    parentId: numericContentId,
+                  },
                 },
-                orderBy: { sequenceOrder: "asc" }, // FIXED: Removed extra quote
-              });
-            endSeq = nextInParentLevel
-              ? nextInParentLevel.sequenceOrder - 1
-              : mainContent.sequenceOrder + 100; // Safe fallback
-          } else {
-            // Final fallback - use a reasonable small number
-            endSeq = mainContent.sequenceOrder + 100;
-          }
+              ],
+            },
+            orderBy: { sequenceOrder: "desc" },
+          });
+
+        if (lastContentInDivision) {
+          const endSeq = lastContentInDivision.sequenceOrder;
+          rowGap = endSeq - startSeq;
+          console.log("Last content in division sequence:", endSeq);
+        } else {
+          // Fallback: if no children found, use current division sequence
+          rowGap = 0;
         }
+
+        console.log("Next Division: Not found - LAST DIVISION IN DOCUMENT");
+        console.log("Next Division Sequence: END OF DOCUMENT");
       }
 
-      rowGap = endSeq - startSeq;
+      console.log("Current Division Sequence:", startSeq);
+    } else {
+      // For other content types (parts, sections, etc.), find next item with same parent
+      // Only proceed if parentId exists
+      if (mainContent.parentId) {
+        nextSameType = await prisma.buildingCodeContent.findFirst({
+          where: {
+            pdfDocumentId: id,
+            parentId: mainContent.parentId,
+            contentType: mainContent.contentType,
+            sequenceOrder: { gt: mainContent.sequenceOrder },
+          },
+          orderBy: { sequenceOrder: "asc" },
+        });
 
-      console.log(
-        `Next ${mainContent.contentType}:`,
-        nextSameType?.id || "Not found"
-      );
-      console.log(`Current ${mainContent.contentType} Sequence:`, startSeq);
-      console.log(
-        `Next ${mainContent.contentType} Sequence:`,
-        nextSameType?.sequenceOrder || "Not applicable"
-      );
-      console.log(`Calculated end sequence:`, endSeq);
+        const startSeq = mainContent.sequenceOrder;
+
+        // If no next same type found, find the next item with different type but same parent level
+        let endSeq;
+        if (nextSameType) {
+          endSeq = nextSameType.sequenceOrder - 1;
+        } else {
+          // Find the next item with the same parent (any type) to determine the actual end
+          const nextAnyTypeSameParent =
+            await prisma.buildingCodeContent.findFirst({
+              where: {
+                pdfDocumentId: id,
+                parentId: mainContent.parentId,
+                sequenceOrder: { gt: mainContent.sequenceOrder },
+              },
+              orderBy: { sequenceOrder: "asc" },
+            });
+
+          if (nextAnyTypeSameParent) {
+            endSeq = nextAnyTypeSameParent.sequenceOrder - 1;
+          } else {
+            // If no next item with same parent, find the next item with parent's parent (moving up one level)
+            const parentItem = await prisma.buildingCodeContent.findUnique({
+              where: { id: mainContent.parentId },
+              select: { parentId: true },
+            });
+
+            if (parentItem?.parentId) {
+              const nextInParentLevel =
+                await prisma.buildingCodeContent.findFirst({
+                  where: {
+                    pdfDocumentId: id,
+                    parentId: parentItem.parentId,
+                    sequenceOrder: { gt: mainContent.sequenceOrder },
+                  },
+                  orderBy: { sequenceOrder: "asc" },
+                });
+              endSeq = nextInParentLevel
+                ? nextInParentLevel.sequenceOrder - 1
+                : mainContent.sequenceOrder + 100; // Safe fallback
+            } else {
+              // Final fallback - use a reasonable small number
+              endSeq = mainContent.sequenceOrder + 100;
+            }
+          }
+        }
+
+        rowGap = endSeq - startSeq;
+
+        console.log(
+          `Next ${mainContent.contentType}:`,
+          nextSameType?.id || "Not found"
+        );
+        console.log(`Current ${mainContent.contentType} Sequence:`, startSeq);
+        console.log(
+          `Next ${mainContent.contentType} Sequence:`,
+          nextSameType?.sequenceOrder || "Not applicable"
+        );
+        console.log(`Calculated end sequence:`, endSeq);
+      } else {
+        // If no parentId, use a safe default row gap
+        rowGap = 100;
+        console.log("No parentId found, using default row gap:", rowGap);
+      }
     }
 
     console.log("Row Gap:", rowGap);
+    console.log("Is Last Division:", isLastDivision);
 
-    // 3. Check if content is large (more than 1000 rows) - but only if we have a valid row gap
-    if (rowGap > 1000 && rowGap < 1000000) {
-      // Added upper bound to catch the MAX_SAFE_INTEGER case
+    // 3. Check if content is large (more than 1000 rows)
+    // REMOVED: && !isLastDivision condition - last divisions should also follow the same rule
+    const isLargeContent = rowGap > 1000;
+
+    if (isLargeContent) {
       console.log(
         `Large ${mainContent.contentType} detected → returning only immediate children`
       );
@@ -679,6 +722,7 @@ router.get("/:id/content/:contentId", async (req, res) => {
           message: `${mainContent.contentType} is large. Showing only immediate children for better performance.`,
           childCount: childrenWithMetadata.length,
           childType: childContentType || "all",
+          isLastDivision: isLastDivision, // Include this info in metadata
         },
       };
 
@@ -690,10 +734,8 @@ router.get("/:id/content/:contentId", async (req, res) => {
       return res.json(response);
     }
 
-    // 4. Small content or invalid row gap → return full hierarchy
-    console.log(
-      `Small ${mainContent.contentType} or invalid gap → returning full hierarchy`
-    );
+    // 4. Small content → return full hierarchy
+    console.log(`Small ${mainContent.contentType} → returning full hierarchy`);
 
     // Recursive function to get full hierarchy
     const getContentHierarchy = async (parentId: number): Promise<any[]> => {
@@ -755,6 +797,7 @@ router.get("/:id/content/:contentId", async (req, res) => {
         totalRowsInSection: rowGap + 1,
         message: "Showing full content hierarchy",
         childCount: children.length,
+        isLastDivision: isLastDivision,
       },
     };
 
@@ -771,7 +814,6 @@ router.get("/:id/content/:contentId", async (req, res) => {
       .json({ error: "Failed to fetch content", details: errorMessage });
   }
 });
-
 // In your routes/pdfDocuments.ts - Fix the navigation endpoint
 router.get("/:id/navigation", async (req, res) => {
   try {
@@ -789,7 +831,15 @@ router.get("/:id/navigation", async (req, res) => {
       where: {
         pdfDocumentId: id,
         contentType: {
-          in: ["division", "part", "section", "subsection", "article"],
+          in: [
+            "division",
+            "part",
+            "section",
+            "subsection",
+            "article",
+            "note_section",
+            "note_item",
+          ],
         },
       },
       select: {
@@ -821,7 +871,15 @@ router.get("/:id/navigation", async (req, res) => {
         reference_code: item.referenceCode,
         title: truncateTitle(item.title, 10),
         sequence_order: item.sequenceOrder,
-        content_text: ["division", "part", "section"].includes(item.contentType)
+        content_text: [
+          "division",
+          "part",
+          "section",
+          "subsection",
+          "article",
+          "note_section",
+          "note_item",
+        ].includes(item.contentType)
           ? item.contentText
           : null,
         children: buildNavigationHierarchy(item.id),
