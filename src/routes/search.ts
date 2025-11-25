@@ -8,7 +8,12 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const { q, documentId, page = 1, limit = 10 } = req.query;
-
+    console.log("Search request received with params:", {
+      q,
+      documentId,
+      page,
+      limit,
+    });
     if (!q) {
       return res.status(400).json({ error: "Query parameter 'q' is required" });
     }
