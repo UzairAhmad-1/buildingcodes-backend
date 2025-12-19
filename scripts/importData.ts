@@ -170,8 +170,8 @@ const extractReferenceCode = (
     }
   }
 
-  // Use title as reference code if it matches pattern
-  if (title && /^[\d\.a-z\)\-]+$/.test(title.replace(/\s/g, ""))) {
+  // Use title as reference code if it matches pattern - FIXED: added \( to pattern
+  if (title && /^[\d\.a-z\(\)\-]+$/.test(title.replace(/\s/g, ""))) {
     return title.trim();
   }
 
@@ -926,7 +926,7 @@ const runCompleteImport = async () => {
     // Initialize database cache first
     await initializeDbCache();
 
-    const jsonFilePath = path.join(__dirname, "merged_spans_new.json");
+    const jsonFilePath = path.join(__dirname, "merged_spans.json");
 
     console.log("📄 Creating PDF document entry...");
     const pdfDocumentId = await createPdfDocument({
