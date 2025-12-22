@@ -139,21 +139,200 @@ const transformContentItem = (item: any) => ({
   // created_at: item.createdAt,
   // updated_at: item.updatedAt,
 });
+// Helper function to get enhanced hyperlink text with clauses
+// First, define interfaces for the enhanced hyperlink structure
+interface EnhancedHyperlinkClause {
+  type: string;
+  title: string;
+  text: string;
+  page: number | null;
+  reference_code: string | null;
+  references: Array<{
+    text: string;
+    page: number | null;
+    target_content_id: number | null;
+    link_text: string | null;
+  }>;
+}
 
-const transformReference = (ref: any) => ({
-  id: ref.id,
-  reference_text: ref.referenceText,
-  reference_type: ref.referenceType,
-  target_content_id: ref.targetContentId,
-  target_reference_code: ref.targetReferenceCode,
-  hyperlink_target: ref.hyperlinkTarget,
-  page_number: ref.pageNumber,
-  reference_position: ref.referencePosition,
-  hyperlink_text: ref.hyperlinkText,
-  // Remove target_content entirely since it's pointing to wrong content
-  target_content: null,
-});
+interface EnhancedHyperlinkDefinition {
+  term: string;
+  text: string;
+  page: number | null;
+  reference_code: string | null;
+  hasDefinitionTerm: boolean;
+}
 
+interface SimplifiedClause {
+  title: string;
+  text: string;
+  reference_code: string | null;
+}
+
+interface EnhancedHyperlinkResult {
+  link_text: string;
+  full_definition?: EnhancedHyperlinkDefinition;
+  clauses?: SimplifiedClause[]; // Changed to SimplifiedClause[]
+  has_clauses: boolean;
+  clause_count?: number;
+}
+async function getEnhancedHyperlinkText(
+  targetContentId: number
+): Promise<EnhancedHyperlinkResult | null> {
+  try {
+    // Get the target definition content
+    const targetContent = await prisma.buildingCodeContent.findUnique({
+      where: { id: targetContentId },
+      select: {
+        id: true,
+        contentType: true,
+        pageNumber: true,
+        referenceCode: true,
+        contentText: true,
+        definitionTerm: true,
+        sequenceOrder: true,
+        pdfDocumentId: true,
+      },
+    });
+
+    if (!targetContent) {
+      return null;
+    }
+
+    // Get all content items that come after this definition
+    const followingContent = await prisma.buildingCodeContent.findMany({
+      where: {
+        pdfDocumentId: targetContent.pdfDocumentId,
+        sequenceOrder: { gt: targetContent.sequenceOrder },
+        contentType: {
+          in: ["clause", "subclause", "sentence", "definition", "paragraph"],
+        },
+      },
+      select: {
+        id: true,
+        contentType: true,
+        pageNumber: true,
+        referenceCode: true,
+        contentText: true,
+        definitionTerm: true,
+        sequenceOrder: true,
+      },
+      orderBy: { sequenceOrder: "asc" },
+      take: 20, // Limit to prevent too much data
+    });
+
+    // Organize the data
+    const result: {
+      definition: EnhancedHyperlinkDefinition;
+      following_items: Array<{
+        title: string;
+        text: string;
+        reference_code: string | null;
+      }>;
+    } = {
+      definition: {
+        term: targetContent.definitionTerm || targetContent.referenceCode || "",
+        text: targetContent.contentText,
+        page: targetContent.pageNumber,
+        reference_code: targetContent.referenceCode,
+        hasDefinitionTerm: !!targetContent.definitionTerm,
+      },
+      following_items: [],
+    };
+
+    // Process following content
+    let foundNextDefinition = false;
+
+    for (const item of followingContent) {
+      // Stop if we encounter another definition (this means we've reached the next definition term)
+      if (item.contentType === "definition" || item.definitionTerm) {
+        foundNextDefinition = true;
+        break;
+      }
+
+      // Only include clauses, subclauses, and sentences that likely belong to this definition
+      if (
+        ["clause", "subclause", "sentence", "paragraph"].includes(
+          item.contentType
+        )
+      ) {
+        // Check if this item is likely a continuation of the definition
+        const pageDiff = Math.abs(
+          (item.pageNumber || 0) - (targetContent.pageNumber || 0)
+        );
+
+        if (pageDiff <= 2) {
+          // Within 2 pages - include with simplified structure
+          const simplifiedClause = {
+            title: item.referenceCode || "",
+            text: item.contentText,
+            reference_code: item.referenceCode,
+          };
+
+          result.following_items.push(simplifiedClause);
+        } else {
+          // If we're getting too far in pages, stop
+          break;
+        }
+      }
+    }
+
+    // Format the final hyperlink text
+    if (result.following_items.length > 0) {
+      return {
+        link_text: `${result.definition.term} ${result.definition.text}`,
+        full_definition: result.definition,
+        clauses: result.following_items, // Now with simplified structure
+        has_clauses: true,
+        clause_count: result.following_items.length,
+      };
+    } else {
+      // Return simple format if no clauses
+      return {
+        link_text: `${result.definition.term} ${result.definition.text}`,
+        has_clauses: false,
+      };
+    }
+  } catch (error) {
+    console.error("Error getting enhanced hyperlink text:", error);
+    return null;
+  }
+}
+// Update the transformReference function to handle both string and object hyperlink_text
+interface TransformedReference {
+  id: number;
+  reference_text: string;
+  reference_type: string;
+  target_content_id: number | null;
+  target_reference_code: string | null;
+  hyperlink_target: string | null;
+  page_number: number | null;
+  reference_position: number | null;
+  hyperlink_text: string | EnhancedHyperlinkResult | null;
+  target_content: null;
+}
+
+const transformReference = async (ref: any): Promise<TransformedReference> => {
+  let enhancedHyperlink: EnhancedHyperlinkResult | null = null;
+
+  // Only enhance if it's a definition reference
+  if (ref.referenceType === "definition" && ref.targetContentId) {
+    enhancedHyperlink = await getEnhancedHyperlinkText(ref.targetContentId);
+  }
+
+  return {
+    id: ref.id,
+    reference_text: ref.referenceText,
+    reference_type: ref.referenceType,
+    target_content_id: ref.targetContentId,
+    target_reference_code: ref.targetReferenceCode,
+    hyperlink_target: ref.hyperlinkTarget,
+    page_number: ref.pageNumber,
+    reference_position: ref.referencePosition,
+    hyperlink_text: enhancedHyperlink || ref.hyperlinkText,
+    target_content: null,
+  };
+};
 // Define interfaces for transformed documents
 interface TransformedPdfDocument extends Omit<PdfDocument, "fileSize"> {
   fileSize: number | null;
@@ -181,6 +360,419 @@ const transformPdfDocument = (doc: any): TransformedPdfDocument => {
     language_code: doc.language?.code,
   };
 };
+
+router.get("/:id/content/:contentId", async (req, res) => {
+  try {
+    const { id, contentId } = req.params;
+    const numericContentId = parseInt(contentId);
+
+    console.log("Requested contentId:", numericContentId);
+
+    // 1. Fetch the main content item
+    const mainContent = await prisma.buildingCodeContent.findUnique({
+      where: { id: numericContentId },
+    });
+
+    if (!mainContent) {
+      return res.status(404).json({ error: "Content not found" });
+    }
+
+    console.log("Main Content Type:", mainContent.contentType);
+
+    // NEW: Determine if we should return parent hierarchy for small items
+    const shouldReturnParentHierarchy = [
+      "clause",
+      "subclause",
+      "sentence",
+      "definition",
+    ].includes(mainContent.contentType);
+
+    let rootContentId = numericContentId;
+    let rootContent = mainContent;
+
+    // If target is a small item, find its parent section/subsection
+    if (shouldReturnParentHierarchy) {
+      console.log(
+        `Small content type ${mainContent.contentType} detected → finding parent hierarchy`
+      );
+
+      // Find the nearest parent that's a section or subsection
+      const parentHierarchy = await findParentSection(numericContentId, id);
+
+      if (parentHierarchy.rootParent) {
+        rootContentId = parentHierarchy.rootParent.id;
+        rootContent = parentHierarchy.rootParent;
+        console.log(
+          `Using parent ${rootContent.contentType} (ID: ${rootContentId}) as root`
+        );
+      } else {
+        console.log("No suitable parent found, using original content as root");
+      }
+    }
+
+    // 2. Find the next item of the same type to calculate row gap
+    // (Use rootContent for calculations instead of mainContent)
+    let nextSameType = null;
+    let rowGap = 0;
+    let isLastDivision = false;
+
+    if (rootContent.contentType === "division") {
+      // For divisions, find next division
+      nextSameType = await prisma.buildingCodeContent.findFirst({
+        where: {
+          pdfDocumentId: id,
+          contentType: "division",
+          sequenceOrder: { gt: rootContent.sequenceOrder },
+        },
+        orderBy: { sequenceOrder: "asc" },
+      });
+
+      const startSeq = rootContent.sequenceOrder;
+
+      if (nextSameType) {
+        // Normal case: there's a next division
+        const endSeq = nextSameType.sequenceOrder - 1;
+        rowGap = endSeq - startSeq;
+        console.log("Next Division:", nextSameType.id);
+        console.log("Next Division Sequence:", nextSameType.sequenceOrder);
+      } else {
+        // Special case: this is the last division in the document
+        isLastDivision = true;
+
+        // Calculate actual row gap by finding the last content item in this division
+        const lastContentInDivision =
+          await prisma.buildingCodeContent.findFirst({
+            where: {
+              pdfDocumentId: id,
+              OR: [
+                { id: rootContentId },
+                { parentId: rootContentId },
+                {
+                  parent: {
+                    parentId: rootContentId,
+                  },
+                },
+              ],
+            },
+            orderBy: { sequenceOrder: "desc" },
+          });
+
+        if (lastContentInDivision) {
+          const endSeq = lastContentInDivision.sequenceOrder;
+          rowGap = endSeq - startSeq;
+          console.log("Last content in division sequence:", endSeq);
+        } else {
+          // Fallback: if no children found, use current division sequence
+          rowGap = 0;
+        }
+
+        console.log("Next Division: Not found - LAST DIVISION IN DOCUMENT");
+        console.log("Next Division Sequence: END OF DOCUMENT");
+      }
+
+      console.log("Current Division Sequence:", startSeq);
+    } else {
+      // For other content types (parts, sections, etc.), find next item with same parent
+      // Only proceed if parentId exists
+      if (rootContent.parentId) {
+        nextSameType = await prisma.buildingCodeContent.findFirst({
+          where: {
+            pdfDocumentId: id,
+            parentId: rootContent.parentId,
+            contentType: rootContent.contentType,
+            sequenceOrder: { gt: rootContent.sequenceOrder },
+          },
+          orderBy: { sequenceOrder: "asc" },
+        });
+
+        const startSeq = rootContent.sequenceOrder;
+
+        // If no next same type found, find the next item with different type but same parent level
+        let endSeq;
+        if (nextSameType) {
+          endSeq = nextSameType.sequenceOrder - 1;
+        } else {
+          // Find the next item with the same parent (any type) to determine the actual end
+          const nextAnyTypeSameParent =
+            await prisma.buildingCodeContent.findFirst({
+              where: {
+                pdfDocumentId: id,
+                parentId: rootContent.parentId,
+                sequenceOrder: { gt: rootContent.sequenceOrder },
+              },
+              orderBy: { sequenceOrder: "asc" },
+            });
+
+          if (nextAnyTypeSameParent) {
+            endSeq = nextAnyTypeSameParent.sequenceOrder - 1;
+          } else {
+            // If no next item with same parent, find the next item with parent's parent (moving up one level)
+            const parentItem = await prisma.buildingCodeContent.findUnique({
+              where: { id: rootContent.parentId },
+              select: { parentId: true },
+            });
+
+            if (parentItem?.parentId) {
+              const nextInParentLevel =
+                await prisma.buildingCodeContent.findFirst({
+                  where: {
+                    pdfDocumentId: id,
+                    parentId: parentItem.parentId,
+                    sequenceOrder: { gt: rootContent.sequenceOrder },
+                  },
+                  orderBy: { sequenceOrder: "asc" },
+                });
+              endSeq = nextInParentLevel
+                ? nextInParentLevel.sequenceOrder - 1
+                : rootContent.sequenceOrder + 100; // Safe fallback
+            } else {
+              // Final fallback - use a reasonable small number
+              endSeq = rootContent.sequenceOrder + 100;
+            }
+          }
+        }
+
+        rowGap = endSeq - startSeq;
+
+        console.log(
+          `Next ${rootContent.contentType}:`,
+          nextSameType?.id || "Not found"
+        );
+        console.log(`Current ${rootContent.contentType} Sequence:`, startSeq);
+        console.log(
+          `Next ${rootContent.contentType} Sequence:`,
+          nextSameType?.sequenceOrder || "Not applicable"
+        );
+        console.log(`Calculated end sequence:`, endSeq);
+      } else {
+        // If no parentId, use a safe default row gap
+        rowGap = 100;
+        console.log("No parentId found, using default row gap:", rowGap);
+      }
+    }
+
+    console.log("Row Gap:", rowGap);
+    console.log("Is Last Division:", isLastDivision);
+
+    // 3. Check if content is large (more than 1000 rows)
+    const isLargeContent = rowGap > 1000;
+
+    if (isLargeContent) {
+      console.log(
+        `Large ${rootContent.contentType} detected → returning only immediate children`
+      );
+
+      // Determine what child content type to show based on current type
+      let childContentType = "";
+      switch (rootContent.contentType) {
+        case "division":
+          childContentType = "part";
+          break;
+        case "part":
+          childContentType = "section";
+          break;
+        case "section":
+          childContentType = "subsection";
+          break;
+        case "subsection":
+          childContentType = "article";
+          break;
+        case "article":
+          childContentType = "sentence";
+          break;
+        default:
+          childContentType = ""; // Show all children for other types
+      }
+
+      // Build query for immediate children
+      const whereClause: any = {
+        pdfDocumentId: id,
+        parentId: rootContentId,
+      };
+
+      // Only filter by contentType if we specified one
+      if (childContentType) {
+        whereClause.contentType = childContentType;
+      }
+
+      // Fetch only immediate children
+      const immediateChildren = await prisma.buildingCodeContent.findMany({
+        where: whereClause,
+        include: {
+          sourceReferences: {
+            include: {
+              targetContent: {
+                select: {
+                  id: true,
+                  parentId: true,
+                  contentType: true,
+                  pageNumber: true,
+                  referenceCode: true,
+                  title: true,
+                  contentText: true,
+                  sequenceOrder: true,
+                  pdfDocumentId: true,
+                },
+              },
+            },
+            orderBy: {
+              referencePosition: "asc",
+            },
+          },
+        },
+        orderBy: { sequenceOrder: "asc" },
+      });
+
+      // Check which children have their own children
+      const childrenWithMetadata = await Promise.all(
+        immediateChildren.map(async (child) => {
+          const hasChildItems = await hasChildren(child.id, id);
+
+          // Transform references with enhanced hyperlink text
+          const transformedReferences = await Promise.all(
+            child.sourceReferences.map(transformReference)
+          );
+
+          return {
+            ...transformContentItem(child),
+            references: transformedReferences,
+            link: `/api/pdf-documents/${id}/content?parentId=${child.id}`,
+            hasChildren: hasChildItems,
+            isLargeSection: hasChildItems,
+          };
+        })
+      );
+
+      const response = {
+        ...transformContentItem(rootContent),
+        references: [],
+        children: childrenWithMetadata,
+        metadata: {
+          isLargeContent: true,
+          contentType: rootContent.contentType,
+          totalRowsInSection: rowGap + 1,
+          message: `${rootContent.contentType} is large. Showing only immediate children for better performance.`,
+          childCount: childrenWithMetadata.length,
+          childType: childContentType || "all",
+          isLastDivision: isLastDivision,
+          originalTargetContent: shouldReturnParentHierarchy
+            ? {
+                id: mainContent.id,
+                contentType: mainContent.contentType,
+                referenceCode: mainContent.referenceCode,
+                contentText: mainContent.contentText,
+                isHighlighted: true, // Flag to highlight the original target in UI
+              }
+            : null,
+        },
+      };
+
+      console.log(
+        `Returning ${childrenWithMetadata.length} ${
+          childContentType || "children"
+        } instead of ${rowGap + 1} total rows`
+      );
+      return res.json(response);
+    }
+
+    // 4. Small content → return full hierarchy
+    console.log(`Small ${rootContent.contentType} → returning full hierarchy`);
+
+    // Recursive function to get full hierarchy
+    const getContentHierarchy = async (parentId: number): Promise<any[]> => {
+      const children = await prisma.buildingCodeContent.findMany({
+        where: {
+          parentId: parentId,
+          pdfDocumentId: id,
+        },
+        include: {
+          sourceReferences: {
+            include: {
+              targetContent: {
+                select: {
+                  id: true,
+                  parentId: true,
+                  contentType: true,
+                  pageNumber: true,
+                  referenceCode: true,
+                  title: true,
+                  contentText: true,
+                  sequenceOrder: true,
+                  pdfDocumentId: true,
+                },
+              },
+            },
+            orderBy: {
+              referencePosition: "asc",
+            },
+          },
+        },
+        orderBy: {
+          sequenceOrder: "asc",
+        },
+      });
+
+      const childrenWithHierarchy = await Promise.all(
+        children.map(async (child) => {
+          // Transform references with enhanced hyperlink text
+          const transformedReferences = await Promise.all(
+            child.sourceReferences.map(transformReference)
+          );
+
+          const childWithChildren = {
+            ...transformContentItem(child),
+            references: transformedReferences,
+            children: await getContentHierarchy(child.id),
+            isHighlighted:
+              shouldReturnParentHierarchy && child.id === numericContentId,
+          };
+          return childWithChildren;
+        })
+      );
+
+      return childrenWithHierarchy;
+    };
+
+    const children = await getContentHierarchy(rootContentId);
+
+    const response = {
+      ...transformContentItem(rootContent),
+      references: [],
+      children: children,
+      metadata: {
+        isLargeContent: false,
+        contentType: rootContent.contentType,
+        totalRowsInSection: rowGap + 1,
+        message: shouldReturnParentHierarchy
+          ? `Showing parent ${rootContent.contentType} hierarchy with target ${mainContent.contentType} highlighted`
+          : "Showing full content hierarchy",
+        childCount: children.length,
+        isLastDivision: isLastDivision,
+        originalTargetContent: shouldReturnParentHierarchy
+          ? {
+              id: mainContent.id,
+              contentType: mainContent.contentType,
+              referenceCode: mainContent.referenceCode,
+              contentText: mainContent.contentText,
+              isHighlighted: true,
+            }
+          : null,
+      },
+    };
+
+    console.log(
+      `Returning full hierarchy with ${children.length} immediate children`
+    );
+    return res.json(response);
+  } catch (error) {
+    console.error("Error fetching content:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    res
+      .status(500)
+      .json({ error: "Failed to fetch content", details: errorMessage });
+  }
+});
 
 // Upload PDF document
 router.post(
@@ -551,409 +1143,6 @@ router.get("/:id/content", async (req, res) => {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error occurred";
     res.status(500).json({ error: "Failed to fetch document content" });
-  }
-});
-
-router.get("/:id/content/:contentId", async (req, res) => {
-  try {
-    const { id, contentId } = req.params;
-    const numericContentId = parseInt(contentId);
-
-    console.log("Requested contentId:", numericContentId);
-
-    // 1. Fetch the main content item
-    const mainContent = await prisma.buildingCodeContent.findUnique({
-      where: { id: numericContentId },
-    });
-
-    if (!mainContent) {
-      return res.status(404).json({ error: "Content not found" });
-    }
-
-    console.log("Main Content Type:", mainContent.contentType);
-
-    // NEW: Determine if we should return parent hierarchy for small items
-    const shouldReturnParentHierarchy = [
-      "clause",
-      "subclause",
-      "sentence",
-      "definition",
-    ].includes(mainContent.contentType);
-
-    let rootContentId = numericContentId;
-    let rootContent = mainContent;
-
-    // If target is a small item, find its parent section/subsection
-    if (shouldReturnParentHierarchy) {
-      console.log(
-        `Small content type ${mainContent.contentType} detected → finding parent hierarchy`
-      );
-
-      // Find the nearest parent that's a section or subsection
-      const parentHierarchy = await findParentSection(numericContentId, id);
-
-      if (parentHierarchy.rootParent) {
-        rootContentId = parentHierarchy.rootParent.id;
-        rootContent = parentHierarchy.rootParent;
-        console.log(
-          `Using parent ${rootContent.contentType} (ID: ${rootContentId}) as root`
-        );
-      } else {
-        console.log("No suitable parent found, using original content as root");
-      }
-    }
-
-    // 2. Find the next item of the same type to calculate row gap
-    // (Use rootContent for calculations instead of mainContent)
-    let nextSameType = null;
-    let rowGap = 0;
-    let isLastDivision = false;
-
-    if (rootContent.contentType === "division") {
-      // For divisions, find next division
-      nextSameType = await prisma.buildingCodeContent.findFirst({
-        where: {
-          pdfDocumentId: id,
-          contentType: "division",
-          sequenceOrder: { gt: rootContent.sequenceOrder },
-        },
-        orderBy: { sequenceOrder: "asc" },
-      });
-
-      const startSeq = rootContent.sequenceOrder;
-
-      if (nextSameType) {
-        // Normal case: there's a next division
-        const endSeq = nextSameType.sequenceOrder - 1;
-        rowGap = endSeq - startSeq;
-        console.log("Next Division:", nextSameType.id);
-        console.log("Next Division Sequence:", nextSameType.sequenceOrder);
-      } else {
-        // Special case: this is the last division in the document
-        isLastDivision = true;
-
-        // Calculate actual row gap by finding the last content item in this division
-        const lastContentInDivision =
-          await prisma.buildingCodeContent.findFirst({
-            where: {
-              pdfDocumentId: id,
-              OR: [
-                { id: rootContentId },
-                { parentId: rootContentId },
-                {
-                  parent: {
-                    parentId: rootContentId,
-                  },
-                },
-              ],
-            },
-            orderBy: { sequenceOrder: "desc" },
-          });
-
-        if (lastContentInDivision) {
-          const endSeq = lastContentInDivision.sequenceOrder;
-          rowGap = endSeq - startSeq;
-          console.log("Last content in division sequence:", endSeq);
-        } else {
-          // Fallback: if no children found, use current division sequence
-          rowGap = 0;
-        }
-
-        console.log("Next Division: Not found - LAST DIVISION IN DOCUMENT");
-        console.log("Next Division Sequence: END OF DOCUMENT");
-      }
-
-      console.log("Current Division Sequence:", startSeq);
-    } else {
-      // For other content types (parts, sections, etc.), find next item with same parent
-      // Only proceed if parentId exists
-      if (rootContent.parentId) {
-        nextSameType = await prisma.buildingCodeContent.findFirst({
-          where: {
-            pdfDocumentId: id,
-            parentId: rootContent.parentId,
-            contentType: rootContent.contentType,
-            sequenceOrder: { gt: rootContent.sequenceOrder },
-          },
-          orderBy: { sequenceOrder: "asc" },
-        });
-
-        const startSeq = rootContent.sequenceOrder;
-
-        // If no next same type found, find the next item with different type but same parent level
-        let endSeq;
-        if (nextSameType) {
-          endSeq = nextSameType.sequenceOrder - 1;
-        } else {
-          // Find the next item with the same parent (any type) to determine the actual end
-          const nextAnyTypeSameParent =
-            await prisma.buildingCodeContent.findFirst({
-              where: {
-                pdfDocumentId: id,
-                parentId: rootContent.parentId,
-                sequenceOrder: { gt: rootContent.sequenceOrder },
-              },
-              orderBy: { sequenceOrder: "asc" },
-            });
-
-          if (nextAnyTypeSameParent) {
-            endSeq = nextAnyTypeSameParent.sequenceOrder - 1;
-          } else {
-            // If no next item with same parent, find the next item with parent's parent (moving up one level)
-            const parentItem = await prisma.buildingCodeContent.findUnique({
-              where: { id: rootContent.parentId },
-              select: { parentId: true },
-            });
-
-            if (parentItem?.parentId) {
-              const nextInParentLevel =
-                await prisma.buildingCodeContent.findFirst({
-                  where: {
-                    pdfDocumentId: id,
-                    parentId: parentItem.parentId,
-                    sequenceOrder: { gt: rootContent.sequenceOrder },
-                  },
-                  orderBy: { sequenceOrder: "asc" },
-                });
-              endSeq = nextInParentLevel
-                ? nextInParentLevel.sequenceOrder - 1
-                : rootContent.sequenceOrder + 100; // Safe fallback
-            } else {
-              // Final fallback - use a reasonable small number
-              endSeq = rootContent.sequenceOrder + 100;
-            }
-          }
-        }
-
-        rowGap = endSeq - startSeq;
-
-        console.log(
-          `Next ${rootContent.contentType}:`,
-          nextSameType?.id || "Not found"
-        );
-        console.log(`Current ${rootContent.contentType} Sequence:`, startSeq);
-        console.log(
-          `Next ${rootContent.contentType} Sequence:`,
-          nextSameType?.sequenceOrder || "Not applicable"
-        );
-        console.log(`Calculated end sequence:`, endSeq);
-      } else {
-        // If no parentId, use a safe default row gap
-        rowGap = 100;
-        console.log("No parentId found, using default row gap:", rowGap);
-      }
-    }
-
-    console.log("Row Gap:", rowGap);
-    console.log("Is Last Division:", isLastDivision);
-
-    // 3. Check if content is large (more than 1000 rows)
-    const isLargeContent = rowGap > 1000;
-
-    if (isLargeContent) {
-      console.log(
-        `Large ${rootContent.contentType} detected → returning only immediate children`
-      );
-
-      // Determine what child content type to show based on current type
-      let childContentType = "";
-      switch (rootContent.contentType) {
-        case "division":
-          childContentType = "part";
-          break;
-        case "part":
-          childContentType = "section";
-          break;
-        case "section":
-          childContentType = "subsection";
-          break;
-        case "subsection":
-          childContentType = "article";
-          break;
-        case "article":
-          childContentType = "sentence";
-          break;
-        default:
-          childContentType = ""; // Show all children for other types
-      }
-
-      // Build query for immediate children
-      const whereClause: any = {
-        pdfDocumentId: id,
-        parentId: rootContentId,
-      };
-
-      // Only filter by contentType if we specified one
-      if (childContentType) {
-        whereClause.contentType = childContentType;
-      }
-
-      // Fetch only immediate children
-      const immediateChildren = await prisma.buildingCodeContent.findMany({
-        where: whereClause,
-        include: {
-          sourceReferences: {
-            include: {
-              targetContent: {
-                select: {
-                  id: true,
-                  parentId: true,
-                  contentType: true,
-                  pageNumber: true,
-                  referenceCode: true,
-                  title: true,
-                  contentText: true,
-                  sequenceOrder: true,
-                  pdfDocumentId: true,
-                },
-              },
-            },
-            orderBy: {
-              referencePosition: "asc",
-            },
-          },
-        },
-        orderBy: { sequenceOrder: "asc" },
-      });
-
-      // Check which children have their own children
-      const childrenWithMetadata = await Promise.all(
-        immediateChildren.map(async (child) => {
-          const hasChildItems = await hasChildren(child.id, id);
-          return {
-            ...transformContentItem(child),
-            references: child.sourceReferences.map(transformReference),
-            link: `/api/pdf-documents/${id}/content?parentId=${child.id}`,
-            hasChildren: hasChildItems,
-            isLargeSection: hasChildItems,
-          };
-        })
-      );
-
-      const response = {
-        ...transformContentItem(rootContent),
-        references: [],
-        children: childrenWithMetadata,
-        metadata: {
-          isLargeContent: true,
-          contentType: rootContent.contentType,
-          totalRowsInSection: rowGap + 1,
-          message: `${rootContent.contentType} is large. Showing only immediate children for better performance.`,
-          childCount: childrenWithMetadata.length,
-          childType: childContentType || "all",
-          isLastDivision: isLastDivision,
-          originalTargetContent: shouldReturnParentHierarchy
-            ? {
-                id: mainContent.id,
-                contentType: mainContent.contentType,
-                referenceCode: mainContent.referenceCode,
-                contentText: mainContent.contentText,
-                isHighlighted: true, // Flag to highlight the original target in UI
-              }
-            : null,
-        },
-      };
-
-      console.log(
-        `Returning ${childrenWithMetadata.length} ${
-          childContentType || "children"
-        } instead of ${rowGap + 1} total rows`
-      );
-      return res.json(response);
-    }
-
-    // 4. Small content → return full hierarchy
-    console.log(`Small ${rootContent.contentType} → returning full hierarchy`);
-
-    // Recursive function to get full hierarchy
-    const getContentHierarchy = async (parentId: number): Promise<any[]> => {
-      const children = await prisma.buildingCodeContent.findMany({
-        where: {
-          parentId: parentId,
-          pdfDocumentId: id,
-        },
-        include: {
-          sourceReferences: {
-            include: {
-              targetContent: {
-                select: {
-                  id: true,
-                  parentId: true,
-                  contentType: true,
-                  pageNumber: true,
-                  referenceCode: true,
-                  title: true,
-                  contentText: true,
-                  sequenceOrder: true,
-                  pdfDocumentId: true,
-                },
-              },
-            },
-            orderBy: {
-              referencePosition: "asc",
-            },
-          },
-        },
-        orderBy: {
-          sequenceOrder: "asc",
-        },
-      });
-
-      const childrenWithHierarchy = await Promise.all(
-        children.map(async (child) => {
-          const childWithChildren = {
-            ...transformContentItem(child),
-            references: child.sourceReferences.map(transformReference),
-            children: await getContentHierarchy(child.id),
-            // Add highlight flag for the original target content
-            isHighlighted:
-              shouldReturnParentHierarchy && child.id === numericContentId,
-          };
-          return childWithChildren;
-        })
-      );
-
-      return childrenWithHierarchy;
-    };
-
-    const children = await getContentHierarchy(rootContentId);
-
-    const response = {
-      ...transformContentItem(rootContent),
-      references: [],
-      children: children,
-      metadata: {
-        isLargeContent: false,
-        contentType: rootContent.contentType,
-        totalRowsInSection: rowGap + 1,
-        message: shouldReturnParentHierarchy
-          ? `Showing parent ${rootContent.contentType} hierarchy with target ${mainContent.contentType} highlighted`
-          : "Showing full content hierarchy",
-        childCount: children.length,
-        isLastDivision: isLastDivision,
-        originalTargetContent: shouldReturnParentHierarchy
-          ? {
-              id: mainContent.id,
-              contentType: mainContent.contentType,
-              referenceCode: mainContent.referenceCode,
-              contentText: mainContent.contentText,
-              isHighlighted: true,
-            }
-          : null,
-      },
-    };
-
-    console.log(
-      `Returning full hierarchy with ${children.length} immediate children`
-    );
-    return res.json(response);
-  } catch (error) {
-    console.error("Error fetching content:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error occurred";
-    res
-      .status(500)
-      .json({ error: "Failed to fetch content", details: errorMessage });
   }
 });
 

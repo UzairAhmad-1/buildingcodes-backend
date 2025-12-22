@@ -131,14 +131,18 @@ const extractReferenceCode = (
   text: string,
   label: string
 ): string => {
+  // Clean the title/text first
+  const cleanTitle = title ? title.trim() : "";
+  const cleanText = text ? text.trim() : "";
+
   // For NoteSection and NoteItem, always use title as reference code
-  if ((label === "NoteSection" || label === "NoteItem") && title) {
-    return title.trim();
+  if ((label === "NoteSection" || label === "NoteItem") && cleanTitle) {
+    return cleanTitle;
   }
 
   // For DefTerm, use term if available (this comes from the title parameter)
-  if (label === "DefTerm" && title) {
-    return title.trim();
+  if (label === "DefTerm" && cleanTitle) {
+    return cleanTitle;
   }
 
   // For high-level structural elements (Division, Part, Section), use title as reference code
@@ -149,8 +153,8 @@ const extractReferenceCode = (
     "Subsection",
     "Article",
   ];
-  if (structuralElements.includes(label) && title) {
-    return title.trim();
+  if (structuralElements.includes(label) && cleanTitle) {
+    return cleanTitle;
   }
 
   // For NoteContent, use empty reference code
@@ -161,34 +165,38 @@ const extractReferenceCode = (
   // For Sentence, check if we should use title or text
   if (label === "Sentence") {
     // If title exists and text is empty, use title as content, not reference code
-    if (title && (!text || text.trim() === "")) {
+    if (cleanTitle && (!cleanText || cleanText === "")) {
       return "";
     }
     // If both title and text exist, use title pattern as reference code if it matches
-    if (title && /^[\d\.\)]+$/.test(title.replace(/\s/g, ""))) {
-      return title.trim();
+    if (cleanTitle && /^[\d\.\)]+$/.test(cleanTitle.replace(/\s/g, ""))) {
+      return cleanTitle;
     }
   }
 
   // Use title as reference code if it matches pattern - FIXED: added \( to pattern
-  if (title && /^[\d\.a-z\(\)\-]+$/.test(title.replace(/\s/g, ""))) {
-    return title.trim();
+  if (
+    cleanTitle &&
+    /^[\d\.a-z\(\)\-\:]+$/.test(cleanTitle.replace(/\s/g, ""))
+  ) {
+    return cleanTitle;
   }
 
   // Extract from text as fallback only for certain types
   const extractFromTextTypes = ["Clause", "Subclause", "Sentence"];
   if (extractFromTextTypes.includes(label)) {
     const patterns = [
-      /^([\d\.\-]+)\s/,
-      /^([a-z]\))\s/,
-      /^(i+\))\s/,
-      /^([A-Z]\))\s/,
+      /^([\d\.\-]+)[\s\)\.]/,
+      /^([a-z]\))[\s]/,
+      /^(i+\))[\s]/,
+      /^([A-Z]\))[\s]/,
     ];
 
     for (const pattern of patterns) {
-      const match = text.match(pattern);
+      const match = cleanText.match(pattern);
       if (match) {
-        return match[1].replace(")", "").trim();
+        // Keep the parentheses if they exist
+        return match[1].trim();
       }
     }
   }
@@ -258,63 +266,60 @@ const extractContentText = (
 
 // Check if content is a definition
 const isDefinitionContent = (text: string, label: string): boolean => {
-  // DefTerm is always a definition
-  if (label === "DefTerm") {
-    return true;
-  }
-
-  // Articles and sentences that define terms are usually definitions
-  if (label === "Article" || label === "Sentence") {
-    const lowerText = text.toLowerCase();
-    return (
-      lowerText.includes("means") ||
-      lowerText.includes("includes") ||
-      lowerText.includes("defined as") ||
-      /^[^.]*: [^.]*\.$/.test(text)
-    );
-  }
-  return false;
+  // Only DefTerm is a definition
+  return label === "DefTerm";
 };
 
 const extractDefinitionTerm = (
   text: string,
   label: string,
   jsonTitle?: string,
-  jsonTerm?: string // Add this parameter
+  jsonTerm?: string
 ): string | null => {
-  // For DefTerm, use the provided term field or extract from text
+  // Only extract term for DefTerm labels
   if (label === "DefTerm") {
     // First priority: use the explicit term field from JSON
     if (jsonTerm) {
-      return jsonTerm;
+      // Clean the term - remove quotes, parentheses, extra spaces
+      return jsonTerm
+        .replace(/^["'(]+|["'),;:!?.]+$/g, "") // Remove surrounding quotes/parentheses
+        .trim();
     }
     // Second priority: use the title field
     if (jsonTitle) {
-      return jsonTitle;
+      return jsonTitle.replace(/^["'(]+|["'),;:!?.]+$/g, "").trim();
     }
-    // Fallback: extract term from DefTerm text pattern: "Term means definition"
-    const match = text.match(/^([^,]+?)\s+means/);
-    if (match) {
-      return match[1].trim();
+    // Fallback: extract term from DefTerm text pattern
+    // Try multiple patterns
+    const patterns = [
+      /^"([^"]+)"\s+means/, // "Term" means
+      /^"([^"]+)"\s+is defined as/, // "Term" is defined as
+      /^"([^"]+)"\s+includes/, // "Term" includes
+      /^([^,]+?)\s+means/, // Term means (no quotes)
+      /^([^,]+?)\s+is defined as/, // Term is defined as
+      /^([^,]+?)\s+includes/, // Term includes
+    ];
+
+    for (const pattern of patterns) {
+      const match = text.match(pattern);
+      if (match) {
+        return match[1].replace(/^["'(]+|["'),;:!?.]+$/g, "").trim();
+      }
     }
-    return text.split(" means")[0]?.trim() || null;
+
+    // Final fallback
+    const meansIndex = text.toLowerCase().indexOf(" means");
+    if (meansIndex > 0) {
+      return text
+        .substring(0, meansIndex)
+        .replace(/^["'(]+|["'),;:!?.]+$/g, "")
+        .trim();
+    }
+
+    return null;
   }
 
-  // Patterns for definition extraction for other content types
-  const patterns = [
-    /^([^:]+):/, // "Term: definition"
-    /^([^\.]+) means/, // "Term means definition"
-    /^([^\.]+) includes/, // "Term includes definition"
-    /^([^\.]+) is defined as/, // "Term is defined as definition"
-  ];
-
-  for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) {
-      return match[1].trim();
-    }
-  }
-  return null;
+  return null; // Only DefTerm has definition terms
 };
 // Function to create PDF document entry using names instead of IDs
 const createPdfDocument = async (
@@ -390,7 +395,7 @@ const createPdfDocument = async (
   return pdfDocument.id;
 };
 
-// Improved function to find target content for a reference using Prisma
+// Update the findTargetContent function to better handle all cases
 const findTargetContent = async (
   referenceText: string,
   pdfDocumentId: string
@@ -400,42 +405,156 @@ const findTargetContent = async (
   hyperlink_target: string;
 } | null> => {
   try {
-    const cacheKey = `${pdfDocumentId}_${referenceText.toLowerCase()}`;
+    // Clean and normalize the reference text
+    let cleanReferenceText = referenceText
+      .trim()
+      .replace(/^[\s"']+|[\s"']+$/g, "")
+      .toLowerCase();
 
-    // First, check if we have a direct definition term match
-    if (definitionTerms.has(referenceText.toLowerCase())) {
-      const definitionId = definitionTerms.get(referenceText.toLowerCase())!;
-      const definitionContent = contentCache.get(
-        `${pdfDocumentId}_id_${definitionId}`
-      );
-      if (definitionContent) {
-        return {
-          id: definitionContent.id,
-          reference_code: definitionContent.reference_code || null,
-          hyperlink_target: `#definition-${definitionContent.id}`,
-        };
+    console.log(`🔍 Searching for target content: "${cleanReferenceText}"`);
+
+    // Handle possessive forms like "building's" -> "building"
+    cleanReferenceText = cleanReferenceText.replace(/'s$/, "");
+
+    // Generate all possible variations of the term
+    const termVariations = new Set<string>();
+
+    // Original cleaned term
+    termVariations.add(cleanReferenceText);
+
+    // Singular version (remove trailing 's')
+    if (cleanReferenceText.endsWith("s")) {
+      const singular = cleanReferenceText.slice(0, -1);
+      termVariations.add(singular);
+
+      // Also try removing 'ies' and adding 'y' (e.g., "occupancies" -> "occupancy")
+      if (cleanReferenceText.endsWith("ies")) {
+        const yForm = cleanReferenceText.slice(0, -3) + "y";
+        termVariations.add(yForm);
       }
     }
 
-    // Try to find definition articles that match the reference text using Prisma
-    const definitionResults = await prisma.buildingCodeContent.findMany({
+    // Plural version (add 's')
+    const plural = cleanReferenceText + "s";
+    termVariations.add(plural);
+
+    // Also try with 'es' for words ending in certain letters
+    if (cleanReferenceText.match(/[sxz]$|ch$|sh$/)) {
+      const pluralEs = cleanReferenceText + "es";
+      termVariations.add(pluralEs);
+    }
+
+    // Convert to array for querying
+    const termVariationsArray = Array.from(termVariations);
+    console.log(`  Term variations: ${termVariationsArray.join(", ")}`);
+
+    // STRATEGY 1: Try exact matches with all term variations
+    const exactDefinition = await prisma.buildingCodeContent.findFirst({
       where: {
         pdfDocumentId: pdfDocumentId,
         isDefinition: true,
-        OR: [
-          { definitionTerm: { contains: referenceText, mode: "insensitive" } },
-          {
-            contentText: { contains: `${referenceText} `, mode: "insensitive" },
-          },
-          { referenceCode: referenceText },
-        ],
+        definitionTerm: {
+          in: termVariationsArray,
+          mode: "insensitive",
+        },
       },
-      orderBy: [{ definitionTerm: "asc" }, { sequenceOrder: "asc" }],
-      take: 5,
+      orderBy: [{ sequenceOrder: "asc" }],
     });
 
-    if (definitionResults.length > 0) {
-      const bestMatch = definitionResults[0];
+    if (exactDefinition) {
+      console.log(
+        `  ✓ Found exact definition: "${exactDefinition.definitionTerm}" (ID: ${exactDefinition.id})`
+      );
+      return {
+        id: exactDefinition.id,
+        reference_code: exactDefinition.referenceCode,
+        hyperlink_target: `#definition-${exactDefinition.id}`,
+      };
+    }
+
+    // STRATEGY 2: Try contains matches for each variation
+    // Build OR conditions for each variation
+    const containsConditions = termVariationsArray.map((term) => ({
+      pdfDocumentId: pdfDocumentId,
+      isDefinition: true,
+      contentText: {
+        contains: ` ${term} means`,
+        mode: "insensitive" as const, // Use const assertion or Prisma.QueryMode
+      },
+    }));
+
+    // Also check for quoted terms
+    const quotedConditions = termVariationsArray.map((term) => ({
+      pdfDocumentId: pdfDocumentId,
+      isDefinition: true,
+      contentText: {
+        contains: `"${term}" means`,
+        mode: "insensitive" as const,
+      },
+    }));
+
+    const allConditions = [...containsConditions, ...quotedConditions];
+
+    const containsDefinition = await prisma.buildingCodeContent.findFirst({
+      where: {
+        OR: allConditions,
+      },
+      orderBy: [{ sequenceOrder: "asc" }],
+    });
+
+    if (containsDefinition) {
+      console.log(
+        `  ✓ Found definition by pattern: "${containsDefinition.definitionTerm}" (ID: ${containsDefinition.id})`
+      );
+      return {
+        id: containsDefinition.id,
+        reference_code: containsDefinition.referenceCode,
+        hyperlink_target: `#definition-${containsDefinition.id}`,
+      };
+    }
+
+    // STRATEGY 3: Try definitionTerm contains (partial matches)
+    const partialMatches = await prisma.buildingCodeContent.findMany({
+      where: {
+        pdfDocumentId: pdfDocumentId,
+        isDefinition: true,
+        OR: termVariationsArray.map((term) => ({
+          definitionTerm: {
+            contains: term,
+            mode: "insensitive" as const,
+          },
+        })),
+      },
+      orderBy: [{ definitionTerm: "asc" }, { sequenceOrder: "asc" }],
+      take: 3,
+    });
+
+    // Filter to find the best partial match
+    if (partialMatches.length > 0) {
+      // Sort by how closely the definition term matches our variations
+      const sortedMatches = partialMatches.sort((a, b) => {
+        const aTerm = a.definitionTerm?.toLowerCase() || "";
+        const bTerm = b.definitionTerm?.toLowerCase() || "";
+
+        // Prefer exact or closer matches
+        const aScore = termVariationsArray.some(
+          (v) => aTerm === v || aTerm.startsWith(v)
+        )
+          ? 1
+          : 0;
+        const bScore = termVariationsArray.some(
+          (v) => bTerm === v || bTerm.startsWith(v)
+        )
+          ? 1
+          : 0;
+
+        return bScore - aScore;
+      });
+
+      const bestMatch = sortedMatches[0];
+      console.log(
+        `  ✓ Found partial match: "${bestMatch.definitionTerm}" (ID: ${bestMatch.id})`
+      );
       return {
         id: bestMatch.id,
         reference_code: bestMatch.referenceCode,
@@ -443,28 +562,97 @@ const findTargetContent = async (
       };
     }
 
-    // Fallback: find any relevant content
-    const fallbackResults = await prisma.buildingCodeContent.findMany({
+    // STRATEGY 4: Look for any definition that mentions the term
+    const broadDefinitionSearch = await prisma.buildingCodeContent.findFirst({
       where: {
         pdfDocumentId: pdfDocumentId,
+        isDefinition: true,
         OR: [
-          { contentText: { contains: referenceText, mode: "insensitive" } },
-          { referenceCode: referenceText },
+          {
+            contentText: {
+              contains: cleanReferenceText,
+              mode: "insensitive" as const,
+            },
+          },
+          // Add conditions for each term variation
+          ...termVariationsArray.map((term) => ({
+            contentText: {
+              contains: term,
+              mode: "insensitive" as const,
+            },
+          })),
         ],
       },
-      orderBy: [{ referenceCode: "asc" }, { sequenceOrder: "asc" }],
-      take: 3,
+      orderBy: [{ sequenceOrder: "asc" }],
     });
 
-    if (fallbackResults.length > 0) {
-      const result = fallbackResults[0];
+    if (broadDefinitionSearch) {
+      console.log(
+        `  ✓ Found definition by broad search: "${broadDefinitionSearch.definitionTerm}" (ID: ${broadDefinitionSearch.id})`
+      );
       return {
-        id: result.id,
-        reference_code: result.referenceCode,
-        hyperlink_target: `#content-${result.id}`,
+        id: broadDefinitionSearch.id,
+        reference_code: broadDefinitionSearch.referenceCode,
+        hyperlink_target: `#definition-${broadDefinitionSearch.id}`,
       };
     }
 
+    // STRATEGY 5: Check for "means" pattern
+    const meansPattern = await prisma.buildingCodeContent.findFirst({
+      where: {
+        pdfDocumentId: pdfDocumentId,
+        contentText: {
+          startsWith: `${referenceText.trim()} means`,
+          mode: "insensitive" as const,
+        },
+      },
+      orderBy: [{ sequenceOrder: "asc" }],
+    });
+
+    if (meansPattern) {
+      console.log(
+        `  ⚠️ Found means pattern (may not be marked as definition): (ID: ${meansPattern.id})`
+      );
+      return {
+        id: meansPattern.id,
+        reference_code: meansPattern.referenceCode,
+        hyperlink_target: meansPattern.isDefinition
+          ? `#definition-${meansPattern.id}`
+          : `#content-${meansPattern.id}`,
+      };
+    }
+
+    // STRATEGY 6: Special handling for compound terms
+    if (cleanReferenceText.includes(" ")) {
+      const words = cleanReferenceText.split(" ");
+      const lastWord = words[words.length - 1];
+      console.log(`  Trying last word: "${lastWord}"`);
+
+      const lastWordDefinition = await prisma.buildingCodeContent.findFirst({
+        where: {
+          pdfDocumentId: pdfDocumentId,
+          isDefinition: true,
+          definitionTerm: {
+            equals: lastWord,
+            mode: "insensitive" as const,
+          },
+        },
+        orderBy: [{ sequenceOrder: "asc" }],
+      });
+
+      if (lastWordDefinition) {
+        console.log(
+          `  ✓ Found definition by last word: "${lastWordDefinition.definitionTerm}" (ID: ${lastWordDefinition.id})`
+        );
+        return {
+          id: lastWordDefinition.id,
+          reference_code: lastWordDefinition.referenceCode,
+          hyperlink_target: `#definition-${lastWordDefinition.id}`,
+        };
+      }
+    }
+
+    console.log(`  ✗ No definition found for: "${cleanReferenceText}"`);
     return null;
   } catch (error) {
     console.error(
@@ -474,7 +662,6 @@ const findTargetContent = async (
     return null;
   }
 };
-
 const importJsonData = async (filePath: string, pdfDocumentId: string) => {
   const rawData = fs.readFileSync(filePath, "utf-8");
   const rows: JsonRow[] = JSON.parse(rawData);
@@ -745,14 +932,58 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
 
       // Store definition terms for reference resolution
       if (isDefinition && definitionTerm) {
-        definitionTerms.set(definitionTerm.toLowerCase(), newId);
-        console.log(`  ✓ Definition term: "${definitionTerm}"`);
+        // Clean the definition term
+        const cleanDefinitionTerm = definitionTerm
+          .replace(/^["'(]+|["'),;:!?.]+$/g, "")
+          .toLowerCase()
+          .trim();
+
+        if (cleanDefinitionTerm) {
+          // Store the term as-is
+          definitionTerms.set(cleanDefinitionTerm, newId);
+
+          // Store singular version
+          if (cleanDefinitionTerm.endsWith("s")) {
+            const singular = cleanDefinitionTerm.slice(0, -1);
+            if (singular.length > 1) {
+              definitionTerms.set(singular, newId);
+            }
+          }
+
+          // Store plural version
+          const plural = cleanDefinitionTerm + "s";
+          definitionTerms.set(plural, newId);
+
+          // Handle "ies" -> "y" transformations
+          if (cleanDefinitionTerm.endsWith("ies")) {
+            const yForm = cleanDefinitionTerm.slice(0, -3) + "y";
+            definitionTerms.set(yForm, newId);
+          }
+
+          // Handle "y" -> "ies" transformations
+          if (cleanDefinitionTerm.endsWith("y")) {
+            const iesForm = cleanDefinitionTerm.slice(0, -1) + "ies";
+            definitionTerms.set(iesForm, newId);
+          }
+
+          // Store without possessive
+          const withoutPossessive = cleanDefinitionTerm.replace(/'s$/, "");
+          if (withoutPossessive !== cleanDefinitionTerm) {
+            definitionTerms.set(withoutPossessive, newId);
+          }
+
+          console.log(
+            `  ✓ Definition term: "${cleanDefinitionTerm}" -> ID: ${newId}`
+          );
+        }
 
         // Set as current definition for subsequent clauses
         currentDefinitionId = newId;
         console.log(`  → Set as current definition ID: ${currentDefinitionId}`);
-      } else if (contentType === ContentType.definition) {
-        // For definition content without a specific term, still set as current definition
+      }
+
+      // Only set as current definition for actual DefTerm content
+      if (contentType === ContentType.definition && row.label === "DefTerm") {
         currentDefinitionId = newId;
         console.log(`  → Set as current definition ID: ${currentDefinitionId}`);
       }
@@ -893,7 +1124,8 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
             referenceType: "definition",
             targetReferenceCode: targetContent?.reference_code || null,
             pageNumber: reference.page,
-            // Removed: fontFamily, bbox from references too
+
+            confidenceScore: 1.0, // Add default confidence score
             hyperlinkTarget: targetContent?.hyperlink_target || null,
             hyperlinkText: reference.link_text || null,
             referencePosition: i,
