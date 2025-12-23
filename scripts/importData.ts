@@ -24,6 +24,7 @@ interface JsonRow {
   y: number;
   references?: Reference[];
   term?: string;
+  list_title?: string; // Add this
 }
 
 interface PdfDocumentParams {
@@ -112,25 +113,29 @@ const determineContentType = (label: string): ContentType | null => {
     Body: ContentType.part,
     SeeAlso: ContentType.see_also,
     DefTerm: ContentType.definition,
-    // New note types
     NoteSection: ContentType.note_section,
     NoteItem: ContentType.note_item,
     NoteContent: ContentType.note_content,
+    ListItem: ContentType.list_item,
   };
 
-  // Skip Table labels
+  // Skip Table and Symbol labels
   if (label === "Table" || label === "Symbol") {
     return null;
   }
 
   return typeMap[label] || ContentType.section;
 };
-
 const extractReferenceCode = (
   title: string,
   text: string,
-  label: string
+  label: string,
+  listTitle?: string
 ): string => {
+  // For ListItem, use list_title if available
+  if (label === "ListItem" && listTitle) {
+    return listTitle.trim();
+  }
   // Clean the title/text first
   const cleanTitle = title ? title.trim() : "";
   const cleanText = text ? text.trim() : "";
@@ -208,8 +213,12 @@ const extractContentText = (
   text: string,
   title: string,
   referenceCode: string,
-  label: string
+  label: string,
+  listTitle?: string
 ): string => {
+  if (label === "ListItem") {
+    return text.trim();
+  }
   // For NoteSection and NoteItem, use text as content text (title goes to reference code)
   if (label === "NoteSection" || label === "NoteItem") {
     return text.trim();
@@ -691,16 +700,17 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       ContentType.division,
       ContentType.part,
       ContentType.section,
-      ContentType.note_section, // NoteSection at same level as Section (siblings under Part)
+      ContentType.note_section,
       ContentType.subsection,
-      ContentType.note_item, // NoteItem at same level as Subsection
+      ContentType.note_item,
       ContentType.article,
       ContentType.sentence,
+      ContentType.definition, // List items can also be in definitions
+      ContentType.list_item, // Place list_item here - it can be child of many types
       ContentType.clause,
       ContentType.subclause,
       ContentType.see_also,
-      ContentType.definition,
-      ContentType.note_content, // NoteContent at bottom level
+      ContentType.note_content,
       ContentType.paragraph,
     ];
 
@@ -728,13 +738,16 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       const referenceCode = extractReferenceCode(
         row.title,
         row.text,
-        row.label
+        row.label,
+        row.list_title // Pass list_title
       );
+
       const contentText = extractContentText(
         row.text,
         row.title,
         referenceCode,
-        row.label
+        row.label,
+        row.list_title
       );
 
       const pageNumber = row.page;
@@ -856,6 +869,26 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
           }
         }
         // Reset current definition when we encounter a new sentence
+        currentDefinitionId = null;
+      } else if (contentType === ContentType.list_item) {
+        // ListItem - can be child of sentence, section, subsection, clause, or definition
+        // Use the same hierarchy-based parent finding
+        for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+          const stackItem = hierarchyStack[i];
+          const currentIndex = hierarchy.indexOf(contentType);
+          const stackIndex = hierarchy.indexOf(stackItem.type);
+          if (stackIndex < currentIndex) {
+            parentId = stackItem.id;
+
+            // Log what type of parent we found
+            const parentType = ContentType[stackItem.type];
+            console.log(
+              `  → Attaching ListItem to ${parentType} ID: ${parentId}`
+            );
+            break;
+          }
+        }
+        // List items don't create new definitions
         currentDefinitionId = null;
       } else if (contentType === ContentType.definition) {
         // Definition - should be child of current sentence

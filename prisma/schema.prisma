@@ -23,6 +23,7 @@ enum ContentType {
   note_section  
   note_item     
   note_content  
+  list_item      
 }
 
 model Admin {
