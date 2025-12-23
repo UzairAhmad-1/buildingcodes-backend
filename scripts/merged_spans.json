@@ -12613,8 +12613,8 @@
     ]
   },
   {
-    "label": "Symbol",
-    "symbol": "1 in 2",
+    "label": "ListItem",
+    "list_title": "1 in 2",
     "text": "slope of 1 vertical to 2 horizontal",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12628,8 +12628,8 @@
     "y": 302.23529052734375
   },
   {
-    "label": "Symbol",
-    "symbol": "cm",
+    "label": "ListItem",
+    "list_title": "cm",
     "text": "centimetre(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12643,8 +12643,8 @@
     "y": 317.35260009765625
   },
   {
-    "label": "Symbol",
-    "symbol": "°",
+    "label": "ListItem",
+    "list_title": "°",
     "text": "degree(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12658,8 +12658,8 @@
     "y": 332.46990966796875
   },
   {
-    "label": "Symbol",
-    "symbol": "°C",
+    "label": "ListItem",
+    "list_title": "°C",
     "text": "degree(s) Celsius",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12673,8 +12673,8 @@
     "y": 347.58721923828125
   },
   {
-    "label": "Symbol",
-    "symbol": "dBA",
+    "label": "ListItem",
+    "list_title": "dBA",
     "text": "A-weighted sound level",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12688,8 +12688,8 @@
     "y": 362.6451110839844
   },
   {
-    "label": "Symbol",
-    "symbol": "diam",
+    "label": "ListItem",
+    "list_title": "diam",
     "text": "diameter",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12703,8 +12703,8 @@
     "y": 377.7624206542969
   },
   {
-    "label": "Symbol",
-    "symbol": "g",
+    "label": "ListItem",
+    "list_title": "g",
     "text": "gram(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12718,8 +12718,8 @@
     "y": 392.8797302246094
   },
   {
-    "label": "Symbol",
-    "symbol": "h",
+    "label": "ListItem",
+    "list_title": "h",
     "text": "hour(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12733,8 +12733,8 @@
     "y": 407.9970397949219
   },
   {
-    "label": "Symbol",
-    "symbol": "HDD",
+    "label": "ListItem",
+    "list_title": "HDD",
     "text": "heating degree-day(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12748,8 +12748,8 @@
     "y": 423.1143493652344
   },
   {
-    "label": "Symbol",
-    "symbol": "HVAC",
+    "label": "ListItem",
+    "list_title": "HVAC",
     "text": "heating, ventilating and air-conditioning",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12763,8 +12763,8 @@
     "y": 438.2316589355469
   },
   {
-    "label": "Symbol",
-    "symbol": "Hz",
+    "label": "ListItem",
+    "list_title": "Hz",
     "text": "hertz",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12778,8 +12778,8 @@
     "y": 453.3489685058594
   },
   {
-    "label": "Symbol",
-    "symbol": "J",
+    "label": "ListItem",
+    "list_title": "J",
     "text": "joule(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12793,8 +12793,8 @@
     "y": 468.4068603515625
   },
   {
-    "label": "Symbol",
-    "symbol": "K",
+    "label": "ListItem",
+    "list_title": "K",
     "text": "degree(s) Kelvin",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12808,8 +12808,8 @@
     "y": 483.524169921875
   },
   {
-    "label": "Symbol",
-    "symbol": "kg",
+    "label": "ListItem",
+    "list_title": "kg",
     "text": "kilogram(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12823,8 +12823,8 @@
     "y": 498.6414794921875
   },
   {
-    "label": "Symbol",
-    "symbol": "kN",
+    "label": "ListItem",
+    "list_title": "kN",
     "text": "kilonewton(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12838,8 +12838,8 @@
     "y": 513.7588500976562
   },
   {
-    "label": "Symbol",
-    "symbol": "kPa",
+    "label": "ListItem",
+    "list_title": "kPa",
     "text": "kilopascal(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12853,8 +12853,8 @@
     "y": 528.8760986328125
   },
   {
-    "label": "Symbol",
-    "symbol": "kW",
+    "label": "ListItem",
+    "list_title": "kW",
     "text": "kilowatt(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12868,8 +12868,8 @@
     "y": 543.993408203125
   },
   {
-    "label": "Symbol",
-    "symbol": "L",
+    "label": "ListItem",
+    "list_title": "L",
     "text": "litre(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12883,8 +12883,8 @@
     "y": 559.1107177734375
   },
   {
-    "label": "Symbol",
-    "symbol": "lx",
+    "label": "ListItem",
+    "list_title": "lx",
     "text": "lux",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12898,8 +12898,8 @@
     "y": 574.1686401367188
   },
   {
-    "label": "Symbol",
-    "symbol": "m",
+    "label": "ListItem",
+    "list_title": "m",
     "text": "metre(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12913,8 +12913,8 @@
     "y": 589.285888671875
   },
   {
-    "label": "Symbol",
-    "symbol": "M",
+    "label": "ListItem",
+    "list_title": "M",
     "text": "metric nomenclature for reinforcing bars",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12928,8 +12928,8 @@
     "y": 604.4031982421875
   },
   {
-    "label": "Symbol",
-    "symbol": "max.",
+    "label": "ListItem",
+    "list_title": "max.",
     "text": "maximum",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12943,8 +12943,8 @@
     "y": 619.5205078125
   },
   {
-    "label": "Symbol",
-    "symbol": "min.",
+    "label": "ListItem",
+    "list_title": "min.",
     "text": "minimum",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12958,8 +12958,8 @@
     "y": 634.6377563476562
   },
   {
-    "label": "Symbol",
-    "symbol": "min",
+    "label": "ListItem",
+    "list_title": "min",
     "text": "minute(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12973,8 +12973,8 @@
     "y": 649.7550659179688
   },
   {
-    "label": "Symbol",
-    "symbol": "MJ",
+    "label": "ListItem",
+    "list_title": "MJ",
     "text": "megajoule(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -12988,8 +12988,8 @@
     "y": 664.8723754882812
   },
   {
-    "label": "Symbol",
-    "symbol": "mm",
+    "label": "ListItem",
+    "list_title": "mm",
     "text": "millimetre(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -13003,8 +13003,8 @@
     "y": 679.9302978515625
   },
   {
-    "label": "Symbol",
-    "symbol": "MPa",
+    "label": "ListItem",
+    "list_title": "MPa",
     "text": "megapascal(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -13018,8 +13018,8 @@
     "y": 695.047607421875
   },
   {
-    "label": "Symbol",
-    "symbol": "N",
+    "label": "ListItem",
+    "list_title": "N",
     "text": "newton",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -13033,8 +13033,8 @@
     "y": 710.1648559570312
   },
   {
-    "label": "Symbol",
-    "symbol": "n/a",
+    "label": "ListItem",
+    "list_title": "n/a",
     "text": "not applicable",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -13048,8 +13048,8 @@
     "y": 725.2821655273438
   },
   {
-    "label": "Symbol",
-    "symbol": "ng",
+    "label": "ListItem",
+    "list_title": "ng",
     "text": "nanogram(s)",
     "page": 47,
     "font": "PalatinoLinotype",
@@ -13063,8 +13063,8 @@
     "y": 740.3994750976562
   },
   {
-    "label": "Symbol",
-    "symbol": "No.",
+    "label": "ListItem",
+    "list_title": "No.",
     "text": "number(s)",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13078,8 +13078,8 @@
     "y": 75.4432144165039
   },
   {
-    "label": "Symbol",
-    "symbol": "o.c.",
+    "label": "ListItem",
+    "list_title": "o.c.",
     "text": "on centre",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13093,8 +13093,8 @@
     "y": 92.96622467041016
   },
   {
-    "label": "Symbol",
-    "symbol": "OSB",
+    "label": "ListItem",
+    "list_title": "OSB",
     "text": "oriented strandboard",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13108,8 +13108,8 @@
     "y": 110.54862213134766
   },
   {
-    "label": "Symbol",
-    "symbol": "PM",
+    "label": "ListItem",
+    "list_title": "PM",
     "text": "particulate matter",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13123,8 +13123,8 @@
     "y": 128.07164001464844
   },
   {
-    "label": "Symbol",
-    "symbol": "ppb",
+    "label": "ListItem",
+    "list_title": "ppb",
     "text": "part(s) per billion",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13138,8 +13138,8 @@
     "y": 145.5946502685547
   },
   {
-    "label": "Symbol",
-    "symbol": "ppm",
+    "label": "ListItem",
+    "list_title": "ppm",
     "text": "part(s) per million",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13153,8 +13153,8 @@
     "y": 163.11766052246094
   },
   {
-    "label": "Symbol",
-    "symbol": "R",
+    "label": "ListItem",
+    "list_title": "R",
     "text": "thermal resistance value (imperial unit)",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13168,8 +13168,8 @@
     "y": 180.6406707763672
   },
   {
-    "label": "Symbol",
-    "symbol": "RSI",
+    "label": "ListItem",
+    "list_title": "RSI",
     "text": "thermal resistance value (metric unit)",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13183,8 +13183,8 @@
     "y": 198.16368103027344
   },
   {
-    "label": "Symbol",
-    "symbol": "s",
+    "label": "ListItem",
+    "list_title": "s",
     "text": "second(s)",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13198,8 +13198,8 @@
     "y": 215.74607849121094
   },
   {
-    "label": "Symbol",
-    "symbol": "W",
+    "label": "ListItem",
+    "list_title": "W",
     "text": "watt(s)",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13213,8 +13213,8 @@
     "y": 233.2690887451172
   },
   {
-    "label": "Symbol",
-    "symbol": "%",
+    "label": "ListItem",
+    "list_title": "%",
     "text": "percent",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13228,8 +13228,8 @@
     "y": 250.79209899902344
   },
   {
-    "label": "Symbol",
-    "symbol": "µg",
+    "label": "ListItem",
+    "list_title": "µg",
     "text": "microgram(s)",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13243,8 +13243,8 @@
     "y": 268.3150939941406
   },
   {
-    "label": "Symbol",
-    "symbol": "µm",
+    "label": "ListItem",
+    "list_title": "µm",
     "text": "micrometre(s)",
     "page": 48,
     "font": "PalatinoLinotype",
@@ -13258,8 +13258,8 @@
     "y": 285.8381042480469
   },
   {
-    "label": "Symbol",
-    "symbol": "U-value",
+    "label": "ListItem",
+    "list_title": "U-value",
     "text": "overall thermal transmittance",
     "page": 48,
     "font": "PalatinoLinotype",
