@@ -24,7 +24,12 @@ interface JsonRow {
   y: number;
   references?: Reference[];
   term?: string;
-  list_title?: string; // Add this
+  list_title?: string;
+  image_data?: string; // Add this
+  format?: string; // Add this
+  width?: number; // Add this
+  height?: number; // Add this
+  caption?: string; // Add this
 }
 
 interface PdfDocumentParams {
@@ -117,21 +122,28 @@ const determineContentType = (label: string): ContentType | null => {
     NoteItem: ContentType.note_item,
     NoteContent: ContentType.note_content,
     ListItem: ContentType.list_item,
+    Image: ContentType.image,
   };
 
-  // Skip Table and Symbol labels
-  if (label === "Table" || label === "Symbol") {
+  // Skip Table and Symbol labels, but NOT Image
+  if (label === "Table" || label === "Symbol" || label === "Figure") {
     return null;
   }
 
   return typeMap[label] || ContentType.section;
 };
+
 const extractReferenceCode = (
   title: string,
   text: string,
   label: string,
   listTitle?: string
 ): string => {
+  // For Image, use title as reference code
+  if (label === "Image" && title) {
+    return title.trim();
+  }
+
   // For ListItem, use list_title if available
   if (label === "ListItem" && listTitle) {
     return listTitle.trim();
@@ -214,19 +226,39 @@ const extractContentText = (
   title: string,
   referenceCode: string,
   label: string,
-  listTitle?: string
+  listTitle?: string,
+  caption?: string
 ): string => {
-  if (label === "ListItem") {
-    return text.trim();
-  }
-  // For NoteSection and NoteItem, use text as content text (title goes to reference code)
-  if (label === "NoteSection" || label === "NoteItem") {
-    return text.trim();
+  // For Image, use caption as content text if available
+  if (label === "Image") {
+    if (caption) {
+      return caption.trim();
+    }
+    // Fallback to title if no caption
+    if (title) {
+      return title.trim();
+    }
+    // Final fallback
+    return text ? text.trim() : "";
   }
 
-  // For DefTerm, use the text as content text (term goes to title/reference code)
+  // For NoteContent, handle undefined text
+  if (label === "NoteContent") {
+    return text ? text.trim() : "";
+  }
+
+  if (label === "ListItem") {
+    return text ? text.trim() : "";
+  }
+
+  // For NoteSection and NoteItem, use text as content text
+  if (label === "NoteSection" || label === "NoteItem") {
+    return text ? text.trim() : "";
+  }
+
+  // For DefTerm, use the text as content text
   if (label === "DefTerm") {
-    return text.trim();
+    return text ? text.trim() : "";
   }
 
   // For Sentence where title exists but text is empty, use title as content
@@ -236,12 +268,7 @@ const extractContentText = (
 
   // For SeeAlso, use the text as-is
   if (label === "SeeAlso") {
-    return text.trim();
-  }
-
-  // For NoteContent, use the text as-is
-  if (label === "NoteContent") {
-    return text.trim();
+    return text ? text.trim() : "";
   }
 
   // For high-level structural elements, use text as content
@@ -253,11 +280,11 @@ const extractContentText = (
     "Article",
   ];
   if (structuralElements.includes(label)) {
-    return text.trim();
+    return text ? text.trim() : "";
   }
 
   // Remove reference code from text if present
-  if (referenceCode && text.startsWith(referenceCode)) {
+  if (referenceCode && text && text.startsWith(referenceCode)) {
     return text
       .replace(referenceCode, "")
       .replace(/^[\.\)\s]*/, "")
@@ -270,9 +297,9 @@ const extractContentText = (
     return title.trim();
   }
 
-  return text.trim();
+  // Handle case where text might be undefined or null
+  return text ? text.trim() : "";
 };
-
 // Check if content is a definition
 const isDefinitionContent = (text: string, label: string): boolean => {
   // Only DefTerm is a definition
@@ -330,6 +357,7 @@ const extractDefinitionTerm = (
 
   return null; // Only DefTerm has definition terms
 };
+
 // Function to create PDF document entry using names instead of IDs
 const createPdfDocument = async (
   params: PdfDocumentParams
@@ -671,6 +699,7 @@ const findTargetContent = async (
     return null;
   }
 };
+
 const importJsonData = async (filePath: string, pdfDocumentId: string) => {
   const rawData = fs.readFileSync(filePath, "utf-8");
   const rows: JsonRow[] = JSON.parse(rawData);
@@ -707,6 +736,7 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       ContentType.sentence,
       ContentType.definition, // List items can also be in definitions
       ContentType.list_item, // Place list_item here - it can be child of many types
+      ContentType.image, // Add Image to hierarchy
       ContentType.clause,
       ContentType.subclause,
       ContentType.see_also,
@@ -729,27 +759,27 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
     for (const row of rows) {
       const contentType = determineContentType(row.label);
 
-      // Skip Table labels and any other null content types
+      // Skip Table, Symbol, and Figure labels (Image is now handled)
       if (contentType === null) {
-        console.log(`⏭️  Skipping Table: ${row.text.substring(0, 50)}...`);
+        // console.log(`⏭️  Skipping ${row.label}: ${row.text ? row.text.substring(0, 50) : ''}...`);
         continue;
       }
 
       const referenceCode = extractReferenceCode(
-        row.title,
-        row.text,
-        row.label,
-        row.list_title // Pass list_title
-      );
-
-      const contentText = extractContentText(
-        row.text,
-        row.title,
-        referenceCode,
+        row.title || "",
+        row.text || "",
         row.label,
         row.list_title
       );
 
+      const contentText = extractContentText(
+        row.text || "",
+        row.title || "",
+        referenceCode,
+        row.label,
+        row.list_title,
+        row.caption
+      );
       const pageNumber = row.page;
 
       // Check if this is definition content
@@ -758,7 +788,9 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
         ? extractDefinitionTerm(contentText, row.label, row.title, row.term) // Add row.term here
         : null;
 
-      console.log(`Processing: ${contentText.substring(0, 50)}...`);
+      console.log(
+        `Processing: ${row.label} - ${contentText.substring(0, 50)}...`
+      );
       console.log(
         `  Type: ${contentType}, Label: ${row.label}, Ref: ${referenceCode}, Is Definition: ${isDefinition}`
       );
@@ -931,6 +963,23 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
             }
           }
         }
+      } else if (contentType === ContentType.image) {
+        // Image - attach to the most recent appropriate parent (similar to ListItem)
+        for (let i = hierarchyStack.length - 1; i >= 0; i--) {
+          const stackItem = hierarchyStack[i];
+          const currentIndex = hierarchy.indexOf(contentType);
+          const stackIndex = hierarchy.indexOf(stackItem.type);
+          if (stackIndex < currentIndex) {
+            parentId = stackItem.id;
+
+            // Log what type of parent we found
+            const parentType = ContentType[stackItem.type];
+            console.log(`  → Attaching Image to ${parentType} ID: ${parentId}`);
+            break;
+          }
+        }
+        // Images don't create new definitions
+        currentDefinitionId = null;
       } else {
         // Regular content - find parent from hierarchy
         for (let i = hierarchyStack.length - 1; i >= 0; i--) {
@@ -945,20 +994,30 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       }
 
       // Insert into database using Prisma WITHOUT font, bbox, yCoordinate and WITHOUT title column
+      const contentData: any = {
+        parentId: parentId,
+        contentType: contentType,
+        pageNumber: pageNumber,
+        referenceCode: referenceCode || null,
+        title: null, // Title column is not used - all content goes in contentText
+        contentText: contentText,
+        sequenceOrder: sequenceOrder,
+        pdfDocumentId: pdfDocumentId,
+        // Removed: fontFamily, fontSize, bbox, yCoordinate
+        isDefinition: isDefinition,
+        definitionTerm: definitionTerm,
+      };
+
+      // Add image data if this is an Image type
+      if (contentType === ContentType.image) {
+        contentData.imageData = row.image_data || null;
+        contentData.imageFormat = row.format || null;
+        contentData.imageWidth = row.width || null;
+        contentData.imageHeight = row.height || null;
+      }
+
       const newContent = await prisma.buildingCodeContent.create({
-        data: {
-          parentId: parentId,
-          contentType: contentType,
-          pageNumber: pageNumber,
-          referenceCode: referenceCode || null,
-          title: null, // Title column is not used - all content goes in contentText
-          contentText: contentText,
-          sequenceOrder: sequenceOrder,
-          pdfDocumentId: pdfDocumentId,
-          // Removed: fontFamily, fontSize, bbox, yCoordinate
-          isDefinition: isDefinition,
-          definitionTerm: definitionTerm,
-        },
+        data: contentData,
       });
 
       const newId: number = newContent.id;
@@ -1045,7 +1104,8 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       // Update hierarchy (don't push SeeAlso to stack as it doesn't create new hierarchy levels)
       if (
         contentType !== ContentType.see_also &&
-        contentType !== ContentType.note_content
+        contentType !== ContentType.note_content &&
+        contentType !== ContentType.image // Don't push Image to hierarchy stack
       ) {
         const currentIndex = hierarchy.indexOf(contentType);
 
@@ -1070,7 +1130,7 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
     console.log(
       `✅ Successfully imported ${contentMap.size} content rows (skipped ${
         rows.length - contentMap.size
-      } tables)`
+      } tables/figures/symbols)`
     );
     console.log(`📚 Found ${definitionTerms.size} definition terms`);
 
@@ -1138,7 +1198,7 @@ const importJsonData = async (filePath: string, pdfDocumentId: string) => {
       const sourceContentId = contentMap.get(contentKey);
 
       if (!sourceContentId) {
-        // This might be a table that was skipped, so skip its references too
+        // This might be a table or image that was skipped, so skip its references too
         continue;
       }
 

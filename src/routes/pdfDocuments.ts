@@ -136,6 +136,10 @@ const transformContentItem = (item: any) => ({
   // y_coordinate: item.yCoordinate,
   // is_definition: item.isDefinition,
   definition_term: item.definitionTerm,
+  imageData: item.imageData,
+  imageFormat: item.imageFormat,
+  imageWidth: item.imageWidth,
+  imageHeight: item.imageHeight,
   // created_at: item.createdAt,
   // updated_at: item.updatedAt,
 });
@@ -595,7 +599,7 @@ router.get("/:id/content/:contentId", async (req, res) => {
         whereClause.contentType = childContentType;
       }
 
-      // Fetch only immediate children
+      // Fetch only immediate children - UPDATED to include image fields
       const immediateChildren = await prisma.buildingCodeContent.findMany({
         where: whereClause,
         include: {
@@ -612,6 +616,10 @@ router.get("/:id/content/:contentId", async (req, res) => {
                   contentText: true,
                   sequenceOrder: true,
                   pdfDocumentId: true,
+                  imageData: true, // ADDED
+                  imageFormat: true, // ADDED
+                  imageWidth: true, // ADDED
+                  imageHeight: true, // ADDED
                 },
               },
             },
@@ -678,7 +686,7 @@ router.get("/:id/content/:contentId", async (req, res) => {
     // 4. Small content → return full hierarchy
     console.log(`Small ${rootContent.contentType} → returning full hierarchy`);
 
-    // Recursive function to get full hierarchy
+    // Recursive function to get full hierarchy - UPDATED to include image fields
     const getContentHierarchy = async (parentId: number): Promise<any[]> => {
       const children = await prisma.buildingCodeContent.findMany({
         where: {
@@ -699,6 +707,10 @@ router.get("/:id/content/:contentId", async (req, res) => {
                   contentText: true,
                   sequenceOrder: true,
                   pdfDocumentId: true,
+                  imageData: true, // ADDED
+                  imageFormat: true, // ADDED
+                  imageWidth: true, // ADDED
+                  imageHeight: true, // ADDED
                 },
               },
             },

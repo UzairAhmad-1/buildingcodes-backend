@@ -24,6 +24,7 @@ enum ContentType {
   note_item     
   note_content  
   list_item      
+  image
 }
 
 model Admin {
@@ -119,6 +120,10 @@ model BuildingCodeContent {
   bbox           Float[]
   yCoordinate    Float?      @map("y_coordinate")
   definitionTerm String?     @map("definition_term")
+  imageData      String?     @map("image_data") @db.Text 
+  imageFormat    String?     @map("image_format") 
+  imageWidth     Int?        @map("image_width") 
+  imageHeight    Int?        @map("image_height") 
   createdAt      DateTime    @default(now()) @map("created_at")
   updatedAt      DateTime    @default(now()) @map("updated_at")
   
